@@ -1,6 +1,6 @@
 from numpy.random import uniform
 
-from .activation import Linear
+from .activations import Linear
 
 
 class Layer(object):

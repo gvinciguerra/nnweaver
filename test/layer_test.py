@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from nnweaver.activation import Linear
+from nnweaver.activations import Linear
 from nnweaver.layer import Layer
 
 

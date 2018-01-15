@@ -16,3 +16,8 @@ class NN(object):
         xi = x
         for l in self.layers:
             xi = l(xi)
+
+        return xi
+
+    def train(self, optimizer):
+        optimizer(self)
