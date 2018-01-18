@@ -7,6 +7,20 @@ class Optimizer(object):
     def __init__(self, loss):  # TODO: Regularization
         self.loss = loss
 
+    @classmethod
+    def shuffle(cls, x, y, seed=None):
+        """ Shuffle x and y elements with the same permutation.
+
+        :param x: an array.
+        :param y: an array having the same length of x.
+        :param seed: seed for the random number generator.
+        :return: x, y. Permuted.
+        """
+        assert len(x) == len(y)
+        np.random.seed(seed)
+        permutation = np.random.permutation(len(x))
+        return x[permutation], y[permutation]
+
 
 class GradientBasedOptimizer(Optimizer):
     def forward(self, nn, x):
@@ -65,19 +79,20 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def fit(self, nn, X, Y, batch_size=1, epochs=1):
-        assert batch_size <= len(X)
+    def fit(self, nn, x, y, batch_size=1, epochs=1):
+        assert batch_size <= len(x)
 
-        ranges = SGD.batch_ranges(X, batch_size)
+        ranges = SGD.batch_ranges(x, batch_size)
         step = self.learning_rate / batch_size
         for epoch in range(0, epochs):
             bar = tqdm.tqdm(ranges, desc="Epoch %3d" % epoch)
+            x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in ranges:
                 # Estimate gradient
                 tot_errors = [0 for _ in range(len(nn.layers))]
                 tot_errors_bias = [0 for _ in range(len(nn.layers))]
-                for i, o in zip(X[low:high], Y[low:high]):
+                for i, o in zip(x_shuffled[low:high], y_shuffled[low:high]):
                     inputs, outputs = self.forward(nn, i)
                     errors = self.backward(nn, o, inputs, outputs)
                     for l in range(len(nn.layers)):
