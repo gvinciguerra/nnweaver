@@ -12,7 +12,7 @@ class NN(object):
 
         self.layers.append(layer)
 
-    def forward(self, x):
+    def predict(self, x):
         xi = x
         for l in self.layers:
             xi = l(xi)
