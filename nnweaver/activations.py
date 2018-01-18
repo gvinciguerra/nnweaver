@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Activation(object):
     def __call__(self, x):
         raise NotImplementedError
@@ -16,7 +19,16 @@ class Linear(Activation):
 
 class Rectifier(Activation):
     def __call__(self, x):
-        return max(0, x)
+        return np.multiply(x, x > 0)
 
     def gradient(self, x):
-        return 1 if x > 0 else 0
+        return np.multiply(1, x > 0)
+
+
+class Sigmoid(Activation):
+    def __call__(self, x):
+        return 1.0 / (1.0 + np.exp(-x))
+
+    def gradient(self, x):
+        y = self(x)
+        return np.multiply(y, 1 - y)

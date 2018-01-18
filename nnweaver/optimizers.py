@@ -81,8 +81,8 @@ class SGD(GradientBasedOptimizer):
                     inputs, outputs = self.forward(nn, i)
                     errors = self.backward(nn, o, inputs, outputs)
                     for l in range(len(nn.layers)):
-                        tot_errors_bias += errors[l]
-                        tot_errors[l] += errors[l].dot(inputs[l])
+                        tot_errors_bias[l] += errors[l]
+                        tot_errors[l] += errors[l].dot(inputs[l].T)
                 tot_errors = [e / batch_size for e in tot_errors]
                 tot_errors_bias = [e / batch_size for e in tot_errors_bias]
 
