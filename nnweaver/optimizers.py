@@ -110,8 +110,6 @@ class SGD(GradientBasedOptimizer):
                         else:
                             tot_errors[l] += errors[l].dot(outputs[l - 1].reshape((1, -1)))
                         assert tot_errors[l].shape == nn.layers[l].weights.shape
-                tot_errors = [e / batch_size for e in tot_errors]
-                tot_errors_bias = [e / batch_size for e in tot_errors_bias]
 
                 # Update weights
                 for (lay, grad, grad_b) in zip(nn.layers, tot_errors, tot_errors_bias):
