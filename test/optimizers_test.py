@@ -1,10 +1,11 @@
 import numpy as np
 
-from nnweaver.activations import Linear, Sigmoid
+from nnweaver.activations import Linear, Sigmoid, Rectifier
 from nnweaver.layer import Layer
 from nnweaver.losses import MSE
 from nnweaver.nn import NN
 from nnweaver.optimizers import SGD, Optimizer
+from nnweaver.utils import accuracy
 
 
 def test_shuffle():
@@ -32,3 +33,22 @@ def test_quadratic():
     y = np.arange(-1, 1, 0.1) ** 2
     sgd = SGD(MSE(), learning_rate=0.5)
     sgd.fit(nn, x, y, 5, 100)
+
+
+def test_circle():
+    samples = 50
+    a = np.random.uniform(0, 2 * np.pi, samples * 2)
+    r = np.append(np.random.uniform(0, 10, samples), np.random.uniform(20, 30, samples))
+    x = np.matrix([np.multiply(r, np.sin(a)), np.multiply(r, np.cos(a)) ]).T
+    y = np.append(np.ones(samples), np.zeros(samples))
+    x, y = Optimizer.shuffle(x, y)
+    limit = int(len(x) * 0.8)
+
+    nn = NN(2)
+    nn.add_layer(Layer(4, Rectifier()))
+    nn.add_layer(Layer(1, Sigmoid()))
+    sgd = SGD(MSE(), learning_rate=0.1)
+    sgd.fit(nn, x[:limit], y[:limit], 5, 100, metrics=[accuracy])
+
+    assert accuracy(nn.predict_batch(x[limit:]), y[limit:]) > 0.9
+
