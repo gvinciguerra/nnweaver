@@ -8,4 +8,5 @@ def one_hot_encoding(x):
 
 
 def accuracy(y, y_target):
+    y_target = y_target.reshape(y.shape)
     return (np.abs(y - y_target) < 0.5).mean()
