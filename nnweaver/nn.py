@@ -18,6 +18,3 @@ class NN(object):
             xi = l(xi)
 
         return xi
-
-    def train(self, optimizer):
-        optimizer(self)

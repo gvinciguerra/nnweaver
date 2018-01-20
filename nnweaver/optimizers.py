@@ -1,6 +1,7 @@
+from math import ceil
+
 import numpy as np
 import tqdm
-from math import ceil
 
 
 class Optimizer(object):
@@ -37,14 +38,16 @@ class GradientBasedOptimizer(Optimizer):
         xi = x
 
         for l in nn.layers:
-            inputs.append(xi)
-            xi = l(xi)
+            input_sum = l.input_sum(xi)
+            xi = l.activation(input_sum)
+            inputs.append(input_sum)
             outputs.append(xi)
 
         return inputs, outputs
 
     def backward(self, nn, y, inputs, outputs):
-        """ Propagate an error backward through the network.
+        """ Propagate an error backward through the network. See "Deep Learning"
+        by Ian Goodfellow et. al (2016) p. 206.
 
         :param nn: the neural network.
         :param y: the target output.
@@ -54,16 +57,12 @@ class GradientBasedOptimizer(Optimizer):
         """
         errors = []  # list of size len(nn.layers)
         layers_reversed = range(len(nn.layers) - 1, -1, -1)
+        g = self.loss.gradient(outputs[-1], y)
 
         for l in layers_reversed:
-            if l == len(nn.layers) - 1:
-                grad_out = self.loss.gradient(outputs[l], y)
-            else:
-                grad_out = nn.layers[l + 1].weights.T.dot(errors[0])
-            chain = nn.layers[l].activation.gradient(inputs[l])
-            grad_pre_act = np.multiply(grad_out, chain)
-            errors.insert(0, grad_pre_act)
-
+            g = np.multiply(g, nn.layers[l].activation.gradient(inputs[l]))
+            errors.insert(0, g)
+            g = nn.layers[l].weights.T.dot(g)
         return errors
 
 
@@ -82,27 +81,39 @@ class SGD(GradientBasedOptimizer):
     def fit(self, nn, x, y, batch_size=1, epochs=1):
         assert batch_size <= len(x)
 
-        ranges = SGD.batch_ranges(x, batch_size)
+        if x.ndim == 1:
+            x = x.reshape((-1, 1))
+        if y.ndim == 1:
+            y = y.reshape((-1, 1))
+
+        batch_ranges = SGD.batch_ranges(x, batch_size)
         step = self.learning_rate / batch_size
         for epoch in range(0, epochs):
-            bar = tqdm.tqdm(ranges, desc="Epoch %3d" % epoch)
+            bar = tqdm.tqdm(batch_ranges, desc="Epoch %3d" % epoch)
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
-            for low, high in ranges:
+            for low, high in batch_ranges:
                 # Estimate gradient
-                tot_errors = [0 for _ in range(len(nn.layers))]
-                tot_errors_bias = [0 for _ in range(len(nn.layers))]
+                tot_errors = [np.zeros(l.weights.shape) for l in nn.layers]
+                tot_errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
                 for i, o in zip(x_shuffled[low:high], y_shuffled[low:high]):
+                    i = i.reshape(-1, 1)
+                    o = o.reshape(-1, 1)
                     inputs, outputs = self.forward(nn, i)
                     errors = self.backward(nn, o, inputs, outputs)
                     for l in range(len(nn.layers)):
                         tot_errors_bias[l] += errors[l]
-                        tot_errors[l] += errors[l].dot(inputs[l].T)
+                        if l == 0:
+                            tot_errors[l] += errors[l].dot(i.T)
+                        else:
+                            tot_errors[l] += errors[l].dot(outputs[l - 1].reshape((1, -1)))
+                        assert tot_errors[l].shape == nn.layers[l].weights.shape
                 tot_errors = [e / batch_size for e in tot_errors]
                 tot_errors_bias = [e / batch_size for e in tot_errors_bias]
 
                 # Update weights
                 for (lay, grad, grad_b) in zip(nn.layers, tot_errors, tot_errors_bias):
+                    assert (lay.weights - step * grad).shape == lay.weights.shape
                     lay.weights -= step * grad
                     lay.bias -= step * grad_b
 

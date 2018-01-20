@@ -1,4 +1,5 @@
 import numpy as np
+
 from .activations import Linear
 
 
@@ -30,7 +31,7 @@ class Layer(object):
         :param x: input to the layer.
         :return: weighted sum of the input with the bias.
         """
-        return self.bias + self.weights.dot(x)
+        return self.bias + self.weights.dot(x).reshape(self.bias.shape)
 
     def __call__(self, x):
         """ Compute the output of the layer.

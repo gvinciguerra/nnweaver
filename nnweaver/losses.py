@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Loss(object):
     @classmethod
     def __call__(cls, y, y_target):
@@ -32,4 +33,3 @@ class MEE(Loss):
     @classmethod
     def gradient(cls, y, y_target):
         return (y - y_target) / MEE.euclidean_distance(y, y_target)
-
