@@ -8,3 +8,21 @@ def test_one_hot_encoding():
                          [0, 0, 1, 0],
                          [0, 0, 1, 0]])
     np.testing.assert_array_equal(one_hot, expected)
+
+
+def test_accuracy():
+    a = np.array([0.7, 0.6, 0.1])
+    b = np.array([1, 0, 0])
+    np.testing.assert_almost_equal(accuracy(a, b), 2 / 3)
+
+    a = np.array([0.0, 0.1, 0.4])
+    b = np.array([1, 1, 1])
+    np.testing.assert_almost_equal(accuracy(a, b), 0)
+
+    a = np.array([1.0, 0.7, 0.8, 0.6])
+    b = np.array([1, 1, 1, 1])
+    np.testing.assert_almost_equal(accuracy(a, b), 1)
+
+    a = np.array([1.0, 0.7])
+    b = np.array([1, 0])
+    np.testing.assert_almost_equal(accuracy(a, b), 1 / 2)

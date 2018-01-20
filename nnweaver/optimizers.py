@@ -78,7 +78,7 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def fit(self, nn, x, y, batch_size=1, epochs=1):
+    def fit(self, nn, x, y, batch_size=1, epochs=1, metrics=[]):
         assert batch_size <= len(x)
 
         if x.ndim == 1:
@@ -96,7 +96,9 @@ class SGD(GradientBasedOptimizer):
                 # Estimate gradient
                 tot_errors = [np.zeros(l.weights.shape) for l in nn.layers]
                 tot_errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
-                for i, o in zip(x_shuffled[low:high], y_shuffled[low:high]):
+                x_batch = x_shuffled[low:high]
+                y_batch = y_shuffled[low:high]
+                for i, o in zip(x_batch, y_batch):
                     i = i.reshape(-1, 1)
                     o = o.reshape(-1, 1)
                     inputs, outputs = self.forward(nn, i)
@@ -117,7 +119,11 @@ class SGD(GradientBasedOptimizer):
                     lay.weights -= step * grad
                     lay.bias -= step * grad_b
 
-                bar.set_postfix(Loss=np.mean(tot_errors[-1]))
+                metrics_val = {f.__name__: f(nn.predict_batch(x), y) for f in metrics}
+                bar.set_postfix(Loss=self.batch_loss(nn, x, y), **metrics_val)
                 bar.update(1)
 
             bar.close()
+
+    def batch_loss(self, nn, x_batch, y_batch):
+        return self.loss(nn.predict_batch(x_batch), y_batch)
