@@ -72,13 +72,13 @@ class SGD(GradientBasedOptimizer):
         self.learning_rate = learning_rate
 
     @staticmethod
-    def batch_ranges(X, batch_size):
-        size = len(X)
+    def batch_ranges(x, batch_size):
+        size = len(x)
         num_batches = int(ceil(size / float(batch_size)))
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def fit(self, nn, x, y, batch_size=1, epochs=1, metrics=[]):
+    def fit(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
         assert batch_size <= len(x)
 
         if x.ndim == 1:
@@ -88,8 +88,10 @@ class SGD(GradientBasedOptimizer):
 
         batch_ranges = SGD.batch_ranges(x, batch_size)
         step = self.learning_rate / batch_size
-        for epoch in range(0, epochs):
-            bar = tqdm.tqdm(batch_ranges, desc="Epoch %3d" % epoch)
+        bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
+
+        for epoch in range(epochs):
+            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch, epochs))
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in batch_ranges:
@@ -117,11 +119,10 @@ class SGD(GradientBasedOptimizer):
                     lay.weights -= step * grad
                     lay.bias -= step * grad_b
 
-                metrics_val = {f.__name__: f(nn.predict_batch(x), y) for f in metrics}
-                bar.set_postfix(Loss=self.batch_loss(nn, x, y), **metrics_val)
                 bar.update(1)
 
+            y_predicted = nn.predict_batch(x)
+            loss_val = self.loss(y_predicted, y)
+            metrics_val = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
+            bar.set_postfix(loss='%.4f' % loss_val, **metrics_val)
             bar.close()
-
-    def batch_loss(self, nn, x_batch, y_batch):
-        return self.loss(nn.predict_batch(x_batch), y_batch)
