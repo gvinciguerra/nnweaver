@@ -72,12 +72,29 @@ class SGD(GradientBasedOptimizer):
 
     @staticmethod
     def batch_ranges(x, batch_size):
+        """ Compute the batch ranges for a given data set :param:`x`.
+
+        :param x: a list of examples.
+        :param batch_size: the batch size.
+        :return: a list of tuples containing the lower and the upper
+            bounds (indexes) of each batch.
+        """
         size = len(x)
         num_batches = int(ceil(size / float(batch_size)))
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
     def train(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
+        """ Train the neural network :param:`nn` using the Stochastic
+        Gradient Descend (SGD) algorithm.
+
+        :param nn: the neural network.
+        :param x: a list of examples.
+        :param y: the target output of each example.
+        :param batch_size: the batch size.
+        :param epochs: the number of the epochs.
+        :param metrics: a list of metric functions to be evaluated at each epoch.
+        """
         assert batch_size <= len(x)
 
         if x.ndim == 1:
