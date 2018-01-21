@@ -91,7 +91,7 @@ class SGD(GradientBasedOptimizer):
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
 
         for epoch in range(epochs):
-            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch, epochs))
+            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch + 1, epochs))
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in batch_ranges:
