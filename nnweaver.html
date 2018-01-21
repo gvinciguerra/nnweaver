@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nnweaver package &#8212; NNWeaver 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">nnweaver package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-nnweaver.activations">nnweaver.activations module</a></li>
+<li><a class="reference internal" href="#module-nnweaver.layer">nnweaver.layer module</a></li>
+<li><a class="reference internal" href="#module-nnweaver.losses">nnweaver.losses module</a></li>
+<li><a class="reference internal" href="#module-nnweaver.nn">nnweaver.nn module</a></li>
+<li><a class="reference internal" href="#module-nnweaver.optimizers">nnweaver.optimizers module</a></li>
+<li><a class="reference internal" href="#module-nnweaver.utils">nnweaver.utils module</a></li>
+<li><a class="reference internal" href="#module-nnweaver">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nnweaver.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nnweaver-package">
+<h1>nnweaver package<a class="headerlink" href="#nnweaver-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nnweaver.activations">
+<span id="nnweaver-activations-module"></span><h2>nnweaver.activations module<a class="headerlink" href="#module-nnweaver.activations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nnweaver.activations.Activation">
+<em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Activation</code><a class="reference internal" href="_modules/nnweaver/activations.html#Activation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Activation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nnweaver.activations.Activation.gradient">
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/activations.html#Activation.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Activation.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.activations.Linear">
+<em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Linear</code><a class="reference internal" href="_modules/nnweaver/activations.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dl class="method">
+<dt id="nnweaver.activations.Linear.gradient">
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/activations.html#Linear.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Linear.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.activations.Rectifier">
+<em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Rectifier</code><a class="reference internal" href="_modules/nnweaver/activations.html#Rectifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Rectifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dl class="method">
+<dt id="nnweaver.activations.Rectifier.gradient">
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/activations.html#Rectifier.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Rectifier.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.activations.Sigmoid">
+<em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Sigmoid</code><a class="reference internal" href="_modules/nnweaver/activations.html#Sigmoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dl class="method">
+<dt id="nnweaver.activations.Sigmoid.gradient">
+<code class="descname">gradient</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/activations.html#Sigmoid.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Sigmoid.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver.layer">
+<span id="nnweaver-layer-module"></span><h2>nnweaver.layer module<a class="headerlink" href="#module-nnweaver.layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nnweaver.layer.Layer">
+<em class="property">class </em><code class="descclassname">nnweaver.layer.</code><code class="descname">Layer</code><span class="sig-paren">(</span><em>units</em>, <em>activation=&lt;nnweaver.activations.Linear object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/layer.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.layer.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nnweaver.layer.Layer.build_weights">
+<code class="descname">build_weights</code><span class="sig-paren">(</span><em>preceding_units</em>, <em>low=-0.05</em>, <em>high=0.05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/layer.html#Layer.build_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.layer.Layer.build_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the weights and the biases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>preceding_units</strong> &#8211; number of units in the previous level.</li>
+<li><strong>low</strong> &#8211; lower boundary of the weights.</li>
+<li><strong>high</strong> &#8211; upper boundary of the weights.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.layer.Layer.input_sum">
+<code class="descname">input_sum</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/layer.html#Layer.input_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.layer.Layer.input_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the input to the layer, without applying the activation
+function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; input to the layer.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">weighted sum of the input with the bias.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver.losses">
+<span id="nnweaver-losses-module"></span><h2>nnweaver.losses module<a class="headerlink" href="#module-nnweaver.losses" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nnweaver.losses.Loss">
+<em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">Loss</code><a class="reference internal" href="_modules/nnweaver/losses.html#Loss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.Loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="nnweaver.losses.Loss.gradient">
+<em class="property">classmethod </em><code class="descname">gradient</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/losses.html#Loss.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.Loss.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.losses.MEE">
+<em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">MEE</code><a class="reference internal" href="_modules/nnweaver/losses.html#MEE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MEE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
+<dl class="classmethod">
+<dt id="nnweaver.losses.MEE.euclidean_distance">
+<em class="property">classmethod </em><code class="descname">euclidean_distance</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/losses.html#MEE.euclidean_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MEE.euclidean_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="nnweaver.losses.MEE.gradient">
+<em class="property">classmethod </em><code class="descname">gradient</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/losses.html#MEE.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MEE.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.losses.MSE">
+<em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">MSE</code><a class="reference internal" href="_modules/nnweaver/losses.html#MSE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
+<dl class="classmethod">
+<dt id="nnweaver.losses.MSE.gradient">
+<em class="property">classmethod </em><code class="descname">gradient</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/losses.html#MSE.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MSE.gradient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver.nn">
+<span id="nnweaver-nn-module"></span><h2>nnweaver.nn module<a class="headerlink" href="#module-nnweaver.nn" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nnweaver.nn.NN">
+<em class="property">class </em><code class="descclassname">nnweaver.nn.</code><code class="descname">NN</code><span class="sig-paren">(</span><em>input_dim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/nn.html#NN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.NN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="nnweaver.nn.NN.add_layer">
+<code class="descname">add_layer</code><span class="sig-paren">(</span><em>layer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/nn.html#NN.add_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.NN.add_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a layer to the neural network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer</strong> &#8211; the layer to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.nn.NN.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/nn.html#NN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.NN.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feed a single input to the neural network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; the dimension must match the input layer of the neural network.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the output of the network.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.nn.NN.predict_batch">
+<code class="descname">predict_batch</code><span class="sig-paren">(</span><em>x_batch</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/nn.html#NN.predict_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.NN.predict_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feed multiple inputs to the neural network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x_batch</strong> &#8211; an array of inputs.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an array (with the same size of x_batch) with the outputs of the network.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver.optimizers">
+<span id="nnweaver-optimizers-module"></span><h2>nnweaver.optimizers module<a class="headerlink" href="#module-nnweaver.optimizers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="nnweaver.optimizers.GradientBasedOptimizer">
+<em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">GradientBasedOptimizer</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#GradientBasedOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.GradientBasedOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.Optimizer" title="nnweaver.optimizers.Optimizer"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.optimizers.Optimizer</span></code></a></p>
+<dl class="method">
+<dt id="nnweaver.optimizers.GradientBasedOptimizer.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>nn</em>, <em>y</em>, <em>inputs</em>, <em>outputs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#GradientBasedOptimizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.GradientBasedOptimizer.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate an error backward through the network. See &#8220;Deep Learning&#8221;
+by Ian Goodfellow et. al (2016) p. 206.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nn</strong> &#8211; the neural network.</li>
+<li><strong>y</strong> &#8211; the target output.</li>
+<li><strong>inputs</strong> &#8211; a list of the input sums at each layer.</li>
+<li><strong>outputs</strong> &#8211; a list of the activated outputs at each layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of the gradients of the loss function at each layer.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.optimizers.GradientBasedOptimizer.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>nn</em>, <em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#GradientBasedOptimizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.GradientBasedOptimizer.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate an input signal through the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nn</strong> &#8211; the neural network.</li>
+<li><strong>x</strong> &#8211; the input.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">two lists of length len(nn.layers) that contains,
+respectively, the input sum and the output (i.e. the result of
+applying the activation function on the input sum) at each layer.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.optimizers.Optimizer">
+<em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">Optimizer</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#Optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.Optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="nnweaver.optimizers.Optimizer.shuffle">
+<em class="property">classmethod </em><code class="descname">shuffle</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#Optimizer.shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.Optimizer.shuffle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shuffle x and y elements with the same permutation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; an array.</li>
+<li><strong>y</strong> &#8211; an array having the same length of x.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">x, y. Permuted.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nnweaver.optimizers.SGD">
+<em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">SGD</code><span class="sig-paren">(</span><em>loss</em>, <em>learning_rate=0.05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#SGD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.SGD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.GradientBasedOptimizer" title="nnweaver.optimizers.GradientBasedOptimizer"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.optimizers.GradientBasedOptimizer</span></code></a></p>
+<dl class="staticmethod">
+<dt id="nnweaver.optimizers.SGD.batch_ranges">
+<em class="property">static </em><code class="descname">batch_ranges</code><span class="sig-paren">(</span><em>x</em>, <em>batch_size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#SGD.batch_ranges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.SGD.batch_ranges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.optimizers.SGD.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>nn</em>, <em>x</em>, <em>y</em>, <em>batch_size=1</em>, <em>epochs=1</em>, <em>metrics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/optimizers.html#SGD.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.SGD.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver.utils">
+<span id="nnweaver-utils-module"></span><h2>nnweaver.utils module<a class="headerlink" href="#module-nnweaver.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="nnweaver.utils.accuracy">
+<code class="descclassname">nnweaver.utils.</code><code class="descname">accuracy</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/utils.html#accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.utils.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="nnweaver.utils.one_hot_encoding">
+<code class="descclassname">nnweaver.utils.</code><code class="descname">one_hot_encoding</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnweaver/utils.html#one_hot_encoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.utils.one_hot_encoding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-nnweaver">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nnweaver" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, Landolfi Francesco, Vinciguerra Giorgio.
+      
+      |
+      <a href="_sources/nnweaver.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
