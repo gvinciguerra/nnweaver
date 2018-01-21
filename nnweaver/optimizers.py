@@ -9,16 +9,14 @@ class Optimizer(object):
         self.loss = loss
 
     @classmethod
-    def shuffle(cls, x, y, seed=None):
+    def shuffle(cls, x, y):
         """ Shuffle x and y elements with the same permutation.
 
         :param x: an array.
         :param y: an array having the same length of x.
-        :param seed: seed for the random number generator.
         :return: x, y. Permuted.
         """
         assert len(x) == len(y)
-        np.random.seed(seed)
         permutation = np.random.permutation(len(x))
         return x[permutation], y[permutation]
 
@@ -69,6 +67,7 @@ class GradientBasedOptimizer(Optimizer):
 class SGD(GradientBasedOptimizer):
     def __init__(self, loss, learning_rate=0.05):
         super().__init__(loss)
+        self.seed = None
         self.learning_rate = learning_rate
 
     @staticmethod
@@ -86,6 +85,7 @@ class SGD(GradientBasedOptimizer):
         if y.ndim == 1:
             y = y.reshape((-1, 1))
 
+        np.random.seed(self.seed)
         batch_ranges = SGD.batch_ranges(x, batch_size)
         step = self.learning_rate / batch_size
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
