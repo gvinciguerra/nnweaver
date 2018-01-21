@@ -20,7 +20,7 @@ def test_sgd_bisector():
     x = np.arange(-1, 1, 0.1)
     y = np.arange(-1, 1, 0.1)
     sgd = SGD(MSE(), learning_rate=0.5)
-    sgd.fit(nn, x, y, 1, 100)
+    sgd.train(nn, x, y, 1, 100)
     np.testing.assert_almost_equal(nn.predict(-1), -1)
 
 
@@ -32,7 +32,7 @@ def test_quadratic():
     x = np.arange(-1, 1, 0.1)
     y = np.arange(-1, 1, 0.1) ** 2
     sgd = SGD(MSE(), learning_rate=0.5)
-    sgd.fit(nn, x, y, 5, 100)
+    sgd.train(nn, x, y, 5, 100)
 
 
 def test_circle():
@@ -48,7 +48,7 @@ def test_circle():
     nn.add_layer(Layer(4, Rectifier()))
     nn.add_layer(Layer(1, Sigmoid()))
     sgd = SGD(MSE(), learning_rate=0.1)
-    sgd.fit(nn, x[:limit], y[:limit], 5, 100, metrics=[accuracy])
+    sgd.train(nn, x[:limit], y[:limit], 5, 100, metrics=[accuracy])
 
     assert accuracy(nn.predict_batch(x[limit:]), y[limit:]) > 0.9
 

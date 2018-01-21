@@ -77,7 +77,7 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def fit(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
+    def train(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
         assert batch_size <= len(x)
 
         if x.ndim == 1:
@@ -122,7 +122,7 @@ class SGD(GradientBasedOptimizer):
                 bar.update(1)
 
             y_predicted = nn.predict_batch(x)
-            loss_val = self.loss(y_predicted, y)
-            metrics_val = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
-            bar.set_postfix(loss='%.4f' % loss_val, **metrics_val)
+            loss_value = self.loss(y_predicted, y)
+            metrics_values = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
+            bar.set_postfix(loss='%.4f' % loss_value, **metrics_values)
             bar.close()

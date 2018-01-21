@@ -33,7 +33,7 @@ x_train, y_train = get_monk(monk1_train)
 nn = NN(17)
 nn.add_layer(Layer(4, Rectifier()))
 nn.add_layer(Layer(1, Sigmoid()))
-SGD(MSE(), learning_rate=0.1).fit(nn, x_train, y_train, batch_size=10, epochs=100, metrics=[accuracy])
+SGD(MSE(), learning_rate=0.1).train(nn, x_train, y_train, batch_size=10, epochs=100, metrics=[accuracy])
 
 monk1_test = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-problems/monks-1.test'
 x_test, y_test = get_monk(monk1_test)
