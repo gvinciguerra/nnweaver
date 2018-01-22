@@ -1,4 +1,3 @@
-import copy
 import itertools
 import operator
 import time
@@ -24,12 +23,6 @@ def splits_generator(x, y, groups):
         begin += g
 
 
-def clone_nn(nn):
-    result = copy.deepcopy(nn)
-    result.reset()
-    return result
-
-
 def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     split_size = int(len(x) / k)
     groups = [split_size for _ in range(k - 1)] + [len(x) - split_size * (k - 1)]
@@ -38,7 +31,8 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     fold = 1
 
     for split_x, split_y, split_complement_x, split_complement_y in splits_generator(x, y, groups):
-        nn_i = clone_nn(nn)
+        nn_i = nn.clone()
+        nn_i.reset()
         t_start = time.time()
         optimizer.train(nn, split_complement_x, split_complement_y, **train_args)
         elapsed = (time.time() - t_start) * 1000

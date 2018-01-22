@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 
 
@@ -43,3 +45,10 @@ class NN(object):
         """ Flash the neural network with a neuralyzer. """
         for l in self.layers:
             l.reset_weights()
+
+    def clone(self):
+        """ Clone the neural network.
+
+        :return: the copy of the neural network.
+        """
+        return copy.deepcopy(self)
