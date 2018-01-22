@@ -1,4 +1,5 @@
 from math import ceil
+from sys import stdout
 
 import numpy as np
 import tqdm
@@ -19,6 +20,9 @@ class Optimizer(object):
         assert len(x) == len(y)
         permutation = np.random.permutation(len(x))
         return x[permutation], y[permutation]
+
+    def train(self, nn, x, y, **train_args):
+        raise NotImplementedError
 
 
 class GradientBasedOptimizer(Optimizer):
@@ -108,7 +112,7 @@ class SGD(GradientBasedOptimizer):
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
 
         for epoch in range(epochs):
-            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch + 1, epochs))
+            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch + 1, epochs), file=stdout)
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in batch_ranges:

@@ -38,3 +38,8 @@ class NN(object):
         :return: an array (with the same size of x_batch) with the outputs of the network.
         """
         return np.array([self.predict(i.reshape(-1, 1)) for i in x_batch]).reshape(-1, 1)
+
+    def reset(self):
+        """ Flash the neural network with a neuralyzer. """
+        for l in self.layers:
+            l.reset_weights()
