@@ -6,7 +6,7 @@ def one_hot_encoding(x):
 
     :param x: the elements to be encoded.
     :return: a matrix with rows equal to the number of the
-        elements in :param:`x` and max(:param:`x`) columns.
+        elements in x and max(x) columns.
     """
     result = np.zeros((x.size, np.max(x) + 1))
     result[np.arange(x.size), x] = 1

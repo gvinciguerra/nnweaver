@@ -27,7 +27,7 @@ class GradientBasedOptimizer(Optimizer):
 
         :param nn: the neural network.
         :param x: the input.
-        :return: two lists of length len(nn.layers) that contains,
+        :return: two lists of length ``len(nn.layers)`` that contains,
             respectively, the input sum and the output (i.e. the result of
             applying the activation function on the input sum) at each layer.
         """
@@ -72,7 +72,7 @@ class SGD(GradientBasedOptimizer):
 
     @staticmethod
     def batch_ranges(x, batch_size):
-        """ Compute the batch ranges for a given data set :param:`x`.
+        """ Compute the batch ranges for a given data set.
 
         :param x: a list of examples.
         :param batch_size: the batch size.
@@ -85,7 +85,7 @@ class SGD(GradientBasedOptimizer):
                 for i in range(num_batches)]
 
     def train(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
-        """ Train the neural network :param:`nn` using the Stochastic
+        """ Train the given neural network using the Stochastic
         Gradient Descend (SGD) algorithm.
 
         :param nn: the neural network.
