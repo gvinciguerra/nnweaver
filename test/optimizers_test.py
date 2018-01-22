@@ -11,16 +11,26 @@ def test_shuffle():
 
 
 def test_sgd_bisector():
-    nn = NN(1)
-    nn.add_layer(Layer(1, Linear()))
     x = np.arange(-1, 1, 0.1)
     y = np.arange(-1, 1, 0.1)
+    nn = NN(1)
+    nn.add_layer(Layer(1, Linear()))
     sgd = SGD(MSE())
     sgd.train(nn, x, y, 0.5, 1, 100)
     np.testing.assert_almost_equal(nn.predict(-1), -1)
 
 
-def test_quadratic():
+def test_sgd_multioutput():
+    x = np.arange(-1, 1.1, 0.1)
+    y = np.stack((np.arange(-1, 1.1, 0.1), np.arange(-1, 1.1, 0.1)), axis=-1)
+    nn = NN(1)
+    nn.add_layer(Layer(2, Linear()))
+    sgd = SGD(MSE())
+    sgd.train(nn, x, y, 0.5, 1, 100)
+    np.testing.assert_almost_equal(nn.predict(-0.2), np.matrix([-0.2, -0.2]).T)
+
+
+def test_sgd_quadratic():
     nn = NN(1)
     nn.add_layer(Layer(12, Sigmoid()))
     nn.add_layer(Layer(13, Sigmoid()))
@@ -31,7 +41,7 @@ def test_quadratic():
     sgd.train(nn, x, y, 0.5, 5, 100)
 
 
-def test_circle():
+def test_sgd_circles():
     samples = 50
     a = np.random.uniform(0, 2 * np.pi, samples * 2)
     r = np.append(np.random.uniform(0, 10, samples), np.random.uniform(20, 30, samples))
@@ -46,5 +56,4 @@ def test_circle():
     sgd = SGD(MSE())
     sgd.seed = 42
     sgd.train(nn, x[:limit], y[:limit], 0.1, 5, 100, metrics=[accuracy])
-
     assert accuracy(nn.predict_batch(x[limit:]), y[limit:]) > 0.8
