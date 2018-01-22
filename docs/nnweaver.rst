@@ -52,6 +52,14 @@ nnweaver\.utils module
     :undoc-members:
     :show-inheritance:
 
+nnweaver\.validation module
+---------------------------
+
+.. automodule:: nnweaver.validation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

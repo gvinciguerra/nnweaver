@@ -69,10 +69,9 @@ class GradientBasedOptimizer(Optimizer):
 
 
 class SGD(GradientBasedOptimizer):
-    def __init__(self, loss, learning_rate=0.05):
+    def __init__(self, loss):
         super().__init__(loss)
         self.seed = None
-        self.learning_rate = learning_rate
 
     @staticmethod
     def batch_ranges(x, batch_size):
@@ -88,13 +87,14 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def train(self, nn, x, y, batch_size=1, epochs=1, metrics=None):
-        """ Train the given neural network using the Stochastic
-        Gradient Descend (SGD) algorithm.
+    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1, metrics=None):
+        """ Train the given neural network using the Stochastic Gradient
+        Descent (SGD) algorithm.
 
         :param nn: the neural network.
         :param x: a list of examples.
         :param y: the target output of each example.
+        :param learning_rate: the step size of the gradient descend.
         :param batch_size: the batch size.
         :param epochs: the number of the epochs.
         :param metrics: a list of metric functions to be evaluated at each epoch.
@@ -108,7 +108,7 @@ class SGD(GradientBasedOptimizer):
 
         np.random.seed(self.seed)
         batch_ranges = SGD.batch_ranges(x, batch_size)
-        step = self.learning_rate / batch_size
+        step = learning_rate / batch_size
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
 
         for epoch in range(epochs):
