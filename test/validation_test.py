@@ -47,3 +47,16 @@ def test_grid_search():
     grid_search(nn_builder, sgd, x, y, train_args, builder_args)
     two_fold = partial(kfold_cross_validation, k=2)
     grid_search(nn_builder, sgd, x, y, train_args, builder_args, two_fold)
+
+
+def test_hold_out():
+    x = np.arange(-1, 1, 0.1)
+    y = np.arange(-1, 1, 0.1) ** 2
+
+    nn = NN(1)
+    nn.add_layer(Layer(12, Sigmoid()))
+    nn.add_layer(Layer(13, Sigmoid()))
+    nn.add_layer(Layer(1, Linear()))
+    sgd = SGD(MSE())
+
+    hold_out_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)

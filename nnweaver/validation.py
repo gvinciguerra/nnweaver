@@ -11,6 +11,13 @@ from nnweaver.optimizers import Optimizer
 
 
 def splits_generator(x, y, groups):
+    """ Split two data sets of the same size into partitions of the given dimensions.
+
+    :param x: a list of elements.
+    :param y: a list of elements.
+    :param groups: the list of the sizes of each partition (the sum of its elements must be
+        ``len(x)``.
+    """
     assert len(x) == len(y)
     assert sum(groups) == len(x)
 
@@ -24,6 +31,22 @@ def splits_generator(x, y, groups):
 
 
 def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
+    """ Perform a K-Fold Cross Validation of the given neural network.
+
+    It splits the data set into :math:`k` partitions that will be used to test :math:`k` different
+    models (trained on the other :math:`k - 1` partitions) and then returns the best performing one.
+
+    :param nn: a neural network.
+    :param optimizer: the optimizer used to train the neural network. Its signature
+        must be compatible with the keys in ``train_args``.
+    :param x: a list of examples.
+    :param y: the target output of each example.
+    :param k: the number of partitions (folds) of the data set.
+    :param train_args: a dictionary whose keys are compatible with the arguments of
+        ``optimizer.train()``.
+    :return: the best (of the :math:`k`) model and the value of the its loss obtained on the test
+        partition.
+    """
     split_size = int(len(x) / k)
     groups = [split_size for _ in range(k - 1)] + [len(x) - split_size * (k - 1)]
     best_loss = np.inf
@@ -60,7 +83,7 @@ def grid_search(nn_builder: Callable[[dict], NN],
     :param nn_builder: a function that accepts a parameter ``builder_args`` and
         returns a neural network.
     :param optimizer: the optimizer to use in the grid search. Its signature
-        must be compatible with the keys in ``train_args``,
+        must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
     :param y: the target output of each example.
     :param train_args: a dictionary whose keys are:
@@ -97,3 +120,26 @@ def grid_search(nn_builder: Callable[[dict], NN],
                 best_model = nn
 
     return best_model, best_loss
+
+
+def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
+    """ Perform an Hold-Out Validation of the given neural network.
+
+    :param nn: a neural network.
+    :param optimizer: the optimizer used to train the neural network. Its signature
+        must be compatible with the keys in ``train_args``.
+    :param x: a list of examples.
+    :param y: the target outputo of each example.
+    :param train_ratio: the ratio between the size of the partition of examples used to
+        train the neural network and the one used to test it.
+    :param train_args: a dictionary whose keys are compatible with the arguments of
+        ``optimizer.train()``.
+    :return: the trained model and the value of the loss computed on the test partition.
+    """
+    assert 0 < train_ratio < 1
+    train_size = int(len(x)*train_ratio)
+    test_size = len(x) - train_size
+    train_x, train_y, test_x, test_y = next(splits_generator(x, y, [train_size, test_size]))
+    optimizer.train(nn, train_x, train_y, **train_args)
+
+    return nn, optimizer.loss(nn.predict_batch(test_x), test_y)
