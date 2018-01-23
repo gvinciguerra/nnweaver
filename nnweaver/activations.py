@@ -1,3 +1,6 @@
+""" This module provides a set of activation functions to be applied to a layer
+of a neural network. """
+
 import numpy as np
 
 
@@ -68,3 +71,23 @@ class Sigmoid(Activation):
         """
         y = self(x)
         return np.multiply(y, 1 - y)
+
+
+class TanH(Activation):
+    def __call__(self, x):
+        """ Compute the TanH activation function on each element of the
+        input array.
+
+        :param x: an array.
+        :return: the activated values of the input array.
+        """
+        return 2*Sigmoid()(2*x) - 1
+
+    def gradient(self, x):
+        """ Compute the gradient of the TanH activation function on
+        each element of the input array.
+
+        :param x: an array.
+        :return: the gradients on the values of the input array.
+        """
+        return 1 - TanH()(x) ** 2
