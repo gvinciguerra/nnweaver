@@ -1,6 +1,6 @@
-""" The :py:mod:`nnweaver.callbacks` module provides the callback
-classes that will be used to execute some pre-defined or user-defined actions
-before, during, or after the training of a neural network. """
+""" The :py:mod:`nnweaver.callbacks` module provides the callback classes that
+will be used to execute some pre-defined or user-defined actions before, during,
+or after the training of a neural network. """
 
 import csv
 
@@ -18,13 +18,14 @@ class Callback(object):
 
 class WriteFileCallback(Callback):
     def __init__(self, filename, x_validation=None, y_validation=None, loss=None):
-        """ Initialize the callback. If a data set and a loss function are given, it will
-        perform a validation of the model at every epoch.
+        """ Initialize the callback. If a data set and a loss function are
+        given, it will perform a validation of the model at every epoch.
 
         :param filename: the output file.
         :param x_validation: the set of validation examples (optional).
         :param y_validation: the set of validation targets (optional).
-        :param loss: the loss function to be evaluated in the validation step (optional).
+        :param loss: the loss function to be evaluated in the validation step
+            (optional).
         """
         assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
         self.x_validation = x_validation

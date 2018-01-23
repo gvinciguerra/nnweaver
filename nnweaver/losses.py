@@ -27,7 +27,8 @@ class MSE(Loss):
 
     @classmethod
     def gradient(cls, y, y_target):
-        """ Compute the gradient of Mean Squared Error (MSE) of the predicted data.
+        """ Compute the gradient of Mean Squared Error (MSE) of the predicted
+        data.
 
         :param y: the predicted output.
         :param y_target: the target output.
@@ -60,7 +61,8 @@ class MEE(Loss):
 
     @classmethod
     def gradient(cls, y, y_target):
-        """ Compute the gradient of Mean Euclidean Error (MEE) of the predicted data.
+        """ Compute the gradient of Mean Euclidean Error (MEE) of the predicted
+        data.
 
         :param y: the predicted output.
         :param y_target: the target output.

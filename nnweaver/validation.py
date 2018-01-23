@@ -13,12 +13,13 @@ from nnweaver.optimizers import Optimizer
 
 
 def splits_generator(x, y, groups):
-    """ Split two data sets of the same size into partitions of the given dimensions.
+    """ Split two data sets of the same size into partitions of the given
+    dimensions.
 
     :param x: a list of elements.
     :param y: a list of elements.
-    :param groups: the list of the sizes of each partition (the sum of its elements must be
-        ``len(x)``.
+    :param groups: the list of the sizes of each partition (the sum of its
+        elements must be ``len(x)``.
     """
     assert len(x) == len(y)
     assert sum(groups) == len(x)
@@ -35,19 +36,20 @@ def splits_generator(x, y, groups):
 def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     """ Perform a K-Fold Cross Validation of the given neural network.
 
-    It splits the data set into :math:`k` partitions that will be used to test :math:`k` different
-    models (trained on the other :math:`k - 1` partitions) and then returns the best performing one.
+    It splits the data set into :math:`k` partitions that will be used to test
+    :math:`k` different models (trained on the other :math:`k - 1` partitions)
+    and then returns the best performing one.
 
     :param nn: a neural network.
-    :param optimizer: the optimizer used to train the neural network. Its signature
-        must be compatible with the keys in ``train_args``.
+    :param optimizer: the optimizer used to train the neural network. Its
+        signature must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
     :param y: the target output of each example.
     :param k: the number of partitions (folds) of the data set.
-    :param train_args: a dictionary whose keys are compatible with the arguments of
-        ``optimizer.train()``.
-    :return: the best (of the :math:`k`) model and the value of the its loss obtained on the test
-        partition.
+    :param train_args: a dictionary whose keys are compatible with the arguments
+        of ``optimizer.train()``.
+    :return: the best (of the :math:`k`) model and the value of the its loss
+        obtained on the test partition.
     """
     split_size = int(len(x) / k)
     groups = [split_size for _ in range(k - 1)] + [len(x) - split_size * (k - 1)]
@@ -96,7 +98,8 @@ def grid_search(nn_builder: Callable[[dict], NN],
         (1) compatible with the arguments of ``nn_builder()``, and
         (2) associated with lists that represent the subset of arguments to
         explore.
-    :param cv: an optional cross validation method that is called at each iteration.
+    :param cv: an optional cross validation method that is called at each
+        iteration.
     :return: the best model found by the grid search and the loss value.
     """
     train_args_keys, train_args_values = train_args.keys(), list(train_args.values())
@@ -128,15 +131,16 @@ def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
     """ Perform an Hold-Out Validation of the given neural network.
 
     :param nn: a neural network.
-    :param optimizer: the optimizer used to train the neural network. Its signature
-        must be compatible with the keys in ``train_args``.
+    :param optimizer: the optimizer used to train the neural network. Its
+        signature must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
     :param y: the target outputo of each example.
-    :param train_ratio: the ratio between the size of the partition of examples used to
-        train the neural network and the one used to test it.
-    :param train_args: a dictionary whose keys are compatible with the arguments of
-        ``optimizer.train()``.
-    :return: the trained model and the value of the loss computed on the test partition.
+    :param train_ratio: the ratio between the size of the partition of examples
+        used to train the neural network and the one used to test it.
+    :param train_args: a dictionary whose keys are compatible with the arguments
+        of ``optimizer.train()``.
+    :return: the trained model and the value of the loss computed on the test
+        partition.
     """
     assert 0 < train_ratio < 1
     train_size = int(len(x)*train_ratio)

@@ -100,8 +100,10 @@ class SGD(GradientBasedOptimizer):
         :param learning_rate: the step size of the gradient descend.
         :param batch_size: the batch size.
         :param epochs: the number of the epochs.
-        :param metrics: a list of metric functions to be evaluated at each epoch.
-        :param callbacks: a list of :py:class:`nnweaver.callbacks.Callback` objects.
+        :param metrics: a list of metric functions to be evaluated at each
+            epoch.
+        :param callbacks: a list of :py:class:`nnweaver.callbacks.Callback`
+            objects.
         """
         assert batch_size <= len(x)
 
