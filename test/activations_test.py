@@ -1,6 +1,6 @@
 import numpy as np
 
-from activations import Sigmoid, Rectifier, Linear
+from activations import Sigmoid, Rectifier, Linear, TanH
 
 
 def test_linear():
@@ -22,3 +22,10 @@ def test_rectifier():
     r = Rectifier()
     np.testing.assert_array_almost_equal(r(v), np.array([1, 0, 3]))
     np.testing.assert_array_almost_equal(r.gradient(v), np.array([1, 0, 1]))
+
+
+def test_tanh():
+    v = np.array([1, 2, 3])
+    t = TanH()
+    np.testing.assert_array_almost_equal(t(v), np.array([0.761594, 0.964028, 0.995055]))
+    np.testing.assert_array_almost_equal(t.gradient(v), np.array([0.419974, 0.0706508, 0.00986604]))
