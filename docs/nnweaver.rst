@@ -12,6 +12,14 @@ nnweaver\.activations module
     :undoc-members:
     :show-inheritance:
 
+nnweaver\.callbacks module
+--------------------------
+
+.. automodule:: nnweaver.callbacks
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nnweaver\.layer module
 ----------------------
 

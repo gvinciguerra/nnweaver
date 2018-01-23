@@ -90,7 +90,7 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1, metrics=None):
+    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1, metrics=None, callbacks=None):
         """ Train the given neural network using the Stochastic Gradient
         Descent (SGD) algorithm.
 
@@ -101,6 +101,7 @@ class SGD(GradientBasedOptimizer):
         :param batch_size: the batch size.
         :param epochs: the number of the epochs.
         :param metrics: a list of metric functions to be evaluated at each epoch.
+        :param callbacks: a list of :py:class:`nnweaver.callbacks.Callback` objects.
         """
         assert batch_size <= len(x)
 
@@ -108,11 +109,15 @@ class SGD(GradientBasedOptimizer):
             x = x.reshape((-1, 1))
         if y.ndim == 1:
             y = y.reshape((-1, 1))
+        if callbacks is None:
+            callbacks = []
 
         np.random.seed(self.seed)
         batch_ranges = SGD.batch_ranges(x, batch_size)
         step = learning_rate / batch_size
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
+        for c in callbacks:
+            c.on_training_begin(nn)
 
         for epoch in range(epochs):
             bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch + 1, epochs), file=stdout)
@@ -150,3 +155,8 @@ class SGD(GradientBasedOptimizer):
             metrics_values = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
             bar.set_postfix(loss='%.4f' % loss_value, **metrics_values)
             bar.close()
+            for c in callbacks:
+                c.on_epoch_end(epoch, nn, loss_value, metrics_values)
+
+        for c in callbacks:
+            c.on_training_end(nn)
