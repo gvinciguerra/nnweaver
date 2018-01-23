@@ -1,3 +1,6 @@
+""" This module provides a set of optimizing algorithms that can be used to
+train neural network models. """
+
 from math import ceil
 from sys import stdout
 

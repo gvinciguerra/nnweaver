@@ -1,3 +1,5 @@
+""" This module provides the Layer class of the neural network. """
+
 import numpy as np
 
 from .activations import Linear

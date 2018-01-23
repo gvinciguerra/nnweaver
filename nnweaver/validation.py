@@ -1,3 +1,5 @@
+""" This module provides a set of cross validation methods. """
+
 import itertools
 import operator
 import time

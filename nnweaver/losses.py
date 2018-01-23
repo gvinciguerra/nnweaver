@@ -1,3 +1,6 @@
+""" This module provides a set of loss/objective functions whose output should
+be minimized during the training phase. """
+
 import numpy as np
 
 
