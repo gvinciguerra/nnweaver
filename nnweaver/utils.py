@@ -14,11 +14,18 @@ def one_hot_encoding(x):
 
 
 def accuracy(y, y_target):
-    """ Compute the (binary) accuracy of a given prediction.
+    """ Compute the (binary) accuracy of a given prediction. If the dimension
+    of the input arrays is greater than 1 (e.g. `y_target` is encoded with
+    :py:func:`nnweaver.utils.one_hot_encoding`), the multi-class accuracy is
+    computed.
 
     :param y: the predicted output.
     :param y_target: the target (binary) output.
     :return: the accuracy of the predicted output, rounded.
     """
     y_target = y_target.reshape(y.shape)
+
+    if y_target.ndim > 1:  # multi-class accuracy
+        return (np.argmax(y, -1) == np.argmax(y_target, -1)).mean()
+
     return (np.abs(y - y_target) < 0.5).mean()
