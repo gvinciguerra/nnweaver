@@ -3,17 +3,21 @@ will be used to execute some pre-defined or user-defined actions before, during,
 or after the training of a neural network. """
 
 import csv
+from abc import ABC, abstractmethod
 
 
-class Callback(object):
+class Callback(ABC):
+    @abstractmethod
     def on_epoch_end(self, epoch, nn, loss_value, metrics_values):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def on_training_begin(self, nn):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def on_training_end(self, nn):
-        raise NotImplementedError
+        pass
 
 
 class WriteFileCallback(Callback):

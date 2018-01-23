@@ -1,12 +1,16 @@
+from abc import abstractmethod
+
 import numpy as np
 
 
 class Regularizer(object):
+    @abstractmethod
     def __call__(self, nn):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def gradient(self, layer):
-        raise NotImplementedError
+        pass
 
 
 class L1L2Regularizer(Regularizer):

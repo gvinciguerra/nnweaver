@@ -1,6 +1,7 @@
 """ This module provides a set of optimization algorithms that can be used to
 train neural networks. """
 
+from abc import ABC, abstractmethod
 from math import ceil
 from sys import stdout
 
@@ -8,7 +9,7 @@ import numpy as np
 import tqdm
 
 
-class Optimizer(object):
+class Optimizer(ABC):
     def __init__(self, loss):
         self.loss = loss
 
@@ -24,8 +25,9 @@ class Optimizer(object):
         permutation = np.random.permutation(len(x))
         return x[permutation], y[permutation]
 
+    @abstractmethod
     def train(self, nn, x, y, **train_args):
-        raise NotImplementedError
+        pass
 
 
 class GradientBasedOptimizer(Optimizer):
@@ -76,8 +78,9 @@ class GradientBasedOptimizer(Optimizer):
 
         return grad_weights, grad_bias
 
+    @abstractmethod
     def train(self, nn, x, y, **train_args):
-        raise NotImplementedError
+        pass
 
 
 class SGD(GradientBasedOptimizer):

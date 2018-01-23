@@ -1,17 +1,21 @@
 """ This module provides a set of loss/objective functions whose output should
 be minimized during the training phase. """
 
+from abc import ABC, abstractmethod
+
 import numpy as np
 
 
-class Loss(object):
+class Loss(ABC):
     @classmethod
+    @abstractmethod
     def __call__(cls, y, y_target):
-        raise NotImplementedError
+        pass
 
     @classmethod
+    @abstractmethod
     def gradient(cls, y, y_target):
-        raise NotImplementedError
+        pass
 
 
 class MSE(Loss):

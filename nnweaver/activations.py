@@ -1,15 +1,19 @@
 """ The :py:mod`nnweaver.activations` module provides a set of activation
 functions to be applied to a layer of a neural network. """
 
+from abc import ABC, abstractmethod
+
 import numpy as np
 
 
-class Activation(object):
+class Activation(ABC):
+    @abstractmethod
     def __call__(self, x):
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def gradient(self, x):
-        raise NotImplementedError
+        pass
 
 
 class Linear(Activation):
