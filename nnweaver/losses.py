@@ -23,7 +23,7 @@ class MSE(Loss):
         :param y_target: the target output.
         :return: the MSE.
         """
-        return np.square(y - y_target).mean()
+        return 0.5 * np.square(y - y_target).mean()
 
     @classmethod
     def gradient(cls, y, y_target):
