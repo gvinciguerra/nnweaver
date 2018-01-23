@@ -50,7 +50,7 @@ class GradientBasedOptimizer(Optimizer):
 
         return inputs, outputs
 
-    def backward(self, nn, y, inputs, outputs):
+    def backward(self, nn, x, y, inputs, outputs):
         """ Propagate an error backward through the network. See "Deep Learning"
         by Ian Goodfellow et. al (2016) p. 206.
 
@@ -60,15 +60,20 @@ class GradientBasedOptimizer(Optimizer):
         :param outputs: a list of the activated outputs at each layer.
         :return: a list of the gradients of the loss function at each layer.
         """
-        errors = []  # list of size len(nn.layers)
+        grad_weights, grad_bias = [], []  # list of size len(nn.layers)
         layers_reversed = range(len(nn.layers) - 1, -1, -1)
         g = self.loss.gradient(outputs[-1], y)
 
         for l in layers_reversed:
             g = np.multiply(g, nn.layers[l].activation.gradient(inputs[l]))
-            errors.insert(0, g)
+            grad_bias.insert(0, g)
+            if l == 0:
+                grad_weights.insert(0, g.dot(x.T))
+            else:
+                grad_weights.insert(0, g.dot(outputs[l - 1].reshape((1, -1))))
             g = nn.layers[l].weights.T.dot(g)
-        return errors
+
+        return grad_weights, grad_bias
 
 
 class SGD(GradientBasedOptimizer):
@@ -126,8 +131,8 @@ class SGD(GradientBasedOptimizer):
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in batch_ranges:
-                # Estimate gradient
-                tot_errors = [np.zeros(l.weights.shape) for l in nn.layers]
+                # Estimate gradient on the batch
+                tot_errors_weight = [np.zeros(l.weights.shape) for l in nn.layers]
                 tot_errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
                 x_batch = x_shuffled[low:high]
                 y_batch = y_shuffled[low:high]
@@ -135,17 +140,13 @@ class SGD(GradientBasedOptimizer):
                     i = i.reshape(-1, 1)
                     o = o.reshape(-1, 1)
                     inputs, outputs = self.forward(nn, i)
-                    errors = self.backward(nn, o, inputs, outputs)
+                    grad_weights, grad_bias = self.backward(nn, i, o, inputs, outputs)
                     for l in range(len(nn.layers)):
-                        tot_errors_bias[l] += errors[l]
-                        if l == 0:
-                            tot_errors[l] += errors[l].dot(i.T)
-                        else:
-                            tot_errors[l] += errors[l].dot(outputs[l - 1].reshape((1, -1)))
-                        assert tot_errors[l].shape == nn.layers[l].weights.shape
+                        tot_errors_bias[l] += grad_bias[l]
+                        tot_errors_weight[l] += grad_weights[l]
 
                 # Update weights
-                for (lay, grad, grad_b) in zip(nn.layers, tot_errors, tot_errors_bias):
+                for (lay, grad, grad_b) in zip(nn.layers, tot_errors_weight, tot_errors_bias):
                     assert (lay.weights - step * grad).shape == lay.weights.shape
                     lay.weights -= step * grad
                     lay.bias -= step * grad_b
