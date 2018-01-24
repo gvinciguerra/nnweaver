@@ -1,4 +1,4 @@
-from .activations import Linear, Rectifier, Sigmoid
+from .activations import Linear, Rectifier, Sigmoid, TanH
 from .layer import Layer
 from .losses import MEE, MSE
 from .nn import NN

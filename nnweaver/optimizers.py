@@ -136,7 +136,6 @@ class SGD(GradientBasedOptimizer):
 
         np.random.seed(self.seed)
         batch_ranges = SGD.batch_ranges(x, batch_size)
-        step = learning_rate / batch_size
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
         for c in callbacks:
             c.on_training_begin(nn)
@@ -163,13 +162,15 @@ class SGD(GradientBasedOptimizer):
                 # Compute the step size
                 if isinstance(learning_rate, GeneratorType):
                     step = next(learning_rate)
+                else:
+                    step = learning_rate
 
                 # Update weights
                 for (lay, grad, grad_b) in zip(nn.layers, tot_errors_weight, tot_errors_bias):
                     assert (lay.weights - step * grad).shape == lay.weights.shape
                     weight_penalty, bias_penalty = (0, 0) if regularizer is None else regularizer.gradient(lay)
-                    lay.weights -= step * (grad + weight_penalty)
-                    lay.bias -= step * (grad_b + bias_penalty)
+                    lay.weights -= step * (grad + weight_penalty) / batch_size
+                    lay.bias -= step * (grad_b + bias_penalty) / batch_size
 
                 bar.update(1)
 
