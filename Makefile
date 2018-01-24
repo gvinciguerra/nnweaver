@@ -4,7 +4,7 @@ test:
 	PYTHONPATH=$(PWD)/nnweaver:$(PYTHONPATH) pytest test
 
 docs:
-	sphinx-apidoc -f -o docs nnweaver
+	sphinx-apidoc -Mf -o docs nnweaver
 	cd docs && make html
 
 clean:

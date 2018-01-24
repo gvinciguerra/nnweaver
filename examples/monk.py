@@ -31,8 +31,8 @@ monk1_train = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-p
 x_train, y_train = get_monk(monk1_train)
 
 nn = NN(17)
-nn.add_layer(Layer(4, Rectifier()))
-nn.add_layer(Layer(1, Sigmoid()))
+nn.add_layer(Layer(4, Rectifier))
+nn.add_layer(Layer(1, Sigmoid))
 SGD(MSE()).train(nn, x_train, y_train, learning_rate=0.1, batch_size=10, epochs=100, metrics=[accuracy])
 
 monk1_test = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-problems/monks-1.test'

@@ -1,5 +1,5 @@
-""" The :py:mod:`nnweaver.validation` module provides a set of cross validation
-methods. """
+""" The :py:mod:`.validation` module provides a set of cross validation
+and model selection methods. """
 
 import itertools
 import operator
@@ -14,11 +14,10 @@ from nnweaver.optimizers import Optimizer
 
 
 def splits_generator(x, y, groups):
-    """ Split two data sets of the same size into partitions of the given
-    dimensions.
+    """ Split a data set into partitions.
 
-    :param x: a list of elements.
-    :param y: a list of elements.
+    :param x: a list of examples.
+    :param y: a list with the target output of each example.
     :param groups: the list of the sizes of each partition (the sum of its
         elements must be ``len(x)``.
     """
@@ -45,7 +44,7 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     :param optimizer: the optimizer used to train the neural network. Its
         signature must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
-    :param y: the target output of each example.
+    :param y: a list with the target output of each example.
     :param k: the number of partitions (folds) of the data set.
     :param train_args: a dictionary whose keys are compatible with the arguments
         of ``optimizer.train()``.
@@ -90,7 +89,7 @@ def grid_search(nn_builder: Callable[[dict], NN],
     :param optimizer: the optimizer to use in the grid search. Its signature
         must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
-    :param y: the target output of each example.
+    :param y: a list with the target output of each example.
     :param train_args: a dictionary whose keys are:
         (1) compatible with the arguments of ``optimizer.train()``, and
         (2) associated with lists that represent the subset of the arguments to
@@ -135,7 +134,7 @@ def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
     :param optimizer: the optimizer used to train the neural network. Its
         signature must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
-    :param y: the target outputo of each example.
+    :param y: a list with the target output of each example.
     :param train_ratio: the ratio between the size of the partition of examples
         used to train the neural network and the one used to test it.
     :param train_args: a dictionary whose keys are compatible with the arguments

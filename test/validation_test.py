@@ -16,9 +16,9 @@ def test_kfold_cross_validation():
     y = np.arange(-1, 1, 0.1) ** 2
 
     nn = NN(1)
-    nn.add_layer(Layer(12, Sigmoid()))
-    nn.add_layer(Layer(13, Sigmoid()))
-    nn.add_layer(Layer(1, Linear()))
+    nn.add_layer(Layer(12, Sigmoid))
+    nn.add_layer(Layer(13, Sigmoid))
+    nn.add_layer(Layer(1, Linear))
     sgd = SGD(MSE())
 
     kfold_cross_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)
@@ -32,7 +32,7 @@ def test_grid_search():
         nn = NN(1)
         nn.add_layer(Layer(units_1, activation_1))
         nn.add_layer(Layer(units_2, activation_2))
-        nn.add_layer(Layer(1, Linear()))
+        nn.add_layer(Layer(1, Linear))
         return nn
 
     sgd = SGD(MSE())
@@ -41,8 +41,8 @@ def test_grid_search():
                   'learning_rate': [0.5]}
     builder_args = {'units_1': [5, 15],
                     'units_2': [5, 10],
-                    'activation_1': [Sigmoid(), Rectifier()],
-                    'activation_2': [Sigmoid()]}
+                    'activation_1': [Sigmoid, Rectifier],
+                    'activation_2': [Sigmoid]}
 
     grid_search(nn_builder, sgd, x, y, train_args, builder_args)
     two_fold = partial(kfold_cross_validation, k=2)
@@ -54,9 +54,9 @@ def test_hold_out():
     y = np.arange(-1, 1, 0.1) ** 2
 
     nn = NN(1)
-    nn.add_layer(Layer(12, Sigmoid()))
-    nn.add_layer(Layer(13, Sigmoid()))
-    nn.add_layer(Layer(1, Linear()))
+    nn.add_layer(Layer(12, Sigmoid))
+    nn.add_layer(Layer(13, Sigmoid))
+    nn.add_layer(Layer(1, Linear))
     sgd = SGD(MSE())
 
     hold_out_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)

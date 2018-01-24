@@ -1,4 +1,4 @@
-""" The :py:mod:`nnweaver.losses` module provides a set of loss/objective
+""" The :py:mod:`.losses` module provides a set of loss/objective
 functions whose output should be minimized during the training phase. """
 
 from abc import ABC, abstractmethod

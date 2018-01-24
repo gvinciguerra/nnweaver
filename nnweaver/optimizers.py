@@ -1,5 +1,11 @@
-""" The :py:mod:`nnweaver.optimizers` module provides a set of optimization
-algorithms that can be used to train neural networks. """
+""" The :py:mod:`.optimizers` module provides a set of optimization
+algorithms that can be used to train neural networks.
+
+Currently, the following optimizers are available:
+
+1. :py:class:`.SGD` Stochastic Gradient Descent.
+
+"""
 
 import itertools
 from abc import ABC, abstractmethod
@@ -12,11 +18,9 @@ import tqdm
 
 
 class Optimizer(ABC):
-    """ Abstract base class for classes that implement an optimization algorithm
-    to :py:meth:`train()` neural networks. """
-
+    @abstractmethod
     def __init__(self, loss):
-        """ Initialize the optimizer with the given loss (cost) function.
+        """ Abstract base class for optimizers.
 
         :param loss: the loss function to optimize.
         """
@@ -26,8 +30,8 @@ class Optimizer(ABC):
     def shuffle(cls, x, y):
         """ Shuffle x and y elements with the same permutation.
 
-        :param x: an array.
-        :param y: an array having the same length of x.
+        :param x: a list of examples.
+        :param y: a list with the target output of each example.
         :return: x, y. Permuted.
         """
         assert len(x) == len(y)
@@ -40,7 +44,13 @@ class Optimizer(ABC):
 
 
 class GradientBasedOptimizer(Optimizer):
-    """ Abstract class for optimizers that use the gradient information. """
+    @abstractmethod
+    def __init__(self, loss):
+        """ Abstract class for optimizers that use the gradient information.
+
+        :param loss: the loss function to optimize.
+        """
+        super().__init__(loss)
 
     def forward(self, nn, x):
         """ Propagate an input signal through the network.
@@ -57,7 +67,7 @@ class GradientBasedOptimizer(Optimizer):
 
         for l in nn.layers:
             input_sum = l.input_sum(xi)
-            xi = l.activation(input_sum)
+            xi = l.activation.apply(input_sum)
             inputs.append(input_sum)
             outputs.append(xi)
 
@@ -95,10 +105,12 @@ class GradientBasedOptimizer(Optimizer):
 
 
 class SGD(GradientBasedOptimizer):
-    """ :py:class:`SGD` implements the Stochastic Gradient Descent algorithm
-    to train neural networks. """
-
     def __init__(self, loss):
+        """ Create an optimizer that implement the Stochastic Gradient Descent
+        (SGD) algorithm.
+
+        :param loss: the loss (cost) function to optimize.
+        """
         super().__init__(loss)
         self.seed = None
 
@@ -125,7 +137,7 @@ class SGD(GradientBasedOptimizer):
 
         :param nn: the neural network.
         :param x: a list of examples.
-        :param y: the target output of each example.
+        :param y: a list with the target output of each example.
         :param learning_rate: the step size of the gradient descend. It can be
             a constant, or a generator that returns the step size at each
             next() call.
@@ -135,7 +147,7 @@ class SGD(GradientBasedOptimizer):
             contribution of previous gradients exponentially decay.
         :param metrics: a list of metric functions to be evaluated at each
             epoch.
-        :param callbacks: a list of :py:class:`nnweaver.callbacks.Callback`
+        :param callbacks: a list of :py:class:`.Callback`
             objects.
         :param regularizer: a regularizer that will be used in the training.
         """
@@ -219,9 +231,11 @@ class SGD(GradientBasedOptimizer):
 
 
 def learning_rate_time_based(initial_rate, rate_decay):
-    """ Decay the rate with time.
+    """ A generator function that decays the rate with time.
 
-    Formally, compute
+    It can be passed as ``learning_rate`` argument to :py:meth:`.SGD.train` .
+
+    Formally, it computes
     :math:`\\epsilon_k = \\frac{\\epsilon_{0}}{1+\\gamma k}`, where
     :math:`k` is the iteration number, :math:`\\gamma` is ``rate_decay``,
     :math:`\\epsilon_0` is ``initial_rate``.
@@ -234,10 +248,12 @@ def learning_rate_time_based(initial_rate, rate_decay):
 
 
 def learning_rate_linearly_decayed(initial_rate, final_rate=0, max_iterations=20):
-    """ Decay the learning rate linearly, starting from `initial_rate`. After
-    `max_iterations` always yields final_rate.
+    """ A generator function that, starting from `initial_rate`, decays the
+    learning rate linearly. After `max_iterations` it always yields final_rate.
 
-    Formally, compute :math:`\\epsilon_k = (1 - \\alpha)\\epsilon_0+
+    It can be passed as ``learning_rate`` argument to :py:meth:`.SGD.train` .
+
+    Formally, it computes :math:`\\epsilon_k = (1 - \\alpha)\\epsilon_0+
     \\alpha \\epsilon_\\tau`, where :math:`k` is the iteration number,
     :math:`\\tau` is ``max_iterations``, :math:`\\epsilon_0` is
     ``initial_rate``, :math:`\\epsilon_\\tau` is ``final_rate``, and

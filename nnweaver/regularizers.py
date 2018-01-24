@@ -1,12 +1,17 @@
-""" The :py:mod:`nnweaver.regularizers` provides a set of weight regularization
+""" The :py:mod:`.regularizers` provides a set of weight regularization
 classes to be used during the training of a neural network. """
 
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 import numpy as np
 
 
-class Regularizer(object):
+class Regularizer(ABC):
+    """ Abstract base class for classes that implements functions on the
+    :py:class:`.NN`'s parameters to control the complexity of the model during
+    the training.
+    """
+
     @abstractmethod
     def __call__(self, nn):
         pass

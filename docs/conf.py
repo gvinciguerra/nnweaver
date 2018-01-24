@@ -36,13 +36,17 @@ extensions = ['sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc']
+    'sphinx.ext.autodoc',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.inheritance_diagram',]
 
 autodoc_default_flags = ['special-members']
+autoclass_content = 'both'
+graphviz_output_format = 'svg'
 
 def skip_members(app, what, name, obj, skip, options):
     if name[:2] == '__':
-        return False if name in ['__call__', '__init__'] else True
+        return False if name in ['__call__'] else True
     return None
 
 def setup(app):
@@ -102,24 +106,36 @@ todo_include_todos = False
 html_theme_path = [alabaster.get_path()]
 extensions += ['alabaster']
 html_theme = 'alabaster'
+
+
+# Theme options are theme-specific and customize the look and feel of a theme
+# further.  For a list of options available for each theme, see the
+# documentation.
+#
+
 html_theme_options = {
     'description': 'A tiny library to build and train neural networks',
     'github_user': 'gvinciguerra',
     'github_repo': 'nnweaver',
     'show_powered_by': 'false',
     'fixed_sidebar': 'true',
+    'github_banner': 'true',
 }
 
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
-# html_theme_options = {}
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 
 # -- Options for HTMLHelp output ------------------------------------------

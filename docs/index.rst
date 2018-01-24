@@ -6,15 +6,33 @@
 NNWeaver's documentation
 ====================================
 
+Todo
+
+
+The NNWeaver Package
+--------------------
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   
+   The NNWeaver package <nnweaver>
 
+Inheritance diagram
+-------------------
+
+.. inheritance-diagram::
+   nnweaver.nn
+   nnweaver.losses
+   nnweaver.optimizers
+   nnweaver.activations
+   nnweaver.regularizers
+   nnweaver.utils
+   nnweaver.validation
+   :parts: 1
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

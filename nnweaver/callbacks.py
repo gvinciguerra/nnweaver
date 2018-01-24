@@ -4,12 +4,13 @@ or after the training of a neural network. """
 
 import csv
 from abc import ABC, abstractmethod
+
 import matplotlib.pyplot as plt
 
 
 class Callback(ABC):
     """ Abstract base class for classes that provide methods that can be
-    called during the :py:meth:`nnweaver.optimizers.Optimizer.train` execution.
+    called during the :py:meth:`.Optimizer.train` execution.
     """
 
     @abstractmethod
@@ -26,12 +27,10 @@ class Callback(ABC):
 
 
 class WriteFileCallback(Callback):
-    """ :py:class:`WriteFileCallback` provides a way to write at each epoch the
-    loss found by a training algorithm to a CSV file. """
-
     def __init__(self, filename, x_validation=None, y_validation=None, loss=None):
-        """ Initialize the callback. If a data set and a loss function are
-        given, it will perform a validation of the model at every epoch.
+        """ Create a callback that, at each epoch, writes the loss found by a
+        training algorithm to a CSV file. If a data set and a loss function are
+        given, it will also write to the file the validation results.
 
         :param filename: the output file.
         :param x_validation: the set of validation examples (optional).
@@ -83,12 +82,10 @@ class WriteFileCallback(Callback):
 
 
 class PlotLearningCurve(Callback):
-    """ :py:class:`PlotLearningCurve` provides a way to plot the learning curve
-    of a model during and after its training phase. """
-
     def __init__(self, x_validation=None, y_validation=None, loss=None, interactive=True, max_epochs=None):
-        """ Initialize the callback. If a data set and a loss function are
-        given, it will perform a validation of the model at every epoch.
+        """ Create a callback that plot the learning curve of a model during and
+        after its training phase. If a data set and a loss function are given,
+        it will also plot the validation results.
 
         :param x_validation: the set of validation examples (optional).
         :param y_validation: the set of validation targets (optional).

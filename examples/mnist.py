@@ -37,8 +37,8 @@ x_train, y_train, _ = get_mnist(True)
 x_test, y_test, test_labels = get_mnist(False)
 
 nn = NN(28 * 28)
-nn.add_layer(Layer(30, Sigmoid()))
-nn.add_layer(Layer(10, Sigmoid()))
+nn.add_layer(Layer(30, Sigmoid))
+nn.add_layer(Layer(10, Sigmoid))
 SGD(MSE()).train(nn, x_train, y_train,
                  learning_rate=0.5, batch_size=50, epochs=10,
                  metrics=[accuracy],
