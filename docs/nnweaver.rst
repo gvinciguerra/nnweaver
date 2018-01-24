@@ -52,6 +52,14 @@ nnweaver\.optimizers module
     :undoc-members:
     :show-inheritance:
 
+nnweaver\.regularizers module
+-----------------------------
+
+.. automodule:: nnweaver.regularizers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nnweaver\.utils module
 ----------------------
 

@@ -1,9 +1,11 @@
 """ This module provides a set of optimization algorithms that can be used to
 train neural networks. """
 
+import itertools
 from abc import ABC, abstractmethod
 from math import ceil
 from sys import stdout
+from types import GeneratorType
 
 import numpy as np
 import tqdm
@@ -112,7 +114,9 @@ class SGD(GradientBasedOptimizer):
         :param nn: the neural network.
         :param x: a list of examples.
         :param y: the target output of each example.
-        :param learning_rate: the step size of the gradient descend.
+        :param learning_rate: the step size of the gradient descend. It can be
+            a constant, or a generator that returns the step size at each
+            next() call.
         :param batch_size: the batch size.
         :param epochs: the number of the epochs.
         :param metrics: a list of metric functions to be evaluated at each
@@ -156,6 +160,10 @@ class SGD(GradientBasedOptimizer):
                         tot_errors_bias[l] += grad_bias[l]
                         tot_errors_weight[l] += grad_weights[l]
 
+                # Compute the step size
+                if isinstance(learning_rate, GeneratorType):
+                    step = next(learning_rate)
+
                 # Update weights
                 for (lay, grad, grad_b) in zip(nn.layers, tot_errors_weight, tot_errors_bias):
                     assert (lay.weights - step * grad).shape == lay.weights.shape
@@ -175,3 +183,43 @@ class SGD(GradientBasedOptimizer):
 
         for c in callbacks:
             c.on_training_end(nn)
+
+
+def learning_rate_time_based(initial_rate, rate_decay):
+    """ Decay the rate with time.
+
+    Formally, compute
+    :math:`\\epsilon_k = \\frac{\\epsilon_{0}}{1+\\gamma k}`, where
+    :math:`k` is the iteration number, :math:`\\gamma` is ``rate_decay``,
+    :math:`\\epsilon_0` is ``initial_rate``.
+
+    :param initial_rate: the rate at the first iteration.
+    :param rate_decay: the decay factor.
+    """
+    for i in itertools.count(start=0, step=1):
+        yield initial_rate / (1. + rate_decay * i)
+
+
+def learning_rate_linearly_decayed(initial_rate, final_rate=0, max_iterations=20):
+    """ Decay the learning rate linearly, starting from `initial_rate`. After
+    `max_iterations` always yields final_rate.
+
+    Formally, compute :math:`\\epsilon_k = (1 - \\alpha)\\epsilon_0+
+    \\alpha \\epsilon_\\tau`, where :math:`k` is the iteration number,
+    :math:`\\tau` is ``max_iterations``, :math:`\\epsilon_0` is
+    ``initial_rate``, :math:`\\epsilon_\\tau` is ``final_rate``, and
+    :math:`\\alpha=\\frac{k}{\\tau}`.
+
+
+    :param initial_rate: the rate at the first iteration.
+    :param final_rate: the rate to return after the maximum number of
+        iterations.
+    :param max_iterations: the maximum number of iterations.
+    """
+    for i in range(max_iterations):
+        alpha = i / max_iterations
+        rate = (1. - alpha) * initial_rate + alpha * final_rate
+        yield rate
+
+    while True:
+        yield final_rate

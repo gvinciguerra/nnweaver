@@ -1,6 +1,6 @@
 import numpy as np
 
-from nnweaver import Linear, Sigmoid, Rectifier, Layer, MSE, NN, SGD, Optimizer
+from nnweaver import *
 from nnweaver.utils import accuracy
 
 
@@ -57,3 +57,16 @@ def test_sgd_circles():
     sgd.seed = 42
     sgd.train(nn, x[:limit], y[:limit], 0.1, 5, 100, metrics=[accuracy])
     assert accuracy(nn.predict_batch(x[limit:]), y[limit:]) > 0.8
+
+
+def test_learning_rate():
+    l0 = learning_rate_time_based(0.5, 0.1)
+    np.testing.assert_almost_equal(next(l0), 0.5)
+    np.testing.assert_almost_equal(next(l0), 0.4545454545)
+
+    l1 = learning_rate_linearly_decayed(0.5, 0.2, 3)
+    np.testing.assert_almost_equal(next(l1), 0.5)
+    np.testing.assert_almost_equal(next(l1), 0.4)
+    np.testing.assert_almost_equal(next(l1), 0.3)
+    np.testing.assert_almost_equal(next(l1), 0.2)
+    np.testing.assert_almost_equal(next(l1), 0.2)
