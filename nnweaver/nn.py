@@ -1,6 +1,6 @@
-""" This module contains the Neural Network (NN) class. Its instances can be
-trained (with an Optimizer) and then used to predict the target values of
-(previously unseen) examples."""
+""" The :py:mod:`nnweaver.nn` module contains the Neural Network (NN) class. Its
+instances can be trained (with an Optimizer) and then used to predict the target
+values of (previously unseen) examples."""
 
 import copy
 

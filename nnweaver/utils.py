@@ -1,4 +1,4 @@
-""" This module provides a set of utility functions. """
+""" The :py:mod:`nnweaver.utils` module provides a set of utility functions. """
 
 import numpy as np
 

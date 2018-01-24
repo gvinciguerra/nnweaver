@@ -1,5 +1,5 @@
-""" This module provides a set of optimization algorithms that can be used to
-train neural networks. """
+""" The :py:mod:`nnweaver.optimizers` module provides a set of optimization
+algorithms that can be used to train neural networks. """
 
 import itertools
 from abc import ABC, abstractmethod

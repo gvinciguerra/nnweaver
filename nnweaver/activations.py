@@ -1,4 +1,4 @@
-""" The :py:mod`nnweaver.activations` module provides a set of activation
+""" The :py:mod:`nnweaver.activations` module provides a set of activation
 functions to be applied to a layer of a neural network. """
 
 from abc import ABC, abstractmethod

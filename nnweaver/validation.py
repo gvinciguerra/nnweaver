@@ -1,4 +1,5 @@
-""" This module provides a set of cross validation methods. """
+""" The :py:mod:`nnweaver.validation` module provides a set of cross validation
+methods. """
 
 import itertools
 import operator

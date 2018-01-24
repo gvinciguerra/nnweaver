@@ -1,4 +1,5 @@
-""" This module provides the Layer class of the neural network. """
+""" The :py:mod:`nnweaver.layer` module provides the Layer class of the neural
+network. """
 
 import numpy as np
 

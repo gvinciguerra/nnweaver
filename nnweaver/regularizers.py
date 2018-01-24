@@ -1,3 +1,6 @@
+""" The :py:mod:`nnweaver.regularizers` provides a set of weight regularization
+classes to be used during the training of a neural network. """
+
 from abc import abstractmethod
 
 import numpy as np
@@ -25,6 +28,12 @@ class L1L2Regularizer(Regularizer):
         self.l2 = l2
 
     def __call__(self, nn):
+        """ Apply both L1 and L2 norms on the weights of every layer of the
+        given neural network.
+
+        :param nn: a neural network.
+        :return: the loss penalty.
+        """
         loss_penalty = 0
         for layer in nn.layers:
             concat = np.concatenate((layer.weights, layer.bias), axis=1)
@@ -35,6 +44,12 @@ class L1L2Regularizer(Regularizer):
         return loss_penalty
 
     def gradient(self, layer):
+        """ Compute the gradient of the loss penalty for a single layer of a
+        neural network.
+
+        :param layer: a layer.
+        :return: the weight and the bias gradient penalty.
+        """
         weight_penalty = 0
         bias_penalty = 0
         if self.l1 != 0:
