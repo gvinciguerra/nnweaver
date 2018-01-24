@@ -116,7 +116,7 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1,
+    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1, momentum=0,
               metrics=None, callbacks=None, regularizer=None):
         """ Train the given neural network using the Stochastic Gradient
         Descent (SGD) algorithm.
@@ -131,6 +131,8 @@ class SGD(GradientBasedOptimizer):
             next() call.
         :param batch_size: the batch size.
         :param epochs: the number of the epochs.
+        :param momentum: value between 0 and 1. Determines how quickly the
+            contribution of previous gradients exponentially decay.
         :param metrics: a list of metric functions to be evaluated at each
             epoch.
         :param callbacks: a list of :py:class:`nnweaver.callbacks.Callback`
@@ -149,6 +151,8 @@ class SGD(GradientBasedOptimizer):
         np.random.seed(self.seed)
         batch_ranges = SGD.batch_ranges(x, batch_size)
         bar_format = '{l_bar}{bar}| [{elapsed}, ' '{rate_fmt}{postfix}]'
+        velocity_bias = np.zeros(len(nn.layers))
+        velocity_weights = np.zeros(len(nn.layers))
         for c in callbacks:
             c.on_training_begin(nn)
 
@@ -158,8 +162,8 @@ class SGD(GradientBasedOptimizer):
 
             for low, high in batch_ranges:
                 # Estimate gradient on the batch
-                tot_errors_weight = [np.zeros(l.weights.shape) for l in nn.layers]
-                tot_errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
+                errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
+                errors_weights = [np.zeros(l.weights.shape) for l in nn.layers]
                 x_batch = x_shuffled[low:high]
                 y_batch = y_shuffled[low:high]
                 for i, o in zip(x_batch, y_batch):
@@ -168,8 +172,8 @@ class SGD(GradientBasedOptimizer):
                     inputs, outputs = self.forward(nn, i)
                     grad_weights, grad_bias = self.backward(nn, i, o, inputs, outputs)
                     for l in range(len(nn.layers)):
-                        tot_errors_bias[l] += grad_bias[l]
-                        tot_errors_weight[l] += grad_weights[l]
+                        errors_bias[l] += grad_bias[l]
+                        errors_weights[l] += grad_weights[l]
 
                 # Compute the step size
                 if isinstance(learning_rate, GeneratorType):
@@ -178,16 +182,32 @@ class SGD(GradientBasedOptimizer):
                     step = learning_rate
 
                 # Update weights
-                for (lay, grad, grad_b) in zip(nn.layers, tot_errors_weight, tot_errors_bias):
-                    assert (lay.weights - step * grad).shape == lay.weights.shape
-                    weight_penalty, bias_penalty = (0, 0) if regularizer is None else regularizer.gradient(lay)
-                    lay.weights -= step * (grad + weight_penalty) / batch_size
-                    lay.bias -= step * (grad_b + bias_penalty) / batch_size
+                iterator = zip(nn.layers, errors_weights, errors_bias, velocity_weights, velocity_bias)
+                new_velocity_bias, new_velocity_weights = [], []
 
+                for (l, grad_w, grad_b, vel_w, vel_b) in iterator:
+                    assert (l.weights - step * grad_w).shape == l.weights.shape
+                    penalty_w, penalty_b = (0, 0) if regularizer is None else regularizer.gradient(l)
+
+                    # Apply penalty to weights (and compute the gradients' velocity)
+                    g_w = step * (grad_w + penalty_w) / batch_size
+                    g_b = step * (grad_b + penalty_b) / batch_size
+
+                    # Compute velocity update
+                    v_b = g_b + momentum * vel_b
+                    v_w = g_w + momentum * vel_w
+                    new_velocity_bias.append(vel_b)
+                    new_velocity_weights.append(vel_w)
+
+                    # Apply update
+                    l.bias -= v_b
+                    l.weights -= v_w
+
+                velocity_bias, velocity_weights = new_velocity_bias, new_velocity_weights
                 bar.update(1)
 
             y_predicted = nn.predict_batch(x)
-            loss_value = self.loss(y_predicted, y) + (0 if regularizer is None else regularizer(nn))
+            loss_value = self.loss.batch_mean(y_predicted, y) + (0 if regularizer is None else regularizer(nn))
             metrics_values = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
             bar.set_postfix(loss='%.4f' % loss_value, **metrics_values)
             bar.close()

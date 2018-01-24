@@ -69,7 +69,7 @@ class WriteFileCallback(Callback):
         record = {'epoch': epoch, 'loss': loss_value}
         if self.x_validation is not None:
             y_predicted = nn.predict_batch(self.x_validation)
-            validation_loss_value = self.loss(y_predicted, self.y_validation)
+            validation_loss_value = self.loss.batch_mean(y_predicted, self.y_validation)
             record['val_loss'] = validation_loss_value
         self.csv_writer.writerow(record)
 

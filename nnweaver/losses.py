@@ -7,36 +7,55 @@ import numpy as np
 
 
 class Loss(ABC):
+    """ Abstract base class for classes that provide methods to compute the
+    cost function over a single example or a batch of examples.
+    """
+
     @classmethod
     @abstractmethod
-    def __call__(cls, y, y_target):
+    def loss(cls, y, y_target):
         pass
 
     @classmethod
     @abstractmethod
     def gradient(cls, y, y_target):
         pass
+
+    @classmethod
+    def batch_mean(cls, y, y_target):
+        """ Compute the average loss over a batch of examples.
+
+        :param y: the bi-dimensional matrix whose rows are the examples and
+            whose columns are the predicted features.
+        :param y_target: the target bi-dimensional matrix. Must have the same
+            number of rows of ``y``,
+        :return: the average loss.
+        """
+        tot = 0
+        for i, o in zip(y, y_target):
+            tot += cls.loss(i.reshape(-1, 1), o.reshape(-1, 1))
+        return tot / len(y)
 
 
 class MSE(Loss):
     @classmethod
-    def __call__(cls, y, y_target):
-        """ Compute the Mean Squared Error (MSE) of the predicted data.
+    def loss(cls, y, y_target):
+        """ Compute the Mean Squared Error (MSE) of the predicted example.
 
-        :param y: the predicted output.
-        :param y_target: the target output.
+        :param y: the predicted output (a column vector).
+        :param y_target: the target output (a column vector).
         :return: the MSE.
         """
-        return 0.5 * np.square(y - y_target).mean()
+        return 0.5 * np.sum(np.square(y - y_target))
 
     @classmethod
     def gradient(cls, y, y_target):
         """ Compute the gradient of Mean Squared Error (MSE) of the predicted
-        data.
+        example.
 
-        :param y: the predicted output.
-        :param y_target: the target output.
-        :return: the gradient of the MSE.
+        :param y: the predicted output (a column vector).
+        :param y_target: the target output (a column vector).
+        :return: the gradient of the MSE (a column vector).
         """
         return y - y_target
 
@@ -47,29 +66,29 @@ class MEE(Loss):
         """ Compute the pairwise euclidean distances between the
         rows of two matrix of the same shape.
 
-        :param y: the predicted output.
-        :param y_target: the target output.
+        :param y: the predicted output (a column vector).
+        :param y_target: the target output (a column vector).
         :return: the euclidean distances.
         """
-        return np.sqrt(np.sum(np.square(y - y_target), axis=1))
+        return np.sqrt(np.sum(np.square(y - y_target)))
 
     @classmethod
-    def __call__(cls, y, y_target):
-        """ Compute the Mean Euclidean Error (MEE) of the predicted data.
+    def loss(cls, y, y_target):
+        """ Compute the Mean Euclidean Error (MEE) of the predicted example.
 
-        :param y: the predicted output.
-        :param y_target: the target output.
+        :param y: the predicted output (a column vector).
+        :param y_target: the target output (a column vector).
         :return: the MEE.
         """
-        return MEE.euclidean_distance(y, y_target).mean()
+        return MEE.euclidean_distance(y, y_target)
 
     @classmethod
     def gradient(cls, y, y_target):
         """ Compute the gradient of Mean Euclidean Error (MEE) of the predicted
-        data.
+        example.
 
-        :param y: the predicted output.
-        :param y_target: the target output.
-        :return: the gradient of the MEE.
+        :param y: the predicted output (a column vector).
+        :param y_target: the target output (a column vector).
+        :return: the gradient of the MEE (a column vector).
         """
         return (y - y_target) / MEE.euclidean_distance(y, y_target)

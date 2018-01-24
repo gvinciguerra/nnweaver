@@ -64,7 +64,7 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
         t_start = time.time()
         optimizer.train(nn, split_complement_x, split_complement_y, **train_args)
         elapsed = (time.time() - t_start) * 1000
-        loss_value = optimizer.loss(nn_i.predict_batch(x), y)
+        loss_value = optimizer.loss.batch_mean(nn_i.predict_batch(x), y)
         if loss_value < best_loss:
             best_model = nn_i
             best_loss = loss_value
@@ -118,7 +118,7 @@ def grid_search(nn_builder: Callable[[dict], NN],
             nn = nn_builder(**b_args)
             if cv is None:
                 optimizer.train(nn, x, y, **t_args)
-                loss_value = optimizer.loss(nn.predict_batch(x), y)
+                loss_value = optimizer.loss.batch_mean(nn.predict_batch(x), y)
             else:
                 nn, loss_value = cv(nn, optimizer, x, y, **t_args)
             if loss_value < best_loss:
@@ -149,4 +149,4 @@ def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
     train_x, train_y, test_x, test_y = next(splits_generator(x, y, [train_size, test_size]))
     optimizer.train(nn, train_x, train_y, **train_args)
 
-    return nn, optimizer.loss(nn.predict_batch(test_x), test_y)
+    return nn, optimizer.loss.batch_mean(nn.predict_batch(test_x), test_y)
