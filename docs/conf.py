@@ -42,7 +42,7 @@ autodoc_default_flags = ['special-members']
 
 def skip_members(app, what, name, obj, skip, options):
     if name[:2] == '__':
-        return False if name in ['__call__'] else True
+        return False if name in ['__call__', '__init__'] else True
     return None
 
 def setup(app):

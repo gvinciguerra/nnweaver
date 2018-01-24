@@ -7,6 +7,10 @@ from abc import ABC, abstractmethod
 
 
 class Callback(ABC):
+    """ Abstract base class for classes that provide methods that can be
+    called during the :py:meth:`nnweaver.optimizers.Optimizer.train` execution.
+    """
+
     @abstractmethod
     def on_epoch_end(self, epoch, nn, loss_value, metrics_values):
         pass
@@ -21,6 +25,9 @@ class Callback(ABC):
 
 
 class WriteFileCallback(Callback):
+    """ :py:class:`WriteFileCallback` provides a way to write at each epoch the
+    loss found by a training algorithm to a CSV file. """
+
     def __init__(self, filename, x_validation=None, y_validation=None, loss=None):
         """ Initialize the callback. If a data set and a loss function are
         given, it will perform a validation of the model at every epoch.

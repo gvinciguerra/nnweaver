@@ -12,7 +12,14 @@ import tqdm
 
 
 class Optimizer(ABC):
+    """ Abstract base class for classes that implement an optimization algorithm
+    to :py:meth:`train()` neural networks. """
+
     def __init__(self, loss):
+        """ Initialize the optimizer with the given loss (cost) function.
+
+        :param loss: the loss function to optimize.
+        """
         self.loss = loss
 
     @classmethod
@@ -33,6 +40,8 @@ class Optimizer(ABC):
 
 
 class GradientBasedOptimizer(Optimizer):
+    """ Abstract class for optimizers that use the gradient information. """
+
     def forward(self, nn, x):
         """ Propagate an input signal through the network.
 
@@ -86,6 +95,9 @@ class GradientBasedOptimizer(Optimizer):
 
 
 class SGD(GradientBasedOptimizer):
+    """ :py:class:`SGD` implements the Stochastic Gradient Descent algorithm
+    to train neural networks. """
+
     def __init__(self, loss):
         super().__init__(loss)
         self.seed = None
