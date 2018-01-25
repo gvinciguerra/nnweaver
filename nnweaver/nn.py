@@ -25,6 +25,40 @@ import numpy as np
 from .activations import Linear
 
 
+def uniform(low, high):
+    """ Returns a weights initializer with values uniformly distributed over the
+    half-open interval :math:`[low, high)`.
+
+    The result of this function can be passed as ``distribution`` argument to
+    :py:meth:`.NN.add_layer` .
+
+    :param low: lower boundary of the random values.
+    :param high: upper boundary of the random values.
+    :return: a weight initializer.
+    """
+    return lambda shape: np.random.uniform(low, high, shape)
+
+
+def glorot_uniform():
+    """ Returns a weights initializer with values uniformly distributed over the
+    half-open interval :math:`\\left[-\\sqrt{\\frac{6}{n_i+n_o}},
+    \\sqrt{\\frac{6}{n_i+n_o}} \\right)`, where :math:`n_i` and :math:`n_o` are
+    the number of inputs and outputs of a layer.
+
+    The result of this function can be passed as ``distribution`` argument to
+    :py:meth:`.NN.add_layer` .
+
+    See "Understanding the difficulty of training deep feedforward neural
+    networks" by Glorot and Bengio (2010).
+
+    :return: a weight initializer.
+    """
+    def h(shape):
+        glorot = np.sqrt(6. / (shape[0] + shape[1]))
+        return uniform(-glorot, +glorot)(shape)
+    return h
+
+
 class NN(object):
     def __init__(self, input_dim):
         """ Create a multi-layer perceptron (MLP, also called feedforward
@@ -35,16 +69,18 @@ class NN(object):
         self.input_dim = input_dim
         self.layers = []
 
-    def add_layer(self, layer):
+    def add_layer(self, layer, distribution=uniform(-0.7, 0.7)):
         """ Add a layer to the neural network.
 
         :param layer: the :py:class:`.Layer` to add.
+        :param distribution: a function that takes a shape and return a matrix
+            with the specified shape. Defaults to ``uniform(-0.7, 0.7)``.
         """
         if len(self.layers) == 0:
-            layer.build_weights(self.input_dim)
+            layer.build_weights(self.input_dim, distribution)
         else:
             preceding_units = self.layers[-1].units
-            layer.build_weights(preceding_units)
+            layer.build_weights(preceding_units, distribution)
 
         self.layers.append(layer)
 
@@ -98,19 +134,19 @@ class Layer(object):
         self.weights = None
         self.activation = activation
 
-    def build_weights(self, preceding_units, low=-0.05, high=0.05):
+    def build_weights(self, preceding_units, distribution=uniform(-0.7, 0.7)):
         """ Initialize the weights and the bias vector of the layer with random
         values.
 
         :param preceding_units: number of units in the previous level.
-        :param low: lower boundary of the random values.
-        :param high: upper boundary of the random values.
+        :param distribution: a function that takes a shape and return a matrix
+            with the specified shape.
         """
         if self.weights is not None:
             raise Exception("This layer was already added to a NN")
 
-        self.bias = np.random.uniform(low, high, (self.units, 1))
-        self.weights = np.random.uniform(low, high, (self.units, preceding_units))
+        self.bias = distribution((self.units, 1))
+        self.weights = distribution((self.units, preceding_units))
 
     def input_sum(self, x):
         """ Compute the input to the layer, without applying the activation
@@ -139,3 +175,4 @@ class Layer(object):
         """
         input_sum = self.input_sum(x)
         return self.activation.apply(input_sum)
+
