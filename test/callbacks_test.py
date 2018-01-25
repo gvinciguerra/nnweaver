@@ -38,6 +38,6 @@ def test_plot_learning_curve():
     nn.add_layer(Layer(1, Sigmoid))
     sgd = SGD(MSE)
     sgd.seed = 42
-    epochs = 100
+    epochs = 3
     callback = callbacks.PlotLearningCurve(x[limit:], y[limit:], loss=MSE, max_epochs=epochs)
     sgd.train(nn, x[:limit], y[:limit], 0.1, 5, epochs, callbacks=[callback])

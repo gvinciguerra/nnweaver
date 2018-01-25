@@ -33,10 +33,9 @@ class WriteFileCallback(Callback):
         given, it will also write to the file the validation results.
 
         :param filename: the output file.
-        :param x_validation: the set of validation examples (optional).
-        :param y_validation: the set of validation targets (optional).
-        :param loss: the loss function to be evaluated in the validation step
-            (optional).
+        :param x_validation: the set of validation examples.
+        :param y_validation: the set of validation targets.
+        :param loss: the loss function to be evaluated in the validation step.
         """
         assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
         self.x_validation = x_validation
@@ -87,10 +86,9 @@ class PlotLearningCurve(Callback):
         after its training phase. If a data set and a loss function are given,
         it will also plot the validation results.
 
-        :param x_validation: the set of validation examples (optional).
-        :param y_validation: the set of validation targets (optional).
-        :param loss: the loss function to be evaluated in the validation step
-            (optional).
+        :param x_validation: the set of validation examples.
+        :param y_validation: the set of validation targets.
+        :param loss: the loss function to be evaluated in the validation step.
         :param interactive: if ``True``, show the learning curve interactively
             during the training of the model, otherwise only after the training.
             Notice that the former may cause a loss of training performance.
@@ -146,6 +144,7 @@ class PlotLearningCurve(Callback):
             self.ax.set_xlabel('Epoch')
             self.ax.set_ylabel('Loss')
             self.fig.canvas.draw()
+            plt.pause(1e-16)
 
     def on_training_end(self, nn):
         """ The callback to be executed at the end of the training.
