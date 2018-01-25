@@ -97,7 +97,7 @@ class TanH(Activation):
         :param x: an array.
         :return: the activated values of the input array.
         """
-        return 2 * Sigmoid.apply(2*x) - 1
+        return np.tanh(x)
 
     @classmethod
     def gradient(cls, x):
