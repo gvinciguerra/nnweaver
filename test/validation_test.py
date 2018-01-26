@@ -65,4 +65,10 @@ def test_hold_out():
     nn.add_layer(Layer(1, Linear))
     sgd = SGD(MSE())
 
-    hold_out_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)
+    cv_dict = hold_out_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)
+    assert 'validation_scores' in cv_dict
+    assert 'train_scores' in cv_dict
+    assert len(cv_dict['validation_scores']) == 1
+    assert len(cv_dict['train_scores']) == 1
+    assert cv_dict['validation_scores'][0] > 0
+

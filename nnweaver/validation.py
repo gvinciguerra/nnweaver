@@ -150,5 +150,7 @@ def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
     test_size = len(x) - train_size
     train_x, train_y, test_x, test_y = next(splits_generator(x, y, [train_size, test_size]))
     optimizer.train(nn, train_x, train_y, **train_args)
+    train_loss = optimizer.loss.batch_mean(nn.predict_batch(train_x), train_y)
+    validation_loss = optimizer.loss.batch_mean(nn.predict_batch(test_x), test_y)
 
-    return nn, optimizer.loss.batch_mean(nn.predict_batch(test_x), test_y)
+    return {'validation_scores': [validation_loss], 'train_scores': [train_loss]}
