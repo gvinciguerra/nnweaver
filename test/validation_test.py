@@ -21,7 +21,13 @@ def test_kfold_cross_validation():
     nn.add_layer(Layer(1, Linear))
     sgd = SGD(MSE())
 
-    kfold_cross_validation(nn, sgd, x, y, learning_rate=0.5, batch_size=5, epochs=100)
+    k = 3
+    cv_dict = kfold_cross_validation(nn, sgd, x, y, k=k, learning_rate=0.5, batch_size=5, epochs=100)
+    assert 'validation_scores' in cv_dict
+    assert 'train_scores' in cv_dict
+    assert k == len(cv_dict['validation_scores'])
+    assert k == len(cv_dict['train_scores'])
+    assert np.mean(cv_dict['validation_scores']) > 0
 
 
 def test_grid_search():

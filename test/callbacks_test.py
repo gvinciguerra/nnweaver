@@ -41,3 +41,4 @@ def test_plot_learning_curve():
     epochs = 3
     callback = callbacks.PlotLearningCurve(x[limit:], y[limit:], loss=MSE, max_epochs=epochs)
     sgd.train(nn, x[:limit], y[:limit], 0.1, 5, epochs, callbacks=[callback])
+    plt.close()

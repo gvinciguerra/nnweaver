@@ -5,7 +5,7 @@ import itertools
 import operator
 import time
 from functools import reduce
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Dict, List
 
 import numpy as np
 
@@ -36,9 +36,8 @@ def splits_generator(x, y, groups):
 def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     """ Perform a K-Fold Cross Validation of the given neural network.
 
-    It splits the data set into :math:`k` partitions that will be used to test
-    :math:`k` different models (trained on the other :math:`k - 1` partitions)
-    and then returns the best performing one.
+    It splits the data set into ``k`` partitions that will be used to test
+    ``k`` different models (trained on the other ``k`` - 1 partitions).
 
     :param nn: a neural network.
     :param optimizer: the optimizer used to train the neural network. Its
@@ -48,13 +47,13 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     :param k: the number of partitions (folds) of the data set.
     :param train_args: a dictionary whose keys are compatible with the arguments
         of ``optimizer.train()``.
-    :return: the best (of the :math:`k`) model and the value of the its loss
-        obtained on the test partition.
+    :return: a dictionary with keys ``'validation_scores'`` and
+        ``'train_scores'`` whose values are arrays of size ``k``.
     """
     split_size = int(len(x) / k)
     groups = [split_size for _ in range(k - 1)] + [len(x) - split_size * (k - 1)]
-    best_loss = np.inf
-    best_model = None
+    train_scores = []
+    validation_scores = []
     fold = 1
 
     for split_x, split_y, split_complement_x, split_complement_y in splits_generator(x, y, groups):
@@ -63,20 +62,21 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
         t_start = time.time()
         optimizer.train(nn, split_complement_x, split_complement_y, **train_args)
         elapsed = (time.time() - t_start) * 1000
-        loss_value = optimizer.loss.batch_mean(nn_i.predict_batch(x), y)
-        if loss_value < best_loss:
-            best_model = nn_i
-            best_loss = loss_value
 
-        print('📂 Fold %d/%d completed in %dms, best loss so far %.4f.' % (fold, k, elapsed, best_loss))
+        train_loss = optimizer.loss.batch_mean(nn_i.predict_batch(split_complement_x), split_complement_y)
+        validation_loss = optimizer.loss.batch_mean(nn_i.predict_batch(x), y)
+        train_scores.append(train_loss)
+        validation_scores.append(validation_loss)
+
+        print('📂 Fold %d/%d completed in %dms' % (fold, k, elapsed))
         fold += 1
 
-    return best_model, best_loss
+    return {'validation_scores': validation_scores, 'train_scores': train_scores}
 
 
 def grid_search(nn_builder: Callable[[dict], NN],
                 optimizer, x, y, train_args, builder_args,
-                cv: Callable[[NN, Optimizer, object, object], Tuple[NN, float]] = None):
+                cv: Callable[[NN, Optimizer, object, object], Dict[str, List[float]]] = None):
     """ Perform an exhaustive search through a space of training and neural
     network topology parameters.
 
@@ -119,7 +119,10 @@ def grid_search(nn_builder: Callable[[dict], NN],
                 optimizer.train(nn, x, y, **t_args)
                 loss_value = optimizer.loss.batch_mean(nn.predict_batch(x), y)
             else:
-                nn, loss_value = cv(nn, optimizer, x, y, **t_args)
+                cv_dict = cv(nn, optimizer, x, y, **t_args)
+                assert 'validation_scores' in cv_dict,\
+                    'The given cv function does not return a dict with key \'validation_scores\'.'
+                loss_value = np.mean(cv_dict['validation_scores'])
             if loss_value < best_loss:
                 best_loss = loss_value
                 best_model = nn
