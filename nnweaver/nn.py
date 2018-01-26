@@ -69,7 +69,7 @@ class NN(object):
         self.input_dim = input_dim
         self.layers = []
 
-    def add_layer(self, layer, distribution=uniform(-0.7, 0.7)):
+    def add_layer(self, layer, distribution=uniform(-0.05, 0.05)):
         """ Add a layer to the neural network.
 
         :param layer: the :py:class:`.Layer` to add.
@@ -134,7 +134,7 @@ class Layer(object):
         self.weights = None
         self.activation = activation
 
-    def build_weights(self, preceding_units, distribution=uniform(-0.7, 0.7)):
+    def build_weights(self, preceding_units, distribution=uniform(-0.05, 0.05)):
         """ Initialize the weights and the bias vector of the layer with random
         values.
 

@@ -28,7 +28,7 @@ def accuracy(y, y_target):
     """
     y_target = y_target.reshape(y.shape)
 
-    if y_target.ndim > 1:  # multi-class accuracy
+    if y_target.ndim > 1 and y_target.shape[1] > 1:  # multi-class accuracy
         return (np.argmax(y, -1) == np.argmax(y_target, -1)).mean()
 
     return (np.abs(y - y_target) < 0.5).mean()
