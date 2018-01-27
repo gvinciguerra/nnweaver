@@ -1,6 +1,6 @@
 """ The :py:mod:`.validation` module provides a set of cross validation
 and model selection methods. """
-
+import inspect
 import itertools
 import operator
 import time
@@ -101,6 +101,21 @@ def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
     return {'validation_scores': [validation_loss], 'train_scores': [train_loss]}
 
 
+def __check_search_args_compatibility(nn_builder, optimizer, train_args, builder_args):
+    """ This is an utility function used in :py:meth:`.grid_search` and
+    :py:meth:`.random_search` to check whether or not the hyperparameters
+    given by the user are compatible.
+    """
+    train_args_keys = set(train_args.keys())
+    builder_args_keys = set(builder_args.keys())
+    train_args = set(inspect.getfullargspec(optimizer.train)[0])
+    nn_builder_args = set(inspect.getfullargspec(nn_builder)[0])
+    diff_train_args = train_args_keys.difference(train_args)
+    diff_builder_args = builder_args_keys.difference(nn_builder_args)
+    assert len(diff_train_args) == 0, 'Arguments %s cannot applied to train()' % diff_train_args
+    assert len(diff_builder_args) == 0, 'Arguments %s cannot applied to nn_builder' % diff_builder_args
+
+
 def grid_search(nn_builder: Callable[[dict], NN],
                 optimizer, x, y, train_args, builder_args,
                 cv: Callable[[NN, Optimizer, object, object], Dict[str, List[float]]] = None):
@@ -129,6 +144,7 @@ def grid_search(nn_builder: Callable[[dict], NN],
         iteration.
     :return: the best model found by the grid search and the loss value.
     """
+    __check_search_args_compatibility(nn_builder, optimizer, train_args, builder_args)
     train_args_keys, train_args_values = train_args.keys(), list(train_args.values())
     builder_args_keys, builder_args_values = builder_args.keys(), list(builder_args.values())
     best_loss = np.inf
@@ -188,6 +204,7 @@ def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
         iteration.
     :return: the best model found by the grid search and the loss value.
     """
+    __check_search_args_compatibility(nn_builder, optimizer, train_args, builder_args)
     best_loss = np.inf
     best_model = None
 
