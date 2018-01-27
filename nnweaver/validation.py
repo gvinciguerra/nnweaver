@@ -142,13 +142,19 @@ def grid_search(nn_builder: Callable[[dict], NN],
         explore.
     :param cv: an optional cross validation method that is called at each
         iteration.
-    :return: the best model found by the grid search and the loss value.
+    :return: a tuple with:
+        (1) the best model found by the grid search,
+        (2) its loss value,
+        (3) arguments used to train it, and
+        (4) arguments used to build it.
     """
     __check_search_args_compatibility(nn_builder, optimizer, train_args, builder_args)
     train_args_keys, train_args_values = train_args.keys(), list(train_args.values())
     builder_args_keys, builder_args_values = builder_args.keys(), list(builder_args.values())
     best_loss = np.inf
     best_model = None
+    best_train_args = None
+    best_builder_args = None
 
     tot_iterations = reduce(operator.mul, map(len, train_args_values + builder_args_values))
     print('Beginning grid search with %d iterations' % tot_iterations)
@@ -169,8 +175,10 @@ def grid_search(nn_builder: Callable[[dict], NN],
             if loss_value < best_loss:
                 best_loss = loss_value
                 best_model = nn
+                best_train_args = t_args
+                best_builder_args = b_args
 
-    return best_model, best_loss
+    return best_model, best_loss, best_train_args, best_builder_args
 
 
 def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
@@ -202,11 +210,17 @@ def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
     :param iterations: the number of iterations of the random search.
     :param cv: an optional cross validation method that is called at each
         iteration.
-    :return: the best model found by the grid search and the loss value.
+    :return: a tuple with:
+        (1) the best model found by the grid search,
+        (2) its loss value,
+        (3) arguments used to train it, and
+        (4) arguments used to build it.
     """
     __check_search_args_compatibility(nn_builder, optimizer, train_args, builder_args)
     best_loss = np.inf
     best_model = None
+    best_train_args = None
+    best_builder_args = None
 
     def build_dict(args):
         return {k: v[np.random.randint(len(v))] if type(v) is list else v.rvs() for k, v in args.items()}
@@ -214,17 +228,21 @@ def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
     print('Beginning random search with %d iterations' % iterations)
 
     for _ in range(iterations):
-        nn = nn_builder(**build_dict(builder_args))
+        t_args = build_dict(train_args)
+        b_args = build_dict(builder_args)
+        nn = nn_builder(**b_args)
         if cv is None:
-            optimizer.train(nn, x, y, **build_dict(train_args))
+            optimizer.train(nn, x, y, **t_args)
             loss_value = optimizer.loss.batch_mean(nn.predict_batch(x), y)
         else:
-            cv_dict = cv(nn, optimizer, x, y, **build_dict(train_args))
+            cv_dict = cv(nn, optimizer, x, y, **t_args)
             assert 'validation_scores' in cv_dict, \
                 'The given cv function does not return a dict with key \'validation_scores\'.'
             loss_value = np.mean(cv_dict['validation_scores'])
         if loss_value < best_loss:
             best_loss = loss_value
             best_model = nn
+            best_train_args = b_args
+            best_builder_args = t_args
 
-    return best_model, best_loss
+    return best_model, best_loss, best_train_args, best_builder_args
