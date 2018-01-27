@@ -39,7 +39,7 @@ class WriteFileCallback(Callback):
         :param metrics: a list of metrics to be evaluated in the validation step.
         """
         assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
-        assert bool(metrics is None) == bool(x_validation is None) == bool(y_validation is None)
+        assert metrics is None or x_validation is not None
         self.x_validation = x_validation
         self.y_validation = y_validation
         self.file = None
