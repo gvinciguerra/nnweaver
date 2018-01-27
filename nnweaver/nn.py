@@ -59,6 +59,19 @@ def glorot_uniform():
     return h
 
 
+def he_normal():
+    """ Returns a weight initializer with a Gaussian distribution whose mean is
+    zero and standard deviation is :math:`\\sqrt{\\frac{2}{n_i}}`, where
+    :math:`n_i` is the number inputs to a layer.
+
+    See "Delving deep into rectifiers: Surpassing human-level performance on
+    ImageNet classification" by He et al (2015).
+
+    :return: a weight initializer.
+    """
+    return lambda shape: np.random.normal(scale=np.sqrt(2 / shape[0]), size=shape)
+
+
 class NN(object):
     def __init__(self, input_dim):
         """ Create a multi-layer perceptron (MLP, also called feedforward
