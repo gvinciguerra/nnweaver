@@ -5,9 +5,10 @@ import itertools
 import operator
 import time
 from functools import reduce
-from typing import Callable, Tuple, Dict, List
+from typing import Callable, Dict, List, Union, Any
 
 import numpy as np
+from scipy.stats.distributions import rv_frozen
 
 from nnweaver import NN
 from nnweaver.optimizers import Optimizer
@@ -74,6 +75,32 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
     return {'validation_scores': validation_scores, 'train_scores': train_scores}
 
 
+def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
+    """ Perform an Hold-Out Validation of the given neural network.
+
+    :param nn: a neural network.
+    :param optimizer: the optimizer used to train the neural network. Its
+        signature must be compatible with the keys in ``train_args``.
+    :param x: a list of examples.
+    :param y: a list with the target output of each example.
+    :param train_ratio: the ratio between the size of the partition of examples
+        used to train the neural network and the one used to test it.
+    :param train_args: a dictionary whose keys are compatible with the arguments
+        of ``optimizer.train()``.
+    :return: the trained model and the value of the loss computed on the test
+        partition.
+    """
+    assert 0 < train_ratio < 1
+    train_size = int(len(x) * train_ratio)
+    test_size = len(x) - train_size
+    train_x, train_y, test_x, test_y = next(splits_generator(x, y, [train_size, test_size]))
+    optimizer.train(nn, train_x, train_y, **train_args)
+    train_loss = optimizer.loss.batch_mean(nn.predict_batch(train_x), train_y)
+    validation_loss = optimizer.loss.batch_mean(nn.predict_batch(test_x), test_y)
+
+    return {'validation_scores': [validation_loss], 'train_scores': [train_loss]}
+
+
 def grid_search(nn_builder: Callable[[dict], NN],
                 optimizer, x, y, train_args, builder_args,
                 cv: Callable[[NN, Optimizer, object, object], Dict[str, List[float]]] = None):
@@ -120,7 +147,7 @@ def grid_search(nn_builder: Callable[[dict], NN],
                 loss_value = optimizer.loss.batch_mean(nn.predict_batch(x), y)
             else:
                 cv_dict = cv(nn, optimizer, x, y, **t_args)
-                assert 'validation_scores' in cv_dict,\
+                assert 'validation_scores' in cv_dict, \
                     'The given cv function does not return a dict with key \'validation_scores\'.'
                 loss_value = np.mean(cv_dict['validation_scores'])
             if loss_value < best_loss:
@@ -130,27 +157,57 @@ def grid_search(nn_builder: Callable[[dict], NN],
     return best_model, best_loss
 
 
-def hold_out_validation(nn, optimizer, x, y, train_ratio=0.8, **train_args):
-    """ Perform an Hold-Out Validation of the given neural network.
+def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
+                  train_args: Dict[str, Union[rv_frozen, List[Any]]],
+                  builder_args: Dict[str, Union[rv_frozen, List[Any]]],
+                  iterations,
+                  cv: Callable[[NN, Optimizer, object, object], Dict[str, List[float]]] = None):
+    """ Perform a random search through a space of training and neural network
+    topology parameters.
 
-    :param nn: a neural network.
-    :param optimizer: the optimizer used to train the neural network. Its
-        signature must be compatible with the keys in ``train_args``.
+    An *iteration* of the random search is one of the possible combinations of
+    the training and builder parameters. The first ones will be fed to
+    ``optimizer.train()``, while the second ones will be fed to ``nn_builder``.
+
+    :param nn_builder: a function that accepts a parameter ``builder_args`` and
+        returns a neural network.
+    :param optimizer: the optimizer to use in the random search. Its signature
+        must be compatible with the keys in ``train_args``.
     :param x: a list of examples.
     :param y: a list with the target output of each example.
-    :param train_ratio: the ratio between the size of the partition of examples
-        used to train the neural network and the one used to test it.
-    :param train_args: a dictionary whose keys are compatible with the arguments
-        of ``optimizer.train()``.
-    :return: the trained model and the value of the loss computed on the test
-        partition.
+    :param train_args: a dictionary whose keys are:
+        (1) compatible with the arguments of ``optimizer.train()``, and
+        (2) associated with lists or (SciPy) random distributions that represent
+        the subset of arguments to explore.
+    :param builder_args: a dictionary whose keys are:
+        (1) compatible with the arguments of ``nn_builder()``, and
+        (2) associated with lists or (SciPy) random distributions that represent
+        the subset of arguments to explore.
+    :param iterations: the number of iterations of the random search.
+    :param cv: an optional cross validation method that is called at each
+        iteration.
+    :return: the best model found by the grid search and the loss value.
     """
-    assert 0 < train_ratio < 1
-    train_size = int(len(x)*train_ratio)
-    test_size = len(x) - train_size
-    train_x, train_y, test_x, test_y = next(splits_generator(x, y, [train_size, test_size]))
-    optimizer.train(nn, train_x, train_y, **train_args)
-    train_loss = optimizer.loss.batch_mean(nn.predict_batch(train_x), train_y)
-    validation_loss = optimizer.loss.batch_mean(nn.predict_batch(test_x), test_y)
+    best_loss = np.inf
+    best_model = None
 
-    return {'validation_scores': [validation_loss], 'train_scores': [train_loss]}
+    def build_dict(args):
+        return {k: v[np.random.randint(len(v))] if type(v) is list else v.rvs() for k, v in args.items()}
+
+    print('Beginning random search with %d iterations' % iterations)
+
+    for _ in range(iterations):
+        nn = nn_builder(**build_dict(builder_args))
+        if cv is None:
+            optimizer.train(nn, x, y, **build_dict(train_args))
+            loss_value = optimizer.loss.batch_mean(nn.predict_batch(x), y)
+        else:
+            cv_dict = cv(nn, optimizer, x, y, **build_dict(train_args))
+            assert 'validation_scores' in cv_dict, \
+                'The given cv function does not return a dict with key \'validation_scores\'.'
+            loss_value = np.mean(cv_dict['validation_scores'])
+        if loss_value < best_loss:
+            best_loss = loss_value
+            best_model = nn
+
+    return best_model, best_loss
