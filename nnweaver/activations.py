@@ -91,7 +91,7 @@ class Sigmoid(Activation):
 class TanH(Activation):
     @classmethod
     def apply(cls, x):
-        """ Compute the TanH activation function on each element of the input
+        """ Compute the tanh activation function on each element of the input
         array.
 
         :param x: an array.
@@ -101,10 +101,55 @@ class TanH(Activation):
 
     @classmethod
     def gradient(cls, x):
-        """ Compute the gradient of the TanH activation function on each element
+        """ Compute the gradient of the tanh activation function on each element
         of the input array.
 
         :param x: an array.
         :return: the gradients on the values of the input array.
         """
         return 1 - TanH.apply(x) ** 2
+
+
+class HardSigmoid(Activation):
+    @classmethod
+    def apply(cls, x):
+        """ Compute the hard-sigmoid activation function on each element of the
+        input array.
+
+        :param x: an array.
+        :return: the activated values of the input array.
+        """
+        return np.maximum(0, np.minimum(1, 0.2*x + 0.5))
+
+    @classmethod
+    def gradient(cls, x):
+        """ Compute the gradient of the hard-sigmoid activation function on each
+        element of the input array.
+
+        :param x: an array.
+        :return: the gradients on the values of the input array.
+        """
+        return np.minimum(-2.5 < x, x < 2.5) * 0.2
+
+
+class HardTanH(Activation):
+    @classmethod
+    def apply(cls, x):
+        """ Compute the hard-tanh activation function on each element of the
+        input array.
+
+        :param x: an array.
+        :return: the activated values of the input array.
+        """
+        return np.maximum(-1, np.minimum(1, x))
+
+    @classmethod
+    def gradient(cls, x):
+        """ Compute the gradient of the hard-tanh activation function on each
+        element of the input array.
+
+        :param x: an array.
+        :return: the gradients on the values of the input array.
+        """
+        return np.minimum(-1. < x, x < 1.) * 1.
+
