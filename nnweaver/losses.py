@@ -63,14 +63,13 @@ class MSE(Loss):
 class MEE(Loss):
     @classmethod
     def euclidean_distance(cls, y, y_target):
-        """ Compute the pairwise euclidean distances between the
-        rows of two matrix of the same shape.
+        """ Compute the euclidean distance between two vectors.
 
         :param y: the predicted output (a column vector).
         :param y_target: the target output (a column vector).
-        :return: the euclidean distances.
+        :return: the euclidean distance.
         """
-        return np.sqrt(np.sum(np.square(y - y_target)))
+        return np.linalg.norm(y - y_target)
 
     @classmethod
     def loss(cls, y, y_target):
