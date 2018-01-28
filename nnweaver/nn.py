@@ -25,53 +25,6 @@ import numpy as np
 from .activations import Linear
 
 
-def uniform(low, high):
-    """ Returns a weights initializer with values uniformly distributed over the
-    half-open interval :math:`[low, high)`.
-
-    The result of this function can be passed as ``distribution`` argument to
-    :py:meth:`.NN.add_layer` .
-
-    :param low: lower boundary of the random values.
-    :param high: upper boundary of the random values.
-    :return: a weight initializer.
-    """
-    return lambda shape: np.random.uniform(low, high, shape)
-
-
-def glorot_uniform():
-    """ Returns a weights initializer with values uniformly distributed over the
-    half-open interval :math:`\\left[-\\sqrt{\\frac{6}{n_i+n_o}},
-    \\sqrt{\\frac{6}{n_i+n_o}} \\right)`, where :math:`n_i` and :math:`n_o` are
-    the number of inputs and outputs of a layer.
-
-    The result of this function can be passed as ``distribution`` argument to
-    :py:meth:`.NN.add_layer` .
-
-    See "Understanding the difficulty of training deep feedforward neural
-    networks" by Glorot and Bengio (2010).
-
-    :return: a weight initializer.
-    """
-    def h(shape):
-        glorot = np.sqrt(6. / (shape[0] + shape[1]))
-        return uniform(-glorot, +glorot)(shape)
-    return h
-
-
-def he_normal():
-    """ Returns a weight initializer with a Gaussian distribution whose mean is
-    zero and standard deviation is :math:`\\sqrt{\\frac{2}{n_i}}`, where
-    :math:`n_i` is the number inputs to a layer.
-
-    See "Delving deep into rectifiers: Surpassing human-level performance on
-    ImageNet classification" by He et al (2015).
-
-    :return: a weight initializer.
-    """
-    return lambda shape: np.random.normal(scale=np.sqrt(2 / shape[0]), size=shape)
-
-
 class NN(object):
     def __init__(self, input_dim):
         """ Create a multi-layer perceptron (MLP, also called feedforward
@@ -82,18 +35,16 @@ class NN(object):
         self.input_dim = input_dim
         self.layers = []
 
-    def add_layer(self, layer, distribution=uniform(-0.05, 0.05)):
+    def add_layer(self, layer):
         """ Add a layer to the neural network.
 
         :param layer: the :py:class:`.Layer` to add.
-        :param distribution: a function that takes a shape and return a matrix
-            with the specified shape. Defaults to ``uniform(-0.7, 0.7)``.
         """
         if len(self.layers) == 0:
-            layer.build_weights(self.input_dim, distribution)
+            layer.build_weights(self.input_dim)
         else:
             preceding_units = self.layers[-1].units
-            layer.build_weights(preceding_units, distribution)
+            layer.build_weights(preceding_units)
 
         self.layers.append(layer)
 
@@ -133,11 +84,67 @@ class NN(object):
         return copy.deepcopy(self)
 
 
+def uniform(low, high):
+    """ Returns a weights initializer with values uniformly distributed over the
+    half-open interval :math:`[low, high)`.
+
+    The result of this function can be passed as ``distribution`` argument to
+    :py:meth:`.NN.add_layer` .
+
+    :param low: lower boundary of the random values.
+    :param high: upper boundary of the random values.
+    :return: a weight initializer.
+    """
+    return lambda shape: np.random.uniform(low, high, shape)
+
+
+def glorot_uniform():
+    """ Returns a weights initializer with values uniformly distributed over the
+    half-open interval :math:`\\left[-\\sqrt{\\frac{6}{n_i+n_o}},
+    \\sqrt{\\frac{6}{n_i+n_o}} \\right)`, where :math:`n_i` and :math:`n_o` are
+    the number of inputs and outputs of a layer.
+
+    The result of this function can be passed as ``distribution`` argument to
+    :py:meth:`.NN.add_layer` .
+
+    See "Understanding the difficulty of training deep feedforward neural
+    networks" by Glorot and Bengio (2010).
+
+    :return: a weight initializer.
+    """
+
+    def h(shape):
+        glorot = np.sqrt(6. / (shape[0] + shape[1]))
+        return uniform(-glorot, +glorot)(shape)
+
+    return h
+
+
+def he_normal():
+    """ Returns a weight initializer with a Gaussian distribution whose mean is
+    zero and standard deviation is :math:`\\sqrt{\\frac{2}{n_i}}`, where
+    :math:`n_i` is the number inputs to a layer.
+
+    See "Delving deep into rectifiers: Surpassing human-level performance on
+    ImageNet classification" by He et al (2015).
+
+    :return: a weight initializer.
+    """
+    return lambda shape: np.random.normal(scale=np.sqrt(2 / shape[0]), size=shape)
+
+
 class Layer(object):
-    def __init__(self, units, activation=Linear):
+    def __init__(self, units, activation=Linear,
+                 weights_initializer=uniform(-0.05, 0.05), bias_initializer=uniform(-0.05, 0.05)):
         """ Create a new layer with a given number of units and activation
         function.
 
+        :param weights_initializer: a function that takes a shape and returns a
+            matrix with the specified shape. Already implemented weights
+            initializer are :meth:`uniform`, :meth:`he_normal`,
+            :meth:`glorot_uniform`.
+        :param bias_initializer: see the description of the argument
+            ``weights_initializer``.
         :param units: the number of units in the layer.
         :param activation: the activation function.
         """
@@ -146,20 +153,18 @@ class Layer(object):
         self.bias = None
         self.weights = None
         self.activation = activation
+        self.weights_initializer = weights_initializer
+        self.bias_initializer = bias_initializer
 
-    def build_weights(self, preceding_units, distribution=uniform(-0.05, 0.05)):
+    def build_weights(self, preceding_units):
         """ Initialize the weights and the bias vector of the layer with random
         values.
 
         :param preceding_units: number of units in the previous level.
-        :param distribution: a function that takes a shape and return a matrix
-            with the specified shape.
         """
-        if self.weights is not None:
-            raise Exception("This layer was already added to a NN")
-
-        self.bias = distribution((self.units, 1))
-        self.weights = distribution((self.units, preceding_units))
+        assert self.weights is None, 'This layer was already added to a NN'
+        self.bias = self.bias_initializer((self.units, 1))
+        self.weights = self.weights_initializer((self.units, preceding_units))
 
     def input_sum(self, x):
         """ Compute the input to the layer, without applying the activation
@@ -170,15 +175,12 @@ class Layer(object):
         """
         return self.bias + self.weights.dot(x).reshape(self.bias.shape)
 
-    def reset_weights(self, low=-0.05, high=0.05):
+    def reset_weights(self):
         """ Re-initialize the weights and the bias vector of the layer with
         random values.
-
-        :param low: lower boundary of the random values.
-        :param high: upper boundary of the random values.
         """
-        self.bias = np.random.uniform(low, high, self.bias.shape)
-        self.weights = np.random.uniform(low, high, self.weights.shape)
+        self.bias = self.bias_initializer(self.bias.shape)
+        self.weights = self.weights_initializer(self.weights.shape)
 
     def __call__(self, x):
         """ Compute the output of the layer.
@@ -188,4 +190,3 @@ class Layer(object):
         """
         input_sum = self.input_sum(x)
         return self.activation.apply(input_sum)
-
