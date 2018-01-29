@@ -36,12 +36,19 @@ There are other arguments to pass to the :py:meth:`.SGD.train` method, for examp
              batch_size=10, epochs=100, momentum=0.85)
 
 Also, you may want to control the model complexity. :meth:`.SGD.train` has a ``regularizer`` argument, that
-accepts an istance of the :class:`.L1L2Regularizer` class.
+accepts an instance of the :class:`.L1L2Regularizer` class.
 
 Validate a Model
 ----------------
 
-TODO
+The :mod:`.validation` module has some facilities to assess a model and select its hyperparameters. This line of code,
+for example, performs a 3-fold cross validation::
+
+   from nnweaver.validation import *
+   results = kfold_cross_validation(nn, sgd, x, y, k=3, learning_rate=0.5, batch_size=5, epochs=100)
+   print(results)
+
+Refer to :doc:`hyperparameters` for more complex examples.
 
 
 Other (Cool) Stuff
@@ -51,6 +58,7 @@ With the :mod:`.callbacks` mechanism you can get information on the training pro
 NNWeaver to write to a file and to plot the loss for each epoch on a training and a validation set::
 
    from nnweaver.callbacks import *
+
    write = callbacks.WriteFileCallback('out.csv')
    plot = callbacks.PlotLearningCurve(x_val, y_val, MSE, interactive=True)
 

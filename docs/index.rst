@@ -18,6 +18,7 @@ Table of Contents
    :maxdepth: 2
 
    gettingstarted
+   hyperparameters
    API Reference <nnweaver>
    genindex
 
@@ -30,6 +31,7 @@ Inheritance diagram
    nnweaver.optimizers
    nnweaver.activations
    nnweaver.regularizers
+   nnweaver.callbacks
    nnweaver.utils
    nnweaver.validation
    :parts: 1
