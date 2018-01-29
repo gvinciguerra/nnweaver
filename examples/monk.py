@@ -12,7 +12,8 @@ from nnweaver import *
 from nnweaver.utils import accuracy, one_hot_encoding
 
 
-def get_monk(url):
+def get_monk(monk):
+    url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-problems/' + monk
     request = urllib.request.urlopen(url)
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(request.read())
@@ -27,14 +28,17 @@ def get_monk(url):
         return out, y
 
 
-monk1_train = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-problems/monks-1.train'
-x_train, y_train = get_monk(monk1_train)
+x, y = get_monk('monks-3.train')
+x_test, y_test = get_monk('monks-3.test')
 
 nn = NN(17)
-nn.add_layer(Layer(4, Rectifier))
+nn.add_layer(Layer(6, Sigmoid))
 nn.add_layer(Layer(1, Sigmoid))
-SGD(MSE()).train(nn, x_train, y_train, learning_rate=0.1, batch_size=10, epochs=100, metrics=[accuracy])
 
-monk1_test = 'https://archive.ics.uci.edu/ml/machine-learning-databases/monks-problems/monks-1.test'
-x_test, y_test = get_monk(monk1_test)
+plc = callbacks.PlotLearningCurve(x_test, y_test, MSE, interactive=False)
+sgd = SGD(MSE)
+sgd.train(nn, x, y, callbacks=[plc], metrics=[accuracy],
+          learning_rate=learning_rate_time_based(0.8, 0.005),
+          momentum=0.5, batch_size=len(x), epochs=3000)
+
 print('Accuracy on test %f' % accuracy(nn.predict_batch(x_test), y_test))
