@@ -38,7 +38,34 @@
   <div class="document">
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">NNWeaver</a></h1>
+
+
+
+<p class="blurb">A tiny library to build and train neural networks</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=gvinciguerra&repo=nnweaver&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hyperparameters.html">Tuning Hyperparameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnweaver.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -64,17 +91,39 @@
           <div class="body" role="main">
             
   <h1>Source code for nnweaver.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot; The :py:mod:`nnweaver.utils` module provides a set of utility functions. &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="one_hot_encoding"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.utils.one_hot_encoding">[docs]</a><span class="k">def</span> <span class="nf">one_hot_encoding</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute the One-Hot-Encoding (OHE) of a list of elements.</span>
+
+<span class="sd">    :param x: the elements to be encoded.</span>
+<span class="sd">    :return: a matrix with rows equal to the number of the</span>
+<span class="sd">        elements in x and max(x) columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">result</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.utils.accuracy">[docs]</a><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute the (binary) accuracy of a given prediction.</span>
+
+<span class="sd">    If the dimension of the input arrays is greater than 1 (e.g. `y_target` is</span>
+<span class="sd">    encoded with :py:func:`.one_hot_encoding`), the multi-class accuracy is</span>
+<span class="sd">    computed.</span>
+
+<span class="sd">    :param y: the predicted output.</span>
+<span class="sd">    :param y_target: the target (binary) output.</span>
+<span class="sd">    :return: the accuracy of the predicted output, rounded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y_target</span> <span class="o">=</span> <span class="n">y_target</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">y_target</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">y_target</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># multi-class accuracy</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_target</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_target</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
 </pre></div>
 
@@ -88,6 +137,10 @@
       
     </div>
 
+    
+    <a href="https://github.com/gvinciguerra/nnweaver" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     

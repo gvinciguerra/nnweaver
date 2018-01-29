@@ -40,15 +40,39 @@
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">NNWeaver</a></h1>
 
-   <div class="relations">
+
+
+<p class="blurb">A tiny library to build and train neural networks</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=gvinciguerra&repo=nnweaver&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hyperparameters.html">Tuning Hyperparameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nnweaver.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Index</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   </ul></li>
 </ul>
 </div>
-
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -69,12 +93,16 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -83,19 +111,49 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.nn.Layer.__call__">__call__() (nnweaver.nn.Layer method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.regularizers.L1L2Regularizer.__call__">(nnweaver.regularizers.L1L2Regularizer method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.regularizers.Regularizer.__call__">(nnweaver.regularizers.Regularizer method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.utils.accuracy">accuracy() (in module nnweaver.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.activations.Activation">Activation (class in nnweaver.activations)</a>
 </li>
       <li><a href="nnweaver.html#nnweaver.nn.NN.add_layer">add_layer() (nnweaver.nn.NN method)</a>
 </li>
+      <li><a href="nnweaver.html#nnweaver.activations.Activation.apply">apply() (nnweaver.activations.Activation class method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.activations.HardSigmoid.apply">(nnweaver.activations.HardSigmoid class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.HardTanH.apply">(nnweaver.activations.HardTanH class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.Linear.apply">(nnweaver.activations.Linear class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.Rectifier.apply">(nnweaver.activations.Rectifier class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.Sigmoid.apply">(nnweaver.activations.Sigmoid class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.TanH.apply">(nnweaver.activations.TanH class method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -104,11 +162,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.optimizers.GradientBasedOptimizer.backward">backward() (nnweaver.optimizers.GradientBasedOptimizer method)</a>
 </li>
+      <li><a href="nnweaver.html#nnweaver.losses.Loss.batch_mean">batch_mean() (nnweaver.losses.Loss class method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.optimizers.SGD.batch_ranges">batch_ranges() (nnweaver.optimizers.SGD static method)</a>
 </li>
-      <li><a href="nnweaver.html#nnweaver.layer.Layer.build_weights">build_weights() (nnweaver.layer.Layer method)</a>
+      <li><a href="nnweaver.html#nnweaver.nn.Layer.build_weights">build_weights() (nnweaver.nn.Layer method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.callbacks.Callback">Callback (class in nnweaver.callbacks)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.nn.NN.clone">clone() (nnweaver.nn.NN method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -132,14 +204,22 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#nnweaver.activations.Activation.gradient">gradient() (nnweaver.activations.Activation method)</a>
+      <li><a href="nnweaver.html#nnweaver.nn.glorot_uniform">glorot_uniform() (in module nnweaver.nn)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.activations.Activation.gradient">gradient() (nnweaver.activations.Activation class method)</a>
 
       <ul>
-        <li><a href="nnweaver.html#nnweaver.activations.Linear.gradient">(nnweaver.activations.Linear method)</a>
+        <li><a href="nnweaver.html#nnweaver.activations.HardSigmoid.gradient">(nnweaver.activations.HardSigmoid class method)</a>
 </li>
-        <li><a href="nnweaver.html#nnweaver.activations.Rectifier.gradient">(nnweaver.activations.Rectifier method)</a>
+        <li><a href="nnweaver.html#nnweaver.activations.HardTanH.gradient">(nnweaver.activations.HardTanH class method)</a>
 </li>
-        <li><a href="nnweaver.html#nnweaver.activations.Sigmoid.gradient">(nnweaver.activations.Sigmoid method)</a>
+        <li><a href="nnweaver.html#nnweaver.activations.Linear.gradient">(nnweaver.activations.Linear class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.Rectifier.gradient">(nnweaver.activations.Rectifier class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.Sigmoid.gradient">(nnweaver.activations.Sigmoid class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.activations.TanH.gradient">(nnweaver.activations.TanH class method)</a>
 </li>
         <li><a href="nnweaver.html#nnweaver.losses.Loss.gradient">(nnweaver.losses.Loss class method)</a>
 </li>
@@ -147,10 +227,32 @@
 </li>
         <li><a href="nnweaver.html#nnweaver.losses.MSE.gradient">(nnweaver.losses.MSE class method)</a>
 </li>
+        <li><a href="nnweaver.html#nnweaver.regularizers.L1L2Regularizer.gradient">(nnweaver.regularizers.L1L2Regularizer method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.regularizers.Regularizer.gradient">(nnweaver.regularizers.Regularizer method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.optimizers.GradientBasedOptimizer">GradientBasedOptimizer (class in nnweaver.optimizers)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.validation.grid_search">grid_search() (in module nnweaver.validation)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.activations.HardSigmoid">HardSigmoid (class in nnweaver.activations)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.activations.HardTanH">HardTanH (class in nnweaver.activations)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.nn.he_normal">he_normal() (in module nnweaver.nn)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.validation.hold_out_validation">hold_out_validation() (in module nnweaver.validation)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -158,7 +260,15 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#nnweaver.layer.Layer.input_sum">input_sum() (nnweaver.layer.Layer method)</a>
+      <li><a href="nnweaver.html#nnweaver.nn.Layer.input_sum">input_sum() (nnweaver.nn.Layer method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.validation.kfold_cross_validation">kfold_cross_validation() (in module nnweaver.validation)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -166,7 +276,13 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#nnweaver.layer.Layer">Layer (class in nnweaver.layer)</a>
+      <li><a href="nnweaver.html#nnweaver.regularizers.L1L2Regularizer">L1L2Regularizer (class in nnweaver.regularizers)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.nn.Layer">Layer (class in nnweaver.nn)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.optimizers.learning_rate_linearly_decayed">learning_rate_linearly_decayed() (in module nnweaver.optimizers)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.optimizers.learning_rate_time_based">learning_rate_time_based() (in module nnweaver.optimizers)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -174,6 +290,14 @@
 </li>
       <li><a href="nnweaver.html#nnweaver.losses.Loss">Loss (class in nnweaver.losses)</a>
 </li>
+      <li><a href="nnweaver.html#nnweaver.losses.Loss.loss">loss() (nnweaver.losses.Loss class method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.losses.MEE.loss">(nnweaver.losses.MEE class method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.losses.MSE.loss">(nnweaver.losses.MSE class method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -198,17 +322,21 @@
 </li>
       <li><a href="nnweaver.html#module-nnweaver.activations">nnweaver.activations (module)</a>
 </li>
-      <li><a href="nnweaver.html#module-nnweaver.layer">nnweaver.layer (module)</a>
+      <li><a href="nnweaver.html#module-nnweaver.callbacks">nnweaver.callbacks (module)</a>
+</li>
+      <li><a href="nnweaver.html#module-nnweaver.losses">nnweaver.losses (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#module-nnweaver.losses">nnweaver.losses (module)</a>
-</li>
       <li><a href="nnweaver.html#module-nnweaver.nn">nnweaver.nn (module)</a>
 </li>
       <li><a href="nnweaver.html#module-nnweaver.optimizers">nnweaver.optimizers (module)</a>
 </li>
+      <li><a href="nnweaver.html#module-nnweaver.regularizers">nnweaver.regularizers (module)</a>
+</li>
       <li><a href="nnweaver.html#module-nnweaver.utils">nnweaver.utils (module)</a>
+</li>
+      <li><a href="nnweaver.html#module-nnweaver.validation">nnweaver.validation (module)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -216,10 +344,34 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#nnweaver.utils.one_hot_encoding">one_hot_encoding() (in module nnweaver.utils)</a>
+      <li><a href="nnweaver.html#nnweaver.callbacks.Callback.on_epoch_end">on_epoch_end() (nnweaver.callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.callbacks.PlotLearningCurve.on_epoch_end">(nnweaver.callbacks.PlotLearningCurve method)</a>
 </li>
+        <li><a href="nnweaver.html#nnweaver.callbacks.WriteFileCallback.on_epoch_end">(nnweaver.callbacks.WriteFileCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="nnweaver.html#nnweaver.callbacks.Callback.on_training_begin">on_training_begin() (nnweaver.callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.callbacks.PlotLearningCurve.on_training_begin">(nnweaver.callbacks.PlotLearningCurve method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.callbacks.WriteFileCallback.on_training_begin">(nnweaver.callbacks.WriteFileCallback method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.callbacks.Callback.on_training_end">on_training_end() (nnweaver.callbacks.Callback method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.callbacks.PlotLearningCurve.on_training_end">(nnweaver.callbacks.PlotLearningCurve method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.callbacks.WriteFileCallback.on_training_end">(nnweaver.callbacks.WriteFileCallback method)</a>
+</li>
+      </ul></li>
+      <li><a href="nnweaver.html#nnweaver.utils.one_hot_encoding">one_hot_encoding() (in module nnweaver.utils)</a>
+</li>
       <li><a href="nnweaver.html#nnweaver.optimizers.Optimizer">Optimizer (class in nnweaver.optimizers)</a>
 </li>
   </ul></td>
@@ -228,11 +380,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.callbacks.PlotLearningCurve">PlotLearningCurve (class in nnweaver.callbacks)</a>
+</li>
       <li><a href="nnweaver.html#nnweaver.nn.NN.predict">predict() (nnweaver.nn.NN method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.nn.NN.predict_batch">predict_batch() (nnweaver.nn.NN method)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.optimizers.ProximalBundleMethod">ProximalBundleMethod (class in nnweaver.optimizers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -240,7 +396,17 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.validation.random_search">random_search() (in module nnweaver.validation)</a>
+</li>
       <li><a href="nnweaver.html#nnweaver.activations.Rectifier">Rectifier (class in nnweaver.activations)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.regularizers.Regularizer">Regularizer (class in nnweaver.regularizers)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.nn.NN.reset">reset() (nnweaver.nn.NN method)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.nn.Layer.reset_weights">reset_weights() (nnweaver.nn.Layer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -250,11 +416,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.optimizers.SGD">SGD (class in nnweaver.optimizers)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.optimizers.Optimizer.shuffle">shuffle() (nnweaver.optimizers.Optimizer class method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nnweaver.html#nnweaver.activations.Sigmoid">Sigmoid (class in nnweaver.activations)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.validation.splits_generator">splits_generator() (in module nnweaver.validation)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -262,7 +430,33 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nnweaver.html#nnweaver.optimizers.SGD.train">train() (nnweaver.optimizers.SGD method)</a>
+      <li><a href="nnweaver.html#nnweaver.activations.TanH">TanH (class in nnweaver.activations)</a>
+</li>
+      <li><a href="nnweaver.html#nnweaver.optimizers.GradientBasedOptimizer.train">train() (nnweaver.optimizers.GradientBasedOptimizer method)</a>
+
+      <ul>
+        <li><a href="nnweaver.html#nnweaver.optimizers.Optimizer.train">(nnweaver.optimizers.Optimizer method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.optimizers.ProximalBundleMethod.train">(nnweaver.optimizers.ProximalBundleMethod method)</a>
+</li>
+        <li><a href="nnweaver.html#nnweaver.optimizers.SGD.train">(nnweaver.optimizers.SGD method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.nn.uniform">uniform() (in module nnweaver.nn)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nnweaver.html#nnweaver.callbacks.WriteFileCallback">WriteFileCallback (class in nnweaver.callbacks)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -279,6 +473,10 @@
       
     </div>
 
+    
+    <a href="https://github.com/gvinciguerra/nnweaver" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     

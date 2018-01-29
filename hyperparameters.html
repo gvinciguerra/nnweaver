@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tuning Hyperparameters &#8212; NNWeaver 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nnweaver package" href="nnweaver.html" />
+    <link rel="prev" title="Getting Started" href="gettingstarted.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">NNWeaver</a></h1>
+
+
+
+<p class="blurb">A tiny library to build and train neural networks</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=gvinciguerra&repo=nnweaver&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tuning Hyperparameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nnweaver.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gettingstarted.html" title="previous chapter">Getting Started</a></li>
+      <li>Next: <a href="nnweaver.html" title="next chapter">nnweaver package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tuning-hyperparameters">
+<h1>Tuning Hyperparameters<a class="headerlink" href="#tuning-hyperparameters" title="Permalink to this headline">¶</a></h1>
+<p>You can perform hyperparameter optimization with a grid search or a random search. In both cases you need to define a
+function that takes some hyperparameters and build a model:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_builder</span><span class="p">(</span><span class="n">units_1</span><span class="p">,</span> <span class="n">units_2</span><span class="p">,</span> <span class="n">activation_1</span><span class="p">,</span> <span class="n">activation_2</span><span class="p">):</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">NN</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="n">units_1</span><span class="p">,</span> <span class="n">activation_1</span><span class="p">))</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="n">units_2</span><span class="p">,</span> <span class="n">activation_2</span><span class="p">))</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Linear</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">nn</span>
+</pre></div>
+</div>
+<p>Then, for <a class="reference internal" href="nnweaver.html#nnweaver.validation.grid_search" title="nnweaver.validation.grid_search"><code class="xref py py-func docutils literal"><span class="pre">grid_search()</span></code></a> you need to specify two dictionaries, one with the values for the function
+defined above, the other for the arguments of the chosen optimizer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.validation</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">builder_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+                <span class="s1">&#39;units_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+                <span class="s1">&#39;activation_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Sigmoid</span><span class="p">,</span> <span class="n">Rectifier</span><span class="p">],</span>
+                <span class="s1">&#39;activation_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Sigmoid</span><span class="p">,</span> <span class="n">Rectifier</span><span class="p">,</span> <span class="n">Linear</span><span class="p">]}</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+              <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+              <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]}</span>
+
+<span class="n">sgd</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">MSE</span><span class="p">)</span>
+<span class="n">three_fold</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">kfold_cross_validation</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">grid_search</span><span class="p">(</span><span class="n">nn_builder</span><span class="p">,</span> <span class="n">sgd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">builder_args</span><span class="p">,</span> <span class="n">three_fold</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you prefer a <a class="reference internal" href="nnweaver.html#nnweaver.validation.random_search" title="nnweaver.validation.random_search"><code class="xref py py-func docutils literal"><span class="pre">random_search()</span></code></a> instead, you can specify in the dictionaries both discrete values and
+distributions:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+
+<span class="n">builder_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units_1&#39;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+                <span class="s1">&#39;units_2&#39;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+                <span class="s1">&#39;activation_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Sigmoid</span><span class="p">,</span> <span class="n">Rectifier</span><span class="p">],</span>
+                <span class="s1">&#39;activation_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Sigmoid</span><span class="p">,</span> <span class="n">Rectifier</span><span class="p">]}</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+              <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+              <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)}</span>
+
+<span class="n">two_fold</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">kfold_cross_validation</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">random_search</span><span class="p">(</span><span class="n">nn_builder</span><span class="p">,</span> <span class="n">sgd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">builder_args</span><span class="p">,</span>
+              <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">two_fold</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, Landolfi Francesco, Vinciguerra Giorgio.
+      
+      |
+      <a href="_sources/hyperparameters.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/gvinciguerra/nnweaver" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

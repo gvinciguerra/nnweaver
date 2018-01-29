@@ -1,20 +1,38 @@
-.. NNWeaver documentation master file, created by
-   sphinx-quickstart on Sun Jan 21 14:55:51 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-NNWeaver's documentation
+NNWeaver's Documentation
 ====================================
+
+NNWeaver is a *tiny* Python library to create and train feedforward neural networks. We developed this library as a
+project for a Machine Learning course.
+
+Some of its features are:
+
+1. Simple API, easy to learn.
+2. Validation functions included.
+3. Lightweight and with few dependencies.
+4. Live loss/epoch curve display.
+
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
+   gettingstarted
+   hyperparameters
+   API Reference <nnweaver>
+   genindex
 
+Inheritance diagram
+-------------------
 
-Indices and tables
-==================
+.. inheritance-diagram::
+   nnweaver.nn
+   nnweaver.losses
+   nnweaver.optimizers
+   nnweaver.activations
+   nnweaver.regularizers
+   nnweaver.callbacks
+   nnweaver.utils
+   nnweaver.validation
+   :parts: 1
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

@@ -38,7 +38,34 @@
   <div class="document">
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">NNWeaver</a></h1>
+
+
+
+<p class="blurb">A tiny library to build and train neural networks</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=gvinciguerra&repo=nnweaver&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hyperparameters.html">Tuning Hyperparameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnweaver.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -64,18 +91,47 @@
           <div class="body" role="main">
             
   <h1>Source code for nnweaver.nn</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot; The :py:mod:`.nn` module contains the :py:class:`.NN` (neural network) and</span>
+<span class="sd">the :py:class:`.Layer` classes.</span>
+
+<span class="sd">Formally, a neural network models a function</span>
+<span class="sd">:math:`f(\\boldsymbol x)=f^{(L)}(f^{(L-1)}(\\dots f^{(1)}(\\boldsymbol</span>
+<span class="sd">x)\\dots ))` , where :math:`\\boldsymbol x` is the input vector, and the</span>
+<span class="sd">:math:`f^{(i)}` s are the layers of the network.</span>
+
+<span class="sd">A layer specifies a function</span>
+<span class="sd">:math:`f(\\boldsymbol x)=g(\\boldsymbol{Wx} + \\boldsymbol b)` ,</span>
+<span class="sd">where :math:`g` is called activation function, :math:`\\boldsymbol W` provides</span>
+<span class="sd">the weights of a linear transformation, and :math:`\\boldsymbol b` is the bias</span>
+<span class="sd">vector.</span>
+
+<span class="sd">A neural network can be trained with an optimizer and then used to predict the</span>
+<span class="sd">target values of (previously unseen) examples. See the :py:mod:`.optimizers`</span>
+<span class="sd">module for a list of available training algorithms and the</span>
+<span class="sd">:py:mod:`.activations` module for a list of available activation functions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.activations</span> <span class="k">import</span> <span class="n">Linear</span>
 
 
 <div class="viewcode-block" id="NN"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN">[docs]</a><span class="k">class</span> <span class="nc">NN</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a multi-layer perceptron (MLP, also called feedforward</span>
+<span class="sd">        neural network) with the given number of inputs.</span>
+
+<span class="sd">        :param input_dim: number of dimensions of the input.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span> <span class="o">=</span> <span class="n">input_dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="NN.add_layer"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN.add_layer">[docs]</a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a layer to the neural network.</span>
 
-<span class="sd">        :param layer: the layer to add.</span>
+<span class="sd">        :param layer: the :py:class:`.Layer` to add.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">layer</span><span class="o">.</span><span class="n">build_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span><span class="p">)</span>
@@ -88,8 +144,9 @@
 <div class="viewcode-block" id="NN.predict"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Feed a single input to the neural network.</span>
 
-<span class="sd">        :param x: the dimension must match the input layer of the neural network.</span>
-<span class="sd">        :return: the output of the network.</span>
+<span class="sd">        :param x: the input. Its size must match the ``input_dim`` of the neural</span>
+<span class="sd">            network.</span>
+<span class="sd">        :return: the output of the neural network (a column vector).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xi</span> <span class="o">=</span> <span class="n">x</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
@@ -100,10 +157,132 @@
 <div class="viewcode-block" id="NN.predict_batch"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN.predict_batch">[docs]</a>    <span class="k">def</span> <span class="nf">predict_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_batch</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Feed multiple inputs to the neural network.</span>
 
-<span class="sd">        :param x_batch: an array of inputs.</span>
-<span class="sd">        :return: an array (with the same size of x_batch) with the outputs of the network.</span>
+<span class="sd">        :param x_batch: a list of examples.</span>
+<span class="sd">        :return: an array (with the same size of x_batch) with the outputs of</span>
+<span class="sd">            the network.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_batch</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_batch</span><span class="p">])</span> \
+            <span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NN.reset"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Flash the neural network with a neuralyzer. &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">reset_weights</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="NN.clone"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.NN.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clone the neural network.</span>
+
+<span class="sd">        :return: the copy of the neural network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="uniform"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.uniform">[docs]</a><span class="k">def</span> <span class="nf">uniform</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns a weights initializer with values uniformly distributed over the</span>
+<span class="sd">    half-open interval :math:`[low, high)`.</span>
+
+<span class="sd">    The result of this function can be passed as ``distribution`` argument to</span>
+<span class="sd">    :py:meth:`.NN.add_layer` .</span>
+
+<span class="sd">    :param low: lower boundary of the random values.</span>
+<span class="sd">    :param high: upper boundary of the random values.</span>
+<span class="sd">    :return: a weight initializer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">shape</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="glorot_uniform"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.glorot_uniform">[docs]</a><span class="k">def</span> <span class="nf">glorot_uniform</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Returns a weights initializer with values uniformly distributed over the</span>
+<span class="sd">    half-open interval :math:`\\left[-\\sqrt{\\frac{6}{n_i+n_o}},</span>
+<span class="sd">    \\sqrt{\\frac{6}{n_i+n_o}} \\right)`, where :math:`n_i` and :math:`n_o` are</span>
+<span class="sd">    the number of inputs and outputs of a layer.</span>
+
+<span class="sd">    The result of this function can be passed as ``distribution`` argument to</span>
+<span class="sd">    :py:meth:`.NN.add_layer` .</span>
+
+<span class="sd">    See &quot;Understanding the difficulty of training deep feedforward neural</span>
+<span class="sd">    networks&quot; by Glorot and Bengio (2010).</span>
+
+<span class="sd">    :return: a weight initializer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+        <span class="n">glorot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">6.</span> <span class="o">/</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">glorot</span><span class="p">,</span> <span class="o">+</span><span class="n">glorot</span><span class="p">)(</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">h</span></div>
+
+
+<div class="viewcode-block" id="he_normal"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.he_normal">[docs]</a><span class="k">def</span> <span class="nf">he_normal</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Returns a weight initializer with a Gaussian distribution whose mean is</span>
+<span class="sd">    zero and standard deviation is :math:`\\sqrt{\\frac{2}{n_i}}`, where</span>
+<span class="sd">    :math:`n_i` is the number inputs to a layer.</span>
+
+<span class="sd">    See &quot;Delving deep into rectifiers: Surpassing human-level performance on</span>
+<span class="sd">    ImageNet classification&quot; by He et al (2015).</span>
+
+<span class="sd">    :return: a weight initializer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">shape</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">Linear</span><span class="p">,</span>
+                 <span class="n">weights_initializer</span><span class="o">=</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">bias_initializer</span><span class="o">=</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot; Create a new layer with a given number of units and activation</span>
+<span class="sd">        function.</span>
+
+<span class="sd">        :param weights_initializer: a function that takes a shape and returns a</span>
+<span class="sd">            matrix with the specified shape. Already implemented weights</span>
+<span class="sd">            initializer are :meth:`uniform`, :meth:`he_normal`,</span>
+<span class="sd">            :meth:`glorot_uniform`.</span>
+<span class="sd">        :param bias_initializer: see the description of the argument</span>
+<span class="sd">            ``weights_initializer``.</span>
+<span class="sd">        :param units: the number of units in the layer.</span>
+<span class="sd">        :param activation: the activation function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">units</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights_initializer</span> <span class="o">=</span> <span class="n">weights_initializer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias_initializer</span> <span class="o">=</span> <span class="n">bias_initializer</span>
+
+<div class="viewcode-block" id="Layer.build_weights"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.Layer.build_weights">[docs]</a>    <span class="k">def</span> <span class="nf">build_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preceding_units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initialize the weights and the bias vector of the layer with random</span>
+<span class="sd">        values.</span>
+
+<span class="sd">        :param preceding_units: number of units in the previous level.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;This layer was already added to a NN&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_initializer</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights_initializer</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">preceding_units</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Layer.input_sum"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.Layer.input_sum">[docs]</a>    <span class="k">def</span> <span class="nf">input_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Compute the input to the layer, without applying the activation</span>
+<span class="sd">        function.</span>
+
+<span class="sd">        :param x: input to the layer (a column vector).</span>
+<span class="sd">        :return: weighted sum of the input with the bias (a column vector).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Layer.reset_weights"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.Layer.reset_weights">[docs]</a>    <span class="k">def</span> <span class="nf">reset_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Re-initialize the weights and the bias vector of the layer with</span>
+<span class="sd">        random values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_initializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights_initializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Layer.__call__"><a class="viewcode-back" href="../../nnweaver.html#nnweaver.nn.Layer.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Compute the output of the layer.</span>
+
+<span class="sd">        :param x: input to the layer (a column vector).</span>
+<span class="sd">        :return: activated output (a column vector).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">input_sum</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -116,6 +295,10 @@
       
     </div>
 
+    
+    <a href="https://github.com/gvinciguerra/nnweaver" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
     
 
     

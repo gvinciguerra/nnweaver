@@ -1,6 +1,11 @@
 nnweaver package
 ================
 
+.. automodule:: nnweaver
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Submodules
 ----------
 
@@ -12,10 +17,10 @@ nnweaver\.activations module
     :undoc-members:
     :show-inheritance:
 
-nnweaver\.layer module
-----------------------
+nnweaver\.callbacks module
+--------------------------
 
-.. automodule:: nnweaver.layer
+.. automodule:: nnweaver.callbacks
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,6 +49,14 @@ nnweaver\.optimizers module
     :undoc-members:
     :show-inheritance:
 
+nnweaver\.regularizers module
+-----------------------------
+
+.. automodule:: nnweaver.regularizers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nnweaver\.utils module
 ----------------------
 
@@ -52,11 +65,12 @@ nnweaver\.utils module
     :undoc-members:
     :show-inheritance:
 
+nnweaver\.validation module
+---------------------------
 
-Module contents
----------------
-
-.. automodule:: nnweaver
+.. automodule:: nnweaver.validation
     :members:
     :undoc-members:
     :show-inheritance:
+
+
