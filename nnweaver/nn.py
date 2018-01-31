@@ -19,6 +19,7 @@ module for a list of available training algorithms and the
 """
 
 import copy
+from inspect import isclass
 
 import numpy as np
 
@@ -82,6 +83,13 @@ class NN(object):
         :return: the copy of the neural network.
         """
         return copy.deepcopy(self)
+
+    def __str__(self):
+        """ Returns a string representation of the neural network. """
+        layers_str = ''
+        for l in self.layers:
+            layers_str += ', ' + str(l)
+        return 'Inputs %d%s' % (self.input_dim, layers_str)
 
 
 def uniform(low, high):
@@ -190,3 +198,8 @@ class Layer(object):
         """
         input_sum = self.input_sum(x)
         return self.activation.apply(input_sum)
+
+    def __str__(self):
+        """ Returns a string representation of the layer. """
+        activation = self.activation.__name__ if isclass(self.activation) else self.activation.__class__.__name__
+        return '(%d, %s)' % (self.units, activation)
