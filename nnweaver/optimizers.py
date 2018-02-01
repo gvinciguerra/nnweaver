@@ -7,7 +7,9 @@ Currently, the following optimizers are available:
 
 """
 
+import functools
 import itertools
+import operator
 from abc import ABC, abstractmethod
 from math import ceil
 from sys import stdout
@@ -15,6 +17,7 @@ from types import GeneratorType
 
 import numpy as np
 import tqdm
+from scipy import optimize
 
 
 class Optimizer(ABC):
@@ -272,3 +275,142 @@ def learning_rate_linearly_decayed(initial_rate, final_rate=0, max_iterations=20
 
     while True:
         yield final_rate
+
+
+class ProximalBundleMethod(GradientBasedOptimizer):
+    def __init__(self, loss):
+        """ Create an optimizer that implement the Proximal Bundle Method
+        algorithm.
+
+        :param loss: the loss (cost) function to optimize.
+        """
+        super().__init__(loss)
+        self.seed = None
+
+    def train(self, nn, x, y, stability_parameter=1, serious_step_condition_factor=0.01,
+              accuracy_tolerance=1e-4, max_iterations=10):
+        """ Train the given neural network using the Proximal Bundle Method
+        algorithm.
+
+        :param nn: the neural network.
+        :param x: a list of examples.
+        :param y: a list with the target output of each example.
+        :param stability_parameter: the fixed weight to be given to the
+            stabilizing term throughout all the algorithm. It must be a strictly
+            positive number.
+        :param serious_step_condition_factor: set to a small value in [0,1) to
+            prevent large steps relative to the decreasing of the loss function.
+        :param accuracy_tolerance: a value greater than 0 that determines the
+            stopping criterion.
+        :param max_iterations: maximum number of iterations before stopping the
+            training.
+        """
+        assert stability_parameter > 0
+        assert accuracy_tolerance > 0
+        assert 0 <= serious_step_condition_factor < 1
+
+        def grad_f():
+            errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
+            errors_weights = [np.zeros(l.weights.shape) for l in nn.layers]
+            for i, o in zip(x, y):
+                i = i.reshape(-1, 1)
+                o = o.reshape(-1, 1)
+                inputs, outputs = self.forward(nn, i)
+                grad_weights, grad_bias = self.backward(nn, i, o, inputs, outputs)
+                for l in range(len(nn.layers)):
+                    errors_bias[l] += grad_bias[l]
+                    errors_weights[l] += grad_weights[l]
+            return self.flatten(errors_weights, errors_bias)
+
+        def f(w):
+            self.unflatten(nn, w)
+            return self.loss.batch_mean(nn.predict_batch(x), y)
+
+        def make_constraints(best_w, G, F):
+            constraints = []
+            for gi, fi in zip(G, F):
+                c = {'type': 'ineq',
+                     'args': (fi, gi),
+                     'fun': lambda w, fi, gi: w[0] - fi - gi.dot(w[1:].reshape((-1, 1)) + best_w)
+                     }
+                constraints.append(c)
+            return tuple(constraints)
+
+        def bundle_objective(d, stability_parameter):
+            return d[0] + stability_parameter * 0.5 * np.linalg.norm(d[1:]) ** 2.
+
+        # Compute first function and subgradient
+        list_weights = [l.weights for l in nn.layers]
+        list_bias = [l.bias for l in nn.layers]
+
+        w = self.flatten(list_weights, list_bias)
+        fw = f(w)
+        g = grad_f()
+
+        G = g.T  # Matrix of subgradients
+        F = np.matrix(fw - g.T.dot(w))
+
+        for iteration in itertools.count(start=1, step=1):
+            print('Iteration %d ' % iteration, end='')
+            # Construct and solve the master problem
+            constraints = make_constraints(w, G, F)
+            guess = np.vstack((np.zeros(1), w))
+            res = optimize.minimize(bundle_objective, guess,
+                                    args=(stability_parameter),
+                                    method='COBYLA',
+                                    options={'maxiter': 3000},
+                                    constraints=constraints)
+
+            if not res.success:
+                self.unflatten(nn, w)
+                print('Error')
+
+            d = res.x[1:]
+            v = res.x[0]
+            nd = np.linalg.norm(d)
+
+            # Stopping criteria
+            if stability_parameter * nd <= accuracy_tolerance:
+                print('Optimal')
+                self.unflatten(nn, w)
+                return 'Optimal'
+
+            if iteration > max_iterations:
+                self.unflatten(nn, w)
+                return 'Exceeded max_iterations'
+
+            # Compute function and subgradient and update the bundle
+            fd = f(w + d)
+            g = grad_f()
+
+            G = np.vstack((G, g.T))
+            F = np.vstack((F, fd - g.T.dot(w + d)))
+
+            # Serious step / null step decision
+            if fd <= fw + serious_step_condition_factor * (v - fw):
+                w = w + d
+                fw = fd
+                print('Serious step')
+            else:
+                print('Null step')
+
+    @staticmethod
+    def flatten(list_weights, list_bias):
+        """Returns a column vector with the concatenation of the given neural
+        network parameters. """
+        flattened = np.array([])
+        for w, b in zip(list_weights, list_bias):
+            flattened = np.concatenate((flattened, w.flatten(), b.flatten()))
+        return flattened.reshape((-1, 1))
+
+    @staticmethod
+    def unflatten(nn, flattened):
+        """ Plug back the flattened weights/bias into the neural networks. """
+        low = 0
+        for l in nn.layers:
+            high = low + functools.reduce(operator.mul, l.weights.shape, 1)
+            l.weights = flattened[low:high].reshape(l.weights.shape)
+            low = high
+            high = low + l.bias.shape[0]
+            l.bias = flattened[low:high].reshape(l.bias.shape)
+            low = high

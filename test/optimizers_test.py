@@ -71,3 +71,50 @@ def test_learning_rate():
     np.testing.assert_almost_equal(next(l1), 0.3)
     np.testing.assert_almost_equal(next(l1), 0.2)
     np.testing.assert_almost_equal(next(l1), 0.2)
+
+
+def test_bundle_flatten():
+    nn = NN(3)
+    nn.add_layer(Layer(2, Linear))
+    nn.add_layer(Layer(3, Linear))
+    cloned = nn.clone()
+    cloned.reset()
+    w = ProximalBundleMethod.flatten([l.weights for l in nn.layers], [l.bias for l in nn.layers])
+    ProximalBundleMethod.unflatten(cloned, w)
+    for l1, l2 in zip(nn.layers, cloned.layers):
+        np.testing.assert_almost_equal(l2.bias, l1.bias)
+        np.testing.assert_almost_equal(l2.weights, l1.weights)
+
+
+def test_bundle_bisector():
+    x = np.arange(-1, 1, 0.1)
+    y = np.arange(-1, 1, 0.1)
+    nn = NN(1)
+    nn.add_layer(Layer(1, Linear))
+    pbm = ProximalBundleMethod(MSE)
+    pbm.train(nn, x, y, stability_parameter=1, accuracy_tolerance=1e-2, max_iterations=50)
+    np.testing.assert_almost_equal(nn.predict(-1), -1, decimal=0)
+
+
+def test_bundle_linear():
+    nn = NN(5)
+    nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-15, -5)))
+    x = np.random.rand(5, 10)
+    y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
+    pbm = ProximalBundleMethod(MSE)
+    pbm.train(nn, x.T, y.T, stability_parameter=1, accuracy_tolerance=1e-3, max_iterations=150)
+    np.testing.assert_almost_equal(nn.predict([0, 1, 2, 3, 4]), -3, decimal=1)
+
+
+# def test_bundle_quadratic():
+#     nn = NN(1)
+#     nn.add_layer(Layer(3, Rectifier, uniform(0, 0.9), uniform(0, 0.9)))
+#     nn.add_layer(Layer(1, Linear, uniform(0, 0.9), uniform(0, 0.9)))
+#     x = np.arange(-1, 1, 0.1)
+#     y = np.arange(-1, 1, 0.1) ** 2
+#     pbm = ProximalBundleMethod(MSE)
+#     pbm.train(nn, x, y, serious_step_condition_factor=1e-16, stability_parameter=5000,
+#               accuracy_tolerance=1e-1, max_iterations=30)
+#     print(nn.layers[1].weights)
+#     print(nn.layers[1].bias)
+#     np.testing.assert_almost_equal(nn.predict(-1), -1, decimal=1)
