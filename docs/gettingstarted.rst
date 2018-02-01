@@ -41,8 +41,8 @@ accepts an instance of the :class:`.L1L2Regularizer` class.
 Validate a Model
 ----------------
 
-The :mod:`.validation` module has some facilities to assess a model and select its hyperparameters. This line of code,
-for example, performs a 3-fold cross validation::
+The :mod:`.validation` module has some facilities to assess a model and select its hyperparameters. These lines of code,
+for example, perform a 3-fold cross validation::
 
    from nnweaver.validation import *
    results = kfold_cross_validation(nn, sgd, x, y, k=3, learning_rate=0.5, batch_size=5, epochs=100)
