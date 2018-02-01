@@ -18,6 +18,7 @@ defined above, the other for the arguments of the chosen optimizer::
 
 
    from nnweaver.validation import *
+   from functools import partial
 
    builder_args = {'units_1': [5, 10, 15],
                    'units_2': [5, 10],
