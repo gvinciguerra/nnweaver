@@ -19,9 +19,10 @@
 #
 import os
 import sys
-import alabaster
-sys.path.insert(0, os.path.abspath('../'))
 
+import alabaster
+
+sys.path.insert(0, os.path.abspath('../'))
 
 # -- General configuration ------------------------------------------------
 
@@ -33,24 +34,36 @@ sys.path.insert(0, os.path.abspath('../'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.graphviz',
-    'sphinx.ext.inheritance_diagram',]
+              'sphinx.ext.mathjax',
+              'sphinx.ext.linkcode',
+              'sphinx.ext.githubpages',
+              'sphinx.ext.autodoc',
+              'sphinx.ext.graphviz',
+              'sphinx.ext.inheritance_diagram', ]
 
 autodoc_default_flags = ['special-members']
 autoclass_content = 'both'
 graphviz_output_format = 'svg'
+
 
 def skip_members(app, what, name, obj, skip, options):
     if name[:2] == '__':
         return False if name in ['__call__'] else True
     return None
 
+
+def linkcode_resolve(domain, info):
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    filename = info['module'].replace('.', '/')
+    return "https://github.com/gvinciguerra/nnweaver/blob/master/%s.py" % filename
+
+
 def setup(app):
     app.connect('autodoc-skip-member', skip_members)
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -96,7 +109,6 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
-
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -106,7 +118,6 @@ todo_include_todos = False
 html_theme_path = [alabaster.get_path()]
 extensions += ['alabaster']
 html_theme = 'alabaster'
-
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -135,14 +146,13 @@ html_sidebars = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+# html_static_path = ['_static']
 
 
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'NNWeaverdoc'
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -172,7 +182,6 @@ latex_documents = [
      'Landolfi Francesco, Vinciguerra Giorgio', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -181,7 +190,6 @@ man_pages = [
     (master_doc, 'nnweaver', 'NNWeaver Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -193,6 +201,3 @@ texinfo_documents = [
      author, 'NNWeaver', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-
