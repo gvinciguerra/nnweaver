@@ -137,8 +137,8 @@ accepts an instance of the <a class="reference internal" href="nnweaver.html#nnw
 </div>
 <div class="section" id="validate-a-model">
 <h2>Validate a Model<a class="headerlink" href="#validate-a-model" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="nnweaver.html#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal"><span class="pre">validation</span></code></a> module has some facilities to assess a model and select its hyperparameters. This line of code,
-for example, performs a 3-fold cross validation:</p>
+<p>The <a class="reference internal" href="nnweaver.html#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal"><span class="pre">validation</span></code></a> module has some facilities to assess a model and select its hyperparameters. These lines of code,
+for example, perform a 3-fold cross validation:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.validation</span> <span class="k">import</span> <span class="o">*</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">kfold_cross_validation</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">sgd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>

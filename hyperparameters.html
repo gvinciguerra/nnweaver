@@ -107,6 +107,7 @@ function that takes some hyperparameters and build a model:</p>
 <p>Then, for <a class="reference internal" href="nnweaver.html#nnweaver.validation.grid_search" title="nnweaver.validation.grid_search"><code class="xref py py-func docutils literal"><span class="pre">grid_search()</span></code></a> you need to specify two dictionaries, one with the values for the function
 defined above, the other for the arguments of the chosen optimizer:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.validation</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 
 <span class="n">builder_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
                 <span class="s1">&#39;units_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
