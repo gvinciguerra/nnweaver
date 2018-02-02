@@ -4,7 +4,7 @@ Getting Started
 Specify a Neural Network Topology
 ---------------------------------
 
-You can create a feedforward neural network specifying the number of inputs as argument of :class:`.NN`, and the
+You can create a feedforward neural network specifying the number of inputs as the argument of :class:`.NN`, and the
 number of outputs by adding a :class:`.Layer`::
 
    from nnweaver import *
