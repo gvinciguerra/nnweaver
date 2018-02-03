@@ -19,7 +19,7 @@ Table of Contents
 
    gettingstarted
    hyperparameters
-   API Reference <nnweaver>
+   nnweaver
    genindex
 
 Inheritance diagram
