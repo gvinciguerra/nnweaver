@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tuning Hyperparameters &#8212; NNWeaver 0.1 documentation</title>
+    <title>Tuning Hyperparameters &#8212; nnweaver 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -41,7 +41,7 @@
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">NNWeaver</a></h1>
+<h1 class="logo"><a href="index.html">nnweaver</a></h1>
 
 
 
@@ -95,7 +95,7 @@
   <div class="section" id="tuning-hyperparameters">
 <h1>Tuning Hyperparameters<a class="headerlink" href="#tuning-hyperparameters" title="Permalink to this headline">¶</a></h1>
 <p>You can perform hyperparameter optimization with a grid search or a random search. In both cases you need to define a
-function that takes some hyperparameters and build a model:</p>
+function that takes some hyperparameters and builds a model:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nn_builder</span><span class="p">(</span><span class="n">units_1</span><span class="p">,</span> <span class="n">units_2</span><span class="p">,</span> <span class="n">activation_1</span><span class="p">,</span> <span class="n">activation_2</span><span class="p">):</span>
     <span class="n">nn</span> <span class="o">=</span> <span class="n">NN</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="n">units_1</span><span class="p">,</span> <span class="n">activation_1</span><span class="p">))</span>
