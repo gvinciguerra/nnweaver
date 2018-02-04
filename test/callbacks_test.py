@@ -40,7 +40,6 @@ def test_plot_learning_curve():
     sgd = SGD(MSE)
     sgd.seed = 42
     epochs = 3
-    callback = callbacks.PlotLearningCurve(x[limit:], y[limit:], loss=MSE, max_epochs=epochs)
-    Thread(target=lambda: plt.close('all')).start()  # Prevent blocking behavior of matplotlib
+    callback = callbacks.PlotLearningCurve(x[limit:], y[limit:], loss=MSE, max_epochs=epochs, blocking=False)
     sgd.train(nn, x[:limit], y[:limit], 0.1, 5, epochs, callbacks=[callback])
-    plt.close()
+    plt.close('all')

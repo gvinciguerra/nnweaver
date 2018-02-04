@@ -93,7 +93,8 @@ class WriteFileCallback(Callback):
 
 
 class PlotLearningCurve(Callback):
-    def __init__(self, x_validation=None, y_validation=None, loss=None, interactive=True, max_epochs=None):
+    def __init__(self, x_validation=None, y_validation=None, loss=None, interactive=True, max_epochs=None,
+                 blocking=True):
         """ Create a callback that plot the learning curve of a model during and
         after its training phase. If a data set and a loss function are given,
         it will also plot the validation results.
@@ -107,6 +108,8 @@ class PlotLearningCurve(Callback):
         :param max_epochs: the expected number of epochs. If present, this
             parameter prevents the plot from rescaling during the training (if
             ``interactive`` is ``False``, this parameter is ignored).
+        :param blocking: if ``True`` display the curve window and block until
+            it has been closed.
         """
         assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
         self.x_validation = x_validation
@@ -118,6 +121,7 @@ class PlotLearningCurve(Callback):
         self.fig, self.ax = plt.subplots()
         self.interactive = interactive
         self.max_epochs = max_epochs
+        self.blocking = blocking
 
     def on_training_begin(self, nn):
         """ The callback to be executed at the beginning of the training.
@@ -172,4 +176,4 @@ class PlotLearningCurve(Callback):
             self.ax.plot(self.epochs, self.losses, 'b')
             if self.x_validation is not None:
                 self.ax.plot(self.epochs, self.val_losses, 'r')
-        plt.show(block=True)
+        plt.show(block=self.blocking)
