@@ -1,5 +1,5 @@
 NNWeaver's Documentation
-====================================
+========================
 
 NNWeaver is a *tiny* Python library to create and train feedforward neural networks. We developed this library as a
 project for a Machine Learning course.
