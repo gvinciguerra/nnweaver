@@ -1,4 +1,6 @@
-<img src="https://gvinciguerra.github.io/nnweaver/_static/logo.svg" align="center"/>
+<p align="center">
+  <img src="https://gvinciguerra.github.io/nnweaver/_static/logo.svg">
+</p>
 
 # NNWeaver #
 
@@ -52,7 +54,7 @@ There are other arguments to pass to the [`SGD.train()`](https://gvinciguerra.gi
               learning_rate_time_based(0.25, 0.001),
               batch_size=10, epochs=100, momentum=0.85)
 
-Also, you may want to control the model complexity. [`SGD.train()`](Also, you may want to control the model complexity. SGD.train() has a `regularizer` argument, that accepts an instance of the [`L1L2Regularizer`](https://gvinciguerra.github.io/nnweaver/nnweaver.html#nnweaver.regularizers.L1L2Regularizer) class.
+Also, you may want to control the model complexity. [`SGD.train()`](https://gvinciguerra.github.io/nnweaver/nnweaver.html#nnweaver.optimizers.SGD.train) has a `regularizer` argument, that accepts an instance of the [`L1L2Regularizer`](https://gvinciguerra.github.io/nnweaver/nnweaver.html#nnweaver.regularizers.L1L2Regularizer) class.
 
 ### A very, very simple example ###
 
