@@ -128,6 +128,8 @@ html_theme_options = {
     'description': 'A tiny library to build and train neural networks',
     'github_user': 'gvinciguerra',
     'github_repo': 'nnweaver',
+    'logo': 'logo.svg',
+    'logo_name': 'true',
     'show_powered_by': 'false',
     'fixed_sidebar': 'true',
     'github_banner': 'true',
@@ -146,8 +148,7 @@ html_sidebars = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
-
+html_static_path = ['static']
 
 # -- Options for HTMLHelp output ------------------------------------------
 
