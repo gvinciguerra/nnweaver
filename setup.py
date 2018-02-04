@@ -1,3 +1,4 @@
+import re
 import sys
 
 from setuptools import setup
@@ -6,12 +7,19 @@ name = 'nnweaver'
 version = '0.1'
 release = '0.1'
 
-try:
-    import pypandoc
 
-    long_description = pypandoc.convert('README.md', 'rst')
-except Exception:
-    long_description = open('README.md').read()
+def get_pypi_compatible_description():
+    readme = open('README.md').read()
+    long_description = re.sub(r'<.*>', '', readme, re.DOTALL)
+    long_description = re.sub(r'\[`(.*?)`\]', r'[\1]', long_description)
+
+    try:
+        import pypandoc
+        long_description = pypandoc.convert_text(long_description, 'rst', format='markdown_github')
+    except (ImportError, RuntimeError):
+        long_description = readme
+    return long_description
+
 
 needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
 pytest_runner = ['pytest-runner'] if needs_pytest else []
@@ -20,7 +28,7 @@ setup(
     name=name,
     version=version,
     description='A tiny Python library to create and train feedforward neural networks',
-    long_description=long_description,
+    long_description=get_pypi_compatible_description(),
     url='https://github.com/gvinciguerra/nnweaver',
     packages=['nnweaver'],
     python_requires='>=3.5',
