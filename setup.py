@@ -23,6 +23,7 @@ setup(
     long_description=long_description,
     url='https://github.com/gvinciguerra/nnweaver',
     packages=['nnweaver'],
+    python_requires='>=3.5',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
