@@ -1,6 +1,4 @@
-<div style="text-align:center">
-  <img src="https://gvinciguerra.github.io/nnweaver/_static/logo.svg" />
-</div>
+<img src="https://gvinciguerra.github.io/nnweaver/_static/logo.svg" align="center"/>
 
 # NNWeaver #
 
@@ -58,7 +56,7 @@ Also, you may want to control the model complexity. [`SGD.train()`](Also, you ma
 
 ### A very, very simple example ###
 
-![Example](https://github.com/gvinciguerra/nnweaver/blob/gh-pages/_images/nnweaver.gif?raw=true)
+<img src="https://github.com/gvinciguerra/nnweaver/blob/gh-pages/_images/nnweaver.gif?raw=true" width="550" />
 
 ## Documentation ##
 
