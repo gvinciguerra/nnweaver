@@ -1,6 +1,6 @@
 import numpy as np
 
-from activations import Sigmoid, Rectifier, Linear, TanH, HardSigmoid, HardTanH
+from nnweaver.activations import Sigmoid, Rectifier, Linear, TanH, HardSigmoid, HardTanH
 
 
 def test_linear():

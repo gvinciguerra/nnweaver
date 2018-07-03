@@ -4,7 +4,7 @@ Tuning Hyperparameters
 ======================
 
 You can perform hyperparameter optimization with a grid search or a random search. In both cases you need to define a
-function that takes some hyperparameters and build a model::
+function that takes some hyperparameters and builds a model::
 
    def nn_builder(units_1, units_2, activation_1, activation_2):
        nn = NN(1)

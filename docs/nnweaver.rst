@@ -1,13 +1,5 @@
-nnweaver package
-================
-
-.. automodule:: nnweaver
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-Submodules
-----------
+API Reference
+=============
 
 nnweaver\.activations module
 ----------------------------
