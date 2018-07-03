@@ -293,8 +293,8 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         super().__init__(loss)
         self.seed = None
 
-    def train(self, nn, x, y, m_L=0.1, m_R=0.6, t̅=0.5, µ=1,
-              accuracy_tolerance=1e-4, max_iterations=10):
+    def train(self, nn, x, y, m_L=0.3, m_R=0.6, t̅=0.65, µ=1,
+              accuracy_tolerance=1e-4, max_iterations=10, convex=False):
         """ Train the given neural network using the Proximal Bundle Method
         algorithm.
 
@@ -353,8 +353,10 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                 fc = f(c + t_L * d)
                 fw = f(c + t_R * d)
                 g = grad_f()
-                alpha = fc - fw - (t_L - t_R) * d * g
-                if -alpha + g * d >= m_R * ν:
+                α = fc - fw - (t_L - t_R) * g.T.dot(d)
+                if not convex:
+                    α = abs(α)
+                if -α + g.T.dot(d) >= m_R * ν:
                     t_R = m
                 else:
                     r = m
@@ -363,19 +365,17 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         def make_constraints(c, f_c, G, F):
             constraints = []
             for gi, fi in zip(G, F):
-                constr = {'type': 'ineq',
-                     'args': (c, f_c, fi, gi),
-                     'fun': lambda w, c, f_c, fi, gi: w[0] - fi + f_c - gi.dot(c) - gi.dot(w[1:].reshape((-1, 1)))
-                     }
+                α = f_c - gi.dot(c) - fi
+                if not convex:
+                    α = abs(α)
+                constr = {
+                    'type': 'ineq',
+                    'args': (α, gi),
+                    'fun': lambda w, α, gi:
+                        w[0] + α - gi.dot(w[1:].reshape((-1, 1)))
+                }
                 constraints.append(constr)
             return tuple(constraints)
-            # for gi, fi in zip(G, F):
-            #     v = np.concatenate((np.array([-1]), gi))
-            #     lin_constr = optimize.LinearConstraint(v, -np.inf, f_c - gi.dot(c) - fi)
-            #     constraints.append(lin_constr)
-            
-            # return constraints
-
 
         def bundle_objective(d, µ):
             return d[0] + µ * 0.5 * np.linalg.norm(d[1:]) ** 2.
@@ -403,7 +403,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
 
             if not res.success:
                 self.unflatten(nn, c)
-                print('QP Solver error: ' + res.message)
+                print('QP Solver error: ' + res.message, end='')
 
             d = res.x[1:]
             v = res.x[0]
@@ -412,20 +412,12 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             # Compute function and subgradient and update the bundle
             fd = f(c + d)
             g = grad_f()
-
             G = np.vstack((G, g.T))
             F = np.vstack((F, fd - g.T.dot(c + d)))
 
             # Serious step / null step decision
-            # if fd <= fc + serious_step_condition_factor * (v - fc):
-            #     c = c + d
-            #     fc = fd
-            #     print('Serious step')
-            # else:
-            #     print('Null step')
-
             t_L = line_search_l(v, c, d)
-            if t_L >= t̅: 
+            if t_L >= t̅:
                 c = c + t_L * d
                 w = c
                 print('long serious step')
@@ -436,7 +428,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                     print('short serious step')
                 else:
                     print('null step')
-                w = w * t_R * d
+                w = c + t_R * d
 
             # Stopping criteria
             if abs(v) <= accuracy_tolerance:
@@ -468,3 +460,34 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             high = low + l.bias.shape[0]
             l.bias = flattened[low:high].reshape(l.bias.shape)
             low = high
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    from .nn import NN, Layer, Linear, uniform
+    from .activations import Sigmoid
+    from .losses import MSE
+
+    # nn = NN(5)
+    # nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-0.5, 0.5)))
+    # x = np.random.rand(5, 10)
+    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
+    # pbm = ProximalBundleMethod(MSE)
+    # pbm.train(nn, x.T, y.T, µ=1, accuracy_tolerance=1e-6, max_iterations=40, convex=True)
+    # np.testing.assert_almost_equal(nn.predict([0, 1, 2, 3, 4]), -3, decimal=1)
+
+    nn = NN(1)
+    nn.add_layer(
+        Layer(6, Sigmoid, weights_initializer=uniform(-0.0005, 0.000005)))
+    nn.add_layer(
+        Layer(1, Linear, weights_initializer=uniform(-0.0005, 0.000005)))
+    x = np.arange(-10, 10)
+    y = x ** 2.0
+    y = -10 - 10 * Sigmoid.apply(x)
+    pbm = ProximalBundleMethod(MSE)
+    pbm.train(nn, x.T, y.T, µ=0.5, accuracy_tolerance=1e-3, max_iterations=30)
+    # np.testing.assert_almost_equal(nn.predict([0, 1, 2, 3, 4]), -3, decimal=1)
+    plt.scatter(x, y, label='dataset')
+    plt.scatter(x, nn.predict_batch(x.T), label='nn')
+    plt.legend()
+    plt.show()
