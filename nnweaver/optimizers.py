@@ -330,8 +330,8 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                     errors_weights[l] += grad_weights[l]
             return self.flatten(errors_weights, errors_bias)
 
-        def f(w):
-            self.unflatten(nn, w)
+        def f(θ):
+            self.unflatten(nn, θ)
             return self.loss.batch_mean(nn.predict_batch(x), y)
 
         def line_search_l(ν, c, d):
@@ -339,7 +339,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             r = 1
             while r - t_L > accuracy_tolerance:
                 m = (r + t_L) / 2.0
-                if f(c + t_L*d) <= f(c) + m_L*t_L*ν:
+                if f(c + t_L * d) <= f(c) + m_L * t_L * ν:
                     t_L = m
                 else:
                     r = m
@@ -384,7 +384,8 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         list_weights = [l.weights for l in nn.layers]
         list_bias = [l.bias for l in nn.layers]
 
-        c = self.flatten(list_weights, list_bias)
+        θ = self.flatten(list_weights, list_bias)
+        c = θ
         fc = f(c)
         g = grad_f()
 
@@ -392,7 +393,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         F = np.matrix(fc - g.T.dot(c))
 
         for iteration in itertools.count(start=1, step=1):
-            print('Iteration %d ' % iteration, end='')
+            print('Iteration %3d ' % iteration, end='')
             # Construct and solve the master problem
             constraints = make_constraints(c, fc, G, F)
             guess = np.vstack((np.zeros(1), c))
@@ -407,28 +408,29 @@ class ProximalBundleMethod(GradientBasedOptimizer):
 
             d = res.x[1:]
             v = res.x[0]
-            nd = np.linalg.norm(d)
 
             # Compute function and subgradient and update the bundle
-            fd = f(c + d)
+            fd = f(θ)
             g = grad_f()
+            fc = f(c)
             G = np.vstack((G, g.T))
-            F = np.vstack((F, fd - g.T.dot(c + d)))
+            F = np.vstack((F, fd - g.T.dot(θ)))
 
             # Serious step / null step decision
             t_L = line_search_l(v, c, d)
             if t_L >= t̅:
-                c = c + t_L * d
-                w = c
                 print('long serious step')
+                c = c + t_L * d
+                θ = c
             else:
                 t_R = line_search_r(v, c, d, t_L)
                 if t_L > 0:
-                    c = c + t_L * d
                     print('short serious step')
+                    c = c + t_L * d
+                    θ = c + t_R * d
                 else:
                     print('null step')
-                w = c + t_R * d
+                    θ = c + t_R * d
 
             # Stopping criteria
             if abs(v) <= accuracy_tolerance:
@@ -442,7 +444,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
 
     @staticmethod
     def flatten(list_weights, list_bias):
-        """Returns a column vector with the concatenation of the given neural
+        """ Returns a column vector with the concatenation of the given neural
         network parameters. """
         flattened = np.array([])
         for w, b in zip(list_weights, list_bias):
