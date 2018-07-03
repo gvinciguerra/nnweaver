@@ -92,17 +92,17 @@ def test_bundle_bisector():
     nn = NN(1)
     nn.add_layer(Layer(1, Linear))
     pbm = ProximalBundleMethod(MSE)
-    pbm.train(nn, x, y, stability_parameter=1, accuracy_tolerance=1e-2, max_iterations=50)
+    pbm.train(nn, x, y, µ=1, accuracy_tolerance=1e-2, max_iterations=50)
     np.testing.assert_almost_equal(nn.predict(-1), -1, decimal=0)
 
 
 def test_bundle_linear():
     nn = NN(5)
-    nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-15, -5)))
+    nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-0.5, 0.5)))
     x = np.random.rand(5, 10)
     y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
     pbm = ProximalBundleMethod(MSE)
-    pbm.train(nn, x.T, y.T, stability_parameter=1, accuracy_tolerance=1e-3, max_iterations=150)
+    pbm.train(nn, x.T, y.T, µ=1, accuracy_tolerance=1e-3, max_iterations=50)
     np.testing.assert_almost_equal(nn.predict([0, 1, 2, 3, 4]), -3, decimal=1)
 
 
