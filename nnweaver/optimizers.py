@@ -294,7 +294,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         super().__init__(loss)
         self.seed = None
 
-    def train(self, nn, x, y, m_L=0.1, m_R=0.99, t_bar=0.5, mu=10, gamma=0.5,
+    def train(self, nn, x, y, mu=10, m_L=0.1, m_R=0.99, t_bar=0.5, gamma=0.5,
               accuracy_tolerance=1e-4, max_iterations=10, callbacks=None):
         """ Train the given neural network using the Proximal Bundle Method
         algorithm.
@@ -302,15 +302,20 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         :param nn: the neural network.
         :param x: a list of examples.
         :param y: a list with the target output of each example.
-        :param µ: the fixed weight to be given to the
-            stabilizing term throughout all the algorithm. It must be a strictly
-            positive number.
-        :param serious_step_condition_factor: set to a small value in [0,1) to
-            prevent large steps relative to the decreasing of the loss function.
+        :param mu: the fixed weight to be given to the
+            stabilizing term throughout all the algorithm. It must be a
+            strictly positive number.
+        :param m_L: line search parameter. Must be 0 < m_L <= 0.5.
+        :param m_R: line search parameter. Must be m_L < m_R < 1.
+        :param t_bar: set to a small value in (0,1) to prevent large steps
+            relative to the decreasing of the loss function.
+        :param gamma: the distance measure parameter. Higher values lead to
+            more localized information of the subgradients. Must be γ >= 0.
         :param accuracy_tolerance: a value greater than 0 that determines the
             stopping criterion.
         :param max_iterations: maximum number of iterations before stopping the
             training.
+        :param callbacks: a list of :py:class:`.Callback` objects.
         """
         t̅ = t_bar
         µ = mu
@@ -535,11 +540,11 @@ if __name__ == '__main__':
     # print(nn.layers[0].weights)
 
     train_args = {'max_iterations': [50],
-                  'mu': stats.uniform(0.1, 10),
+                  'mu': stats.uniform(0.001, 10),
                   'gamma': stats.uniform(0, 10),
-                  'm_L': stats.uniform(0.0001, 0.499),
+                  'm_L': stats.uniform(1e-3, 0.499),
                   'm_R': stats.uniform(0.5, 0.499),
-                  't_bar': stats.uniform(0.5, 0.49)
+                  't_bar': stats.uniform(0, 1)
                   }
     result = random_search(build, pbm, x.T, y.T, train_args, {}, 30)
 
