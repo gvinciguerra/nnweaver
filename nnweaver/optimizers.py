@@ -17,7 +17,7 @@ from types import GeneratorType
 
 import numpy as np
 import tqdm
-from scipy import optimize
+from cvxopt import matrix, solvers
 
 
 class Optimizer(ABC):
@@ -373,27 +373,15 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                     r = m
             return t_R
 
-        def make_constraints(c, f_c, G, F, S):
-            constraints = []
-            sc_tot = S[:, 0].sum()
-            for gi, fi, sc, sd in zip(G, F, S[:, 0], S[:, 1]):
-                s = sd + sc_tot
-                α = f_c - gi.dot(c) - fi
-                α = max(abs(α), γ * s ** 2)
-                constr = {
-                    'type': 'ineq',
-                    'args': (α, gi),
-                    'fun': lambda w, α, gi:
-                        w[0] + α - gi.dot(w[1:].reshape((-1, 1)))
-                }
-                constraints.append(constr)
-                sc_tot -= sc
-            return constraints
-
-        def bundle_objective(x, µ):
-            ν = x[0]
-            d = x[1:]
-            return ν + µ * 0.5 * np.linalg.norm(d) ** 2.
+        def make_parameters(c, f_c, G, F, S):
+            s = (S[:, 1] + S[::-1, 0].cumsum()[::-1]).reshape((-1, 1))
+            α = f_c - G.dot(c) - F
+            h = np.maximum(np.abs(α), γ * s ** 2)
+            A = np.hstack((-np.ones((G.shape[0], 1)), G))
+            P = µ * np.eye(len(c) + 1)
+            P[0, 0] = 0
+            q = np.eye(len(c) + 1, 1)
+            return matrix(P), matrix(q), matrix(A), matrix(h)
 
         # Compute first function and subgradient
         list_weights = [l.weights for l in nn.layers]
@@ -414,21 +402,15 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         bar = tqdm.tqdm(total=max_iterations)
         for iteration in itertools.count(start=1, step=1):
             bar.write('Iteration %3d ' % iteration, end='')
+            res = solvers.qp(*make_parameters(c, fc, G, F, S),
+                             options={'show_progress': False})
 
-            # Construct and solve the master problem
-            constraints = make_constraints(c, fc, G, F, S)
-            guess = np.vstack((np.zeros(1), np.zeros(c.shape)))  # (ν, d)
-            res = optimize.minimize(bundle_objective, guess, args=(µ),
-                                    tol=accuracy_tolerance, method='COBYLA',
-                                    options={'maxiter': 3000, 'disp': 0},
-                                    constraints=constraints)
-
-            if not res.success:
+            if res['status'] is not 'optimal':
                 self.unflatten(nn, c)
-                bar.write('QP Solver error: ' + res.message, end='')
+                bar.write('QP Solver error: ' + res['status'], end='')
 
-            d = res.x[1:]
-            ν = res.x[0]
+            d = res['x'][1:]
+            ν = res['x'][0]
 
             # Compute function and subgradient and update the bundle
             fd = f(θ)
@@ -501,12 +483,12 @@ class ProximalBundleMethod(GradientBasedOptimizer):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    from .nn import NN, Layer, Linear, uniform
-    from .activations import Sigmoid
-    from .losses import MSE
-    from .callbacks import PlotLearningCurve
+    from nnweaver.nn import NN, Layer, Linear, uniform
+    from nnweaver.activations import Sigmoid, Rectifier
+    from nnweaver.losses import MSE
+    from nnweaver.callbacks import PlotLearningCurve
     from sklearn import preprocessing
-    from .validation import random_search
+    from nnweaver.validation import random_search
     from scipy import stats
 
     # nn = NN(5)
@@ -515,41 +497,69 @@ if __name__ == '__main__':
     # y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
     # pbm = ProximalBundleMethod(MSE)
     # pbm.train(nn, x.T, y.T, µ=1, accuracy_tolerance=1e-6, max_iterations=40, convex=True)
-
-    def build():
-        nn = NN(1)
-        nn.add_layer(
-            Layer(1, Sigmoid, weights_initializer=uniform(-0.005, 0.005)))
-        nn.add_layer(
-            Layer(1, Linear, weights_initializer=uniform(-0.005, 0.005)))
-        return nn
-    x = np.arange(-15, 15).reshape((1, -1))
-    y = 1 * Sigmoid.apply(x) + 5
-    y += .05 * np.random.randn(*y.shape)
-
-    scaler_x = preprocessing.MinMaxScaler()
-    scaler_y = preprocessing.MinMaxScaler()
-    x = (x - x.min()) / (x.max() - x.min())
-    y = (y - y.min()) / (y.max() - y.min())
-
-    iterations = 25
-    callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    #
+    # def build():
+    #     nn = NN(1)
+    #     nn.add_layer(
+    #         Layer(1, Sigmoid, weights_initializer=uniform(-0.005, 0.005)))
+    #     nn.add_layer(
+    #         Layer(1, Linear, weights_initializer=uniform(-0.005, 0.005)))
+    #     return nn
+    # x = np.arange(-15, 15).reshape((1, -1))
+    # y = 1 * Sigmoid.apply(x) + 5
+    # y += .05 * np.random.randn(*y.shape)
+    #
+    # scaler_x = preprocessing.MinMaxScaler()
+    # scaler_y = preprocessing.MinMaxScaler()
+    # x = (x - x.min()) / (x.max() - x.min())
+    # y = (y - y.min()) / (y.max() - y.min())
+    #
+    # iterations = 25
+    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    # pbm = ProximalBundleMethod(MSE)
+    # # pbm.train(nn, x.T, y.T, accuracy_tolerance=1e-3,  µ=4, γ=0, m_L=0.1, m_R=0.99, t̅=0.5,
+    # #           max_iterations=iterations, callbacks=[callback])
+    # # print(nn.layers[0].weights)
+    #
+    # train_args = {'max_iterations': [50],
+    #               'mu': stats.uniform(0.001, 10),
+    #               'gamma': stats.uniform(0, 10),
+    #               'm_L': stats.uniform(1e-3, 0.499),
+    #               'm_R': stats.uniform(0.5, 0.499),
+    #               't_bar': stats.uniform(0, 1)
+    #               }
+    # result = random_search(build, pbm, x.T, y.T, train_args, {}, 30)
+    #
+    # nn = result[0]
+    # plt.scatter(x, y, label='dataset')
+    # plt.scatter(x, nn.predict_batch(x.T), label='nn')
+    # plt.legend()
+    # plt.show()
+    nn = NN(1)
+    nn.add_layer(Layer(5, Sigmoid, uniform(0, 0), uniform(0, 0)))
+    nn.add_layer(Layer(1, Linear, uniform(0, 0), uniform(0, 0)))
+    x = np.arange(-1, 1, 0.01)
+    y = np.arange(-1, 1, 0.01) ** 2
     pbm = ProximalBundleMethod(MSE)
-    # pbm.train(nn, x.T, y.T, accuracy_tolerance=1e-3,  µ=4, γ=0, m_L=0.1, m_R=0.99, t̅=0.5,
-    #           max_iterations=iterations, callbacks=[callback])
-    # print(nn.layers[0].weights)
 
-    train_args = {'max_iterations': [50],
-                  'mu': stats.uniform(0.001, 10),
-                  'gamma': stats.uniform(0, 10),
-                  'm_L': stats.uniform(1e-3, 0.499),
-                  'm_R': stats.uniform(0.5, 0.499),
-                  't_bar': stats.uniform(0, 1)
-                  }
-    result = random_search(build, pbm, x.T, y.T, train_args, {}, 30)
+    iterations = 1000
+    callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    pbm.train(nn, x.T, y.T,  mu=10, m_L=0.5, m_R=0.8, t_bar=0.55, gamma=5,
+              accuracy_tolerance=1e-8, max_iterations=iterations, callbacks=[callback])
 
-    nn = result[0]
     plt.scatter(x, y, label='dataset')
     plt.scatter(x, nn.predict_batch(x.T), label='nn')
     plt.legend()
     plt.show()
+    #
+    # nn = NN(3)
+    # nn.add_layer(Layer(1, Linear))
+    # x = np.random.rand(3, 10)
+    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2]
+    #
+    # iterations = 500
+    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    # pbm = ProximalBundleMethod(MSE)
+    # pbm.train(nn, x.T, y.T, mu=10, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0,
+    #           accuracy_tolerance=1e-6, max_iterations=iterations, callbacks=[callback])
+    # np.testing.assert_almost_equal(nn.predict_batch(x.T).flatten(), y, decimal=3)
