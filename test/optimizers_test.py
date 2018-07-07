@@ -45,7 +45,8 @@ def test_sgd_quadratic():
 def test_sgd_circles():
     samples = 50
     a = np.random.uniform(0, 2 * np.pi, samples * 2)
-    r = np.append(np.random.uniform(0, 10, samples), np.random.uniform(20, 30, samples))
+    r = np.append(np.random.uniform(0, 10, samples),
+                  np.random.uniform(20, 30, samples))
     x = np.matrix([np.multiply(r, np.sin(a)), np.multiply(r, np.cos(a))]).T
     y = np.append(np.ones(samples), np.zeros(samples))
     x, y = Optimizer.shuffle(x, y)
@@ -79,7 +80,8 @@ def test_bundle_flatten():
     nn.add_layer(Layer(3, Linear))
     cloned = nn.clone()
     cloned.reset()
-    w = ProximalBundleMethod.flatten([l.weights for l in nn.layers], [l.bias for l in nn.layers])
+    w = ProximalBundleMethod.flatten([l.weights for l in nn.layers],
+                                     [l.bias for l in nn.layers])
     ProximalBundleMethod.unflatten(cloned, w)
     for l1, l2 in zip(nn.layers, cloned.layers):
         np.testing.assert_almost_equal(l2.bias, l1.bias)
@@ -100,12 +102,14 @@ def test_bundle_bisector():
 def test_bundle_linear():
     nn = NN(3)
     nn.add_layer(Layer(1, Linear, uniform(0, 0), uniform(0, 0)))
-    np.random.seed(42)
-    x = np.random.rand(3, 5)
+    x = np.array(
+        [[0.14131787,  0.31549032,  0.33582581,  0.16351758,  0.23220519],
+         [0.34221643,  0.36613729,  0.9500988,  0.74681656,  0.08620996],
+         [0.69490933,  0.05386328,  0.08184282,  0.83205677,  0.6950512]])
     y = 2.*x[0] + 3.*x[1] - 0.5*x[2]
     pbm = ProximalBundleMethod(MSE)
-    pbm.train(nn, x.T, y.T, mu=0.5, m_L=0.3, m_R=0.7, t_bar=0.6, gamma=0,
-              accuracy_tolerance=1e-6, max_iterations=500)
+    pbm.train(nn, x.T, y.T, mu=0.2, m_L=0.3, m_R=0.7, t_bar=0.6, gamma=0,
+              accuracy_tolerance=1e-9, max_iterations=500)
     np.testing.assert_almost_equal(nn.predict([0, 1, 2]), 2, decimal=3)
 
 
