@@ -199,16 +199,17 @@ class SGD(GradientBasedOptimizer):
                     step = learning_rate
 
                 # Update weights
+                self._weights_gradient = (errors_weights, errors_bias)
                 iterator = zip(nn.layers, errors_weights,
                                errors_bias, velocity_weights, velocity_bias)
                 new_velocity_bias, new_velocity_weights = [], []
 
                 for (l, grad_w, grad_b, vel_w, vel_b) in iterator:
                     assert (l.weights - step * grad_w).shape == l.weights.shape
-                    penalty_w, penalty_b = (
-                        0, 0) if regularizer is None else regularizer.gradient(l)
+                    penalty_w, penalty_b = (0, 0) if regularizer is None \
+                        else regularizer.gradient(l)
 
-                    # Apply penalty to weights (and compute the gradients' velocity)
+                    # Apply penalty to weights
                     g_w = step * (grad_w + penalty_w) / batch_size
                     g_b = step * (grad_b + penalty_b) / batch_size
 
@@ -222,7 +223,8 @@ class SGD(GradientBasedOptimizer):
                     l.bias -= v_b
                     l.weights -= v_w
 
-                velocity_bias, velocity_weights = new_velocity_bias, new_velocity_weights
+                velocity_bias = new_velocity_bias
+                velocity_weights = new_velocity_weights
                 bar.update(1)
 
             y_predicted = nn.predict_batch(x)
@@ -344,12 +346,13 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                 i = i.reshape(-1, 1)
                 o = o.reshape(-1, 1)
                 inputs, outputs = self.forward(nn, i)
-                grad_weights, grad_bias = self.backward(
-                    nn, i, o, inputs, outputs)
+                grad_weights, grad_bias = self.backward(nn, i, o, inputs,
+                                                        outputs)
                 for l in range(len(nn.layers)):
                     weight_penalty, bias_penalty = (0, 0)
                     if regularizer is not None:
-                        weight_penalty, bias_penalty = regularizer.gradient(nn.layers[l])
+                        weight_penalty, bias_penalty = regularizer.gradient(
+                            nn.layers[l])
                     errors_bias[l] += grad_bias[l] + bias_penalty
                     errors_weights[l] += grad_weights[l] + weight_penalty
             return self.flatten(errors_weights, errors_bias)
@@ -498,7 +501,6 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             #     plt.legend()
             #     fig.canvas.draw()
             #     plt.pause(1e-16)
-
 
         for clbk in callbacks:
             clbk.on_training_end(nn)
