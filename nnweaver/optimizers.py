@@ -417,7 +417,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
 
         bar = tqdm.tqdm(total=max_iterations)
         for iteration in itertools.count(start=1, step=1):
-            bar.write('Iteration %3d ' % iteration, end='')
+            bar.write('Iteration %3d: ' % iteration, end='')
             res = solvers.qp(*make_parameters(c, fc, G, F, S),
                              options={'show_progress': False})
 
@@ -439,7 +439,7 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             t_L = line_search_l(ν, c, d)
             d_norm = np.linalg.norm(d)
             if t_L >= t̅:
-                bar.write('long serious step')
+                bar.write('Long Serious Step, ', end='')
                 c = c + t_L * d
                 θ = c
                 s_c = t_L * d_norm
@@ -447,28 +447,29 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             else:
                 t_R = line_search_r(ν, c, d, t_L)
                 if t_L > 0:
-                    bar.write('short serious step')
+                    bar.write('Short Serious Step, ', end='')
                     c = c + t_L * d
                     θ = c + t_R * d
                     s_c = t_L * d_norm
                     s_d = (t_R - t_L) * d_norm
                 else:
-                    bar.write('null step')
+                    bar.write('Null Step, ', end='')
                     θ = c + t_R * d
                     s_c = 0
                     s_d = t_R * d_norm
             S += s_c
             S = np.vstack((S, s_d))
-
             a = max(a + s_c, s_d)
 
-            if a > a̅ :
-                filter = (S < 0.5 * a̅).flatten()
-                filter[-1] = True  # Ensures at least one element
-                G = G[filter]
-                F = F[filter]
-                S = S[filter]
+            if a > a̅:
+                mask = (S < 0.5 * a̅).flatten()
+                mask[-1] = True  # Ensures at least one element
+                G = G[mask]
+                F = F[mask]
+                S = S[mask]
                 a = S[0]
+
+            bar.write('{} constraints'.format(len(F)))
 
             # Stopping criteria
             self.unflatten(nn, c)
@@ -582,17 +583,17 @@ if __name__ == '__main__':
     # plt.legend()
     # plt.show()
     nn = NN(1)
-    nn.add_layer(Layer(5, Sigmoid, uniform(-10, 10), uniform(-10, 10)))
-    nn.add_layer(Layer(1, Linear, uniform(-10, 10), uniform(-10, 10)))
+    nn.add_layer(Layer(5, Rectifier))
+    nn.add_layer(Layer(1, Linear))
     x = np.arange(-1, 1, 0.01)
     y = np.arange(-1, 1, 0.01) ** 2
     pbm = ProximalBundleMethod(MSE)
 
     iterations = 1000
     # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
-    pbm.train(nn, x.T, y.T,  mu=500, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0.3,
-              accuracy_tolerance=1e-6, max_iterations=iterations,
-              regularizer=L1L2Regularizer(1e-8, 1e-5), a_bar=5, callbacks=[])
+    pbm.train(nn, x.T, y.T,  mu=100, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=1,
+              accuracy_tolerance=1e-10, max_iterations=iterations,
+              regularizer=L1L2Regularizer(1e-8, 1e-5), a_bar=0.2, callbacks=[])
     np.testing.assert_array_equal(y, nn.predict_batch(x.T).flatten())
 
     # plt.scatter(x, y, label='dataset')
