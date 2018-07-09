@@ -353,8 +353,8 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                     if regularizer is not None:
                         weight_penalty, bias_penalty = regularizer.gradient(
                             nn.layers[l])
-                    errors_bias[l] += grad_bias[l] + bias_penalty
-                    errors_weights[l] += grad_weights[l] + weight_penalty
+                    errors_bias[l] += (grad_bias[l] + bias_penalty) / len(x)
+                    errors_weights[l] += (grad_weights[l] + weight_penalty) / len(x)
             return self.flatten(errors_weights, errors_bias)
 
         def f(θ):
@@ -593,7 +593,7 @@ if __name__ == '__main__':
 
     iterations = 1000
     # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
-    pbm.train(nn, x.T, y.T,  mu=100, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=1,
+    pbm.train(nn, x.T, y.T,  mu=1, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=1,
               accuracy_tolerance=1e-10, max_iterations=iterations,
               regularizer=L1L2Regularizer(1e-8, 1e-5), a_bar=0.2, callbacks=[])
     np.testing.assert_array_equal(y, nn.predict_batch(x.T).flatten())
