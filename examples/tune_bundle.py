@@ -62,6 +62,8 @@ while i < 10:
     try:
         _, loss, args, _ = random_search(nn_builder, pbm, x_train, y_train,
                                          train_args, {}, 1)
+        args['regularizer'] = {"l1": args['regularizer'].l1,
+                               "l2": args['regularizer'].l2}
         element = dict()
         element["loss"] = loss
         element["args"] = args
