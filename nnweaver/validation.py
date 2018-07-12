@@ -61,7 +61,7 @@ def kfold_cross_validation(nn, optimizer, x, y, k=3, **train_args):
         nn_i = nn.clone()
         nn_i.reset()
         t_start = time.time()
-        optimizer.train(nn, split_complement_x, split_complement_y, **train_args)
+        optimizer.train(nn_i, split_complement_x, split_complement_y, **train_args)
         elapsed = (time.time() - t_start) * 1000
 
         train_loss = optimizer.loss.batch_mean(nn_i.predict_batch(split_complement_x), split_complement_y)
@@ -242,7 +242,7 @@ def random_search(nn_builder: Callable[[dict], NN], optimizer, x, y,
         if loss_value < best_loss:
             best_loss = loss_value
             best_model = nn
-            best_train_args = b_args
-            best_builder_args = t_args
+            best_train_args = t_args
+            best_builder_args = b_args
 
     return best_model, best_loss, best_train_args, best_builder_args
