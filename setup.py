@@ -4,8 +4,8 @@ import sys
 from setuptools import setup
 
 name = 'nnweaver'
-version = '0.1'
-release = '0.1'
+version = '0.2'
+release = '0.2'
 
 
 def get_pypi_compatible_description():
@@ -15,7 +15,8 @@ def get_pypi_compatible_description():
 
     try:
         import pypandoc
-        long_description = pypandoc.convert_text(long_description, 'rst', format='markdown_github')
+        long_description = pypandoc.convert_text(long_description, 'rst',
+                                                 format='markdown_github')
     except (ImportError, RuntimeError):
         long_description = readme
     return long_description

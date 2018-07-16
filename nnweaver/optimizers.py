@@ -4,6 +4,7 @@ algorithms that can be used to train neural networks.
 Currently, the following optimizers are available:
 
 1. :py:class:`.SGD` Stochastic Gradient Descent.
+2. :py:class:`.ProximalBundleMethod` Proximal Bundle Method.
 
 """
 
@@ -414,10 +415,6 @@ class ProximalBundleMethod(GradientBasedOptimizer):
         for clbk in callbacks:
             clbk.on_training_begin(nn)
 
-        # fig, ax = plt.subplots()
-        # plt.ion()
-        # plt.show()
-
         bar = tqdm.tqdm(total=max_iterations)
         for iteration in itertools.count(start=1, step=1):
             bar.write('Iteration %3d: ' % iteration, end='')
@@ -483,9 +480,6 @@ class ProximalBundleMethod(GradientBasedOptimizer):
                 bar.write('Exceeded max_iterations')
                 break
 
-            # bar.write("Weights: \n{}".format(str([l.weights for l in nn.layers])))
-            # bar.write("Biases: \n{}".format(str([l.bias for l in nn.layers])))
-
             # Callbacks
             y_predicted = nn.predict_batch(x)
             loss_value = self.loss.batch_mean(y_predicted, y)
@@ -494,18 +488,8 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             bar.set_postfix({'loss': loss_value, '‖d‖': d_norm, 'ν': ν})
             bar.update()
 
-            # if iteration % 5 == 0:
-            #     plt.cla()
-            #     plt.scatter(x, y, label='dataset')
-            #     plt.scatter(x, y_predicted, label='nn')
-            #     plt.legend()
-            #     fig.canvas.draw()
-            #     plt.pause(1e-16)
-
         for clbk in callbacks:
             clbk.on_training_end(nn)
-
-        # plt.ioff()
 
     @staticmethod
     def flatten(list_weights, list_bias):
@@ -527,90 +511,3 @@ class ProximalBundleMethod(GradientBasedOptimizer):
             high = low + l.bias.shape[0]
             l.bias = flattened[low:high].reshape(l.bias.shape)
             low = high
-
-
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    from nnweaver.nn import NN, Layer, Linear, uniform
-    from nnweaver.activations import Sigmoid, Rectifier
-    from nnweaver.losses import MSE
-    from nnweaver.regularizers import L1L2Regularizer
-    from nnweaver.callbacks import PlotLearningCurve
-    from sklearn import preprocessing
-    from nnweaver.validation import random_search
-    from scipy import stats
-
-    # nn = NN(5)
-    # nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-0.5, 0.5)))
-    # x = np.random.rand(5, 10)
-    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
-    # pbm = ProximalBundleMethod(MSE)
-    # pbm.train(nn, x.T, y.T, µ=1, accuracy_tolerance=1e-6, max_iterations=40, convex=True)
-    #
-    # def build():
-    #     nn = NN(1)
-    #     nn.add_layer(
-    #         Layer(1, Sigmoid, weights_initializer=uniform(-0.005, 0.005)))
-    #     nn.add_layer(
-    #         Layer(1, Linear, weights_initializer=uniform(-0.005, 0.005)))
-    #     return nn
-    # x = np.arange(-15, 15).reshape((1, -1))
-    # y = 1 * Sigmoid.apply(x) + 5
-    # y += .05 * np.random.randn(*y.shape)
-    #
-    # scaler_x = preprocessing.MinMaxScaler()
-    # scaler_y = preprocessing.MinMaxScaler()
-    # x = (x - x.min()) / (x.max() - x.min())
-    # y = (y - y.min()) / (y.max() - y.min())
-    #
-    # iterations = 25
-    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
-    # pbm = ProximalBundleMethod(MSE)
-    # # pbm.train(nn, x.T, y.T, accuracy_tolerance=1e-3,  µ=4, γ=0, m_L=0.1, m_R=0.99, t̅=0.5,
-    # #           max_iterations=iterations, callbacks=[callback])
-    # # print(nn.layers[0].weights)
-    #
-    # train_args = {'max_iterations': [50],
-    #               'mu': stats.uniform(0.001, 10),
-    #               'gamma': stats.uniform(0, 10),
-    #               'm_L': stats.uniform(1e-3, 0.499),
-    #               'm_R': stats.uniform(0.5, 0.499),
-    #               't_bar': stats.uniform(0, 1)
-    #               }
-    # result = random_search(build, pbm, x.T, y.T, train_args, {}, 30)
-    #
-    # nn = result[0]
-    # plt.scatter(x, y, label='dataset')
-    # plt.scatter(x, nn.predict_batch(x.T), label='nn')
-    # plt.legend()
-    # plt.show()
-    nn = NN(1)
-    nn.add_layer(Layer(5, Rectifier))
-    nn.add_layer(Layer(1, Linear))
-    x = np.arange(-1, 1, 0.01)
-    y = np.arange(-1, 1, 0.01) ** 2
-    pbm = ProximalBundleMethod(MSE)
-
-    iterations = 1000
-    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
-    pbm.train(nn, x.T, y.T,  mu=1, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=1,
-              accuracy_tolerance=1e-10, max_iterations=iterations,
-              regularizer=L1L2Regularizer(1e-8, 1e-5), a_bar=0.2, callbacks=[])
-    np.testing.assert_array_equal(y, nn.predict_batch(x.T).flatten())
-
-    # plt.scatter(x, y, label='dataset')
-    # plt.scatter(x, nn.predict_batch(x.T), label='nn')
-    # plt.legend()
-    # plt.show()
-    #
-    # nn = NN(3)
-    # nn.add_layer(Layer(1, Linear))
-    # x = np.random.rand(3, 10)
-    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2]
-    #
-    # iterations = 500
-    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
-    # pbm = ProximalBundleMethod(MSE)
-    # pbm.train(nn, x.T, y.T, mu=10, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0,
-    #           accuracy_tolerance=1e-6, max_iterations=iterations, callbacks=[callback])
-    # np.testing.assert_almost_equal(nn.predict_batch(x.T).flatten(), y, decimal=3)

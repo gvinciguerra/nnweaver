@@ -25,6 +25,11 @@ train_args = {
 assert len(sys.argv) > 1, 'Dataset path not given'
 dataset = np.genfromtxt(sys.argv[1] + '/train.csv', delimiter=',',
                         usecols=tuple(range(1, 13)))
+
+# DO NOT TOUCH UNTIL THE END
+# dataset_test = np.genfromtxt(sys.argv[1] + '/test.csv', delimiter=',',
+#                              usecols=tuple(range(1, 13)))
+
 x = dataset[:, :10]
 y = dataset[:, 10:]
 limit = int(len(x) * 0.8)
@@ -62,6 +67,3 @@ with open('%s/bundle_predictions.csv' % (directory), 'w') as f:
     f.write('y0_predict,y1_predict,y0_val,y1_val\n')
     for y, y_val in zip(y_predict, y_val):
         f.write('%f,%f,%f,%f\n' % (y[0], y[1], y_val[0], y_val[1]))
-
-# DO NOT TOUCH UNTIL THE END
-# dataset_test = np.genfromtxt(sys.argv[1] + '/test.csv', delimiter=',', usecols=tuple(range(1, 13)))
