@@ -1,30 +1,19 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>API Reference &#8212; nnweaver 0.1 documentation</title>
-    
+    <title>API Reference &#8212; nnweaver 0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Index" href="genindex.html" />
@@ -35,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">
+  </head><body>
   <div class="document">
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -95,12 +83,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -113,12 +103,12 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-nnweaver.activations">
 <span id="nnweaver-activations-module"></span><h2>nnweaver.activations module<a class="headerlink" href="#module-nnweaver.activations" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal"><span class="pre">activations</span></code></a> module provides a set of activation
+<p>The <a class="reference internal" href="#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">activations</span></code></a> module provides a set of activation
 functions to be applied to a layer of a neural network.</p>
 <dl class="class">
 <dt id="nnweaver.activations.Activation">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Activation</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Activation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for classes that implement an activation function.</p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.Activation.apply">
@@ -135,7 +125,7 @@ functions to be applied to a layer of a neural network.</p>
 <dl class="class">
 <dt id="nnweaver.activations.HardSigmoid">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">HardSigmoid</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.HardSigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.HardSigmoid.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.HardSigmoid.apply" title="Permalink to this definition">¶</a></dt>
@@ -145,7 +135,7 @@ input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the activated values of the input array.</td>
 </tr>
@@ -162,7 +152,7 @@ element of the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gradients on the values of the input array.</td>
 </tr>
@@ -175,7 +165,7 @@ element of the input array.</p>
 <dl class="class">
 <dt id="nnweaver.activations.HardTanH">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">HardTanH</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.HardTanH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.HardTanH.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.HardTanH.apply" title="Permalink to this definition">¶</a></dt>
@@ -185,7 +175,7 @@ input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the activated values of the input array.</td>
 </tr>
@@ -202,7 +192,7 @@ element of the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gradients on the values of the input array.</td>
 </tr>
@@ -215,7 +205,7 @@ element of the input array.</p>
 <dl class="class">
 <dt id="nnweaver.activations.Linear">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Linear</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Linear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.Linear.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Linear.apply" title="Permalink to this definition">¶</a></dt>
@@ -225,7 +215,7 @@ the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the input array.</td>
 </tr>
@@ -242,7 +232,7 @@ the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an array of 1s of the same shape of the input array.</td>
 </tr>
@@ -255,7 +245,7 @@ the input array.</p>
 <dl class="class">
 <dt id="nnweaver.activations.Rectifier">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Rectifier</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Rectifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.Rectifier.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Rectifier.apply" title="Permalink to this definition">¶</a></dt>
@@ -265,7 +255,7 @@ input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the activated values of the input array.</td>
 </tr>
@@ -282,7 +272,7 @@ element of the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gradients on the values of the input array.</td>
 </tr>
@@ -295,7 +285,7 @@ element of the input array.</p>
 <dl class="class">
 <dt id="nnweaver.activations.Sigmoid">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">Sigmoid</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.Sigmoid.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.Sigmoid.apply" title="Permalink to this definition">¶</a></dt>
@@ -305,7 +295,7 @@ input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the activated values of the input array.</td>
 </tr>
@@ -322,7 +312,7 @@ element of the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gradients on the values of the input array.</td>
 </tr>
@@ -335,7 +325,7 @@ element of the input array.</p>
 <dl class="class">
 <dt id="nnweaver.activations.TanH">
 <em class="property">class </em><code class="descclassname">nnweaver.activations.</code><code class="descname">TanH</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.TanH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.activations.Activation" title="nnweaver.activations.Activation"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.activations.Activation</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.activations.TanH.apply">
 <em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/activations.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.activations.TanH.apply" title="Permalink to this definition">¶</a></dt>
@@ -345,7 +335,7 @@ array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the activated values of the input array.</td>
 </tr>
@@ -362,7 +352,7 @@ of the input array.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; an array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – an array.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gradients on the values of the input array.</td>
 </tr>
@@ -375,15 +365,15 @@ of the input array.</p>
 </div>
 <div class="section" id="module-nnweaver.callbacks">
 <span id="nnweaver-callbacks-module"></span><h2>nnweaver.callbacks module<a class="headerlink" href="#module-nnweaver.callbacks" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.callbacks" title="nnweaver.callbacks"><code class="xref py py-mod docutils literal"><span class="pre">nnweaver.callbacks</span></code></a> module provides the callback classes that
-will be used to execute some pre-defined or user-defined actions before, during,
-or after the training of a neural network.</p>
+<p>The <a class="reference internal" href="#module-nnweaver.callbacks" title="nnweaver.callbacks"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nnweaver.callbacks</span></code></a> module provides the callback classes that
+will be used to execute some pre-defined or user-defined actions before,
+during, or after the training of a neural network.</p>
 <dl class="class">
 <dt id="nnweaver.callbacks.Callback">
 <em class="property">class </em><code class="descclassname">nnweaver.callbacks.</code><code class="descname">Callback</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/callbacks.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.callbacks.Callback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for classes that provide methods that can be
-called during the <a class="reference internal" href="#nnweaver.optimizers.Optimizer.train" title="nnweaver.optimizers.Optimizer.train"><code class="xref py py-meth docutils literal"><span class="pre">Optimizer.train()</span></code></a> execution.</p>
+called during the <a class="reference internal" href="#nnweaver.optimizers.Optimizer.train" title="nnweaver.optimizers.Optimizer.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Optimizer.train()</span></code></a> execution.</p>
 <dl class="method">
 <dt id="nnweaver.callbacks.Callback.on_epoch_end">
 <code class="descname">on_epoch_end</code><span class="sig-paren">(</span><em>epoch</em>, <em>nn</em>, <em>loss_value</em>, <em>metrics_values</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/callbacks.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.callbacks.Callback.on_epoch_end" title="Permalink to this definition">¶</a></dt>
@@ -403,25 +393,27 @@ called during the <a class="reference internal" href="#nnweaver.optimizers.Optim
 
 <dl class="class">
 <dt id="nnweaver.callbacks.PlotLearningCurve">
-<em class="property">class </em><code class="descclassname">nnweaver.callbacks.</code><code class="descname">PlotLearningCurve</code><span class="sig-paren">(</span><em>x_validation=None</em>, <em>y_validation=None</em>, <em>loss=None</em>, <em>interactive=True</em>, <em>max_epochs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/callbacks.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.callbacks.PlotLearningCurve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.callbacks.Callback</span></code></a></p>
-<p>Create a callback that plot the learning curve of a model during and
-after its training phase. If a data set and a loss function are given,
-it will also plot the validation results.</p>
+<em class="property">class </em><code class="descclassname">nnweaver.callbacks.</code><code class="descname">PlotLearningCurve</code><span class="sig-paren">(</span><em>x_validation=None</em>, <em>y_validation=None</em>, <em>loss=None</em>, <em>interactive=True</em>, <em>max_epochs=None</em>, <em>blocking=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/callbacks.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.callbacks.PlotLearningCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.callbacks.Callback</span></code></a></p>
+<p>Create a callback that plot the learning curve of a model during
+and after its training phase. If a data set and a loss function are
+given, it will also plot the validation results.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x_validation</strong> &#8211; the set of validation examples.</li>
-<li><strong>y_validation</strong> &#8211; the set of validation targets.</li>
-<li><strong>loss</strong> &#8211; the loss function to be evaluated in the validation step.</li>
-<li><strong>interactive</strong> &#8211; if <code class="docutils literal"><span class="pre">True</span></code>, show the learning curve interactively
-during the training of the model, otherwise only after the training.
+<li><strong>x_validation</strong> – the set of validation examples.</li>
+<li><strong>y_validation</strong> – the set of validation targets.</li>
+<li><strong>loss</strong> – the loss function to be evaluated in the validation step.</li>
+<li><strong>interactive</strong> – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, show the learning curve interactively
+during the training of the model, otherwise only after it’s ended.
 Notice that the former may cause a loss of training performance.</li>
-<li><strong>max_epochs</strong> &#8211; the expected number of epochs. If present, this
+<li><strong>max_epochs</strong> – the expected number of epochs. If present, this
 parameter prevents the plot from rescaling during the training (if
-<code class="docutils literal"><span class="pre">interactive</span></code> is <code class="docutils literal"><span class="pre">False</span></code>, this parameter is ignored).</li>
+<code class="docutils literal notranslate"><span class="pre">interactive</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, this parameter is ignored).</li>
+<li><strong>blocking</strong> – if <code class="docutils literal notranslate"><span class="pre">True</span></code> display the curve window and block until
+it has been closed.</li>
 </ul>
 </td>
 </tr>
@@ -436,10 +428,10 @@ parameter prevents the plot from rescaling during the training (if
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>epoch</strong> &#8211; the epoch number.</li>
-<li><strong>nn</strong> &#8211; the neural network that is being trained.</li>
-<li><strong>loss_value</strong> &#8211; the loss value obtained in this epoch.</li>
-<li><strong>metrics_values</strong> &#8211; ignored.</li>
+<li><strong>epoch</strong> – the epoch number.</li>
+<li><strong>nn</strong> – the neural network that is being trained.</li>
+<li><strong>loss_value</strong> – the loss value obtained in this epoch.</li>
+<li><strong>metrics_values</strong> – ignored.</li>
 </ul>
 </td>
 </tr>
@@ -455,7 +447,7 @@ parameter prevents the plot from rescaling during the training (if
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> &#8211; the neural network that is being trained.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> – the neural network that is being trained.</td>
 </tr>
 </tbody>
 </table>
@@ -469,7 +461,7 @@ parameter prevents the plot from rescaling during the training (if
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> &#8211; the neural network that is being trained.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> – the neural network that is being trained.</td>
 </tr>
 </tbody>
 </table>
@@ -480,7 +472,7 @@ parameter prevents the plot from rescaling during the training (if
 <dl class="class">
 <dt id="nnweaver.callbacks.WriteFileCallback">
 <em class="property">class </em><code class="descclassname">nnweaver.callbacks.</code><code class="descname">WriteFileCallback</code><span class="sig-paren">(</span><em>filename</em>, <em>x_validation=None</em>, <em>y_validation=None</em>, <em>loss=None</em>, <em>metrics=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/callbacks.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.callbacks.WriteFileCallback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.callbacks.Callback</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.callbacks.Callback</span></code></a></p>
 <p>Create a callback that, at each epoch, writes the loss found by a
 training algorithm to a CSV file. If a data set and a loss function are
 given, it will also write to the file the validation results.</p>
@@ -489,11 +481,12 @@ given, it will also write to the file the validation results.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>filename</strong> &#8211; the output file.</li>
-<li><strong>x_validation</strong> &#8211; the set of validation examples.</li>
-<li><strong>y_validation</strong> &#8211; the set of validation targets.</li>
-<li><strong>loss</strong> &#8211; the loss function to be evaluated in the validation step.</li>
-<li><strong>metrics</strong> &#8211; a list of metrics to be evaluated in the validation step.</li>
+<li><strong>filename</strong> – the output file.</li>
+<li><strong>x_validation</strong> – the set of validation examples.</li>
+<li><strong>y_validation</strong> – the set of validation targets.</li>
+<li><strong>loss</strong> – the loss function to be evaluated in the validation step.</li>
+<li><strong>metrics</strong> – a list of metrics to be evaluated in the validation
+step.</li>
 </ul>
 </td>
 </tr>
@@ -508,10 +501,10 @@ given, it will also write to the file the validation results.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>epoch</strong> &#8211; the epoch number.</li>
-<li><strong>nn</strong> &#8211; the neural network that is being trained.</li>
-<li><strong>loss_value</strong> &#8211; the loss value obtained in this epoch.</li>
-<li><strong>metrics_values</strong> &#8211; the other metric values obtained in this epoch.</li>
+<li><strong>epoch</strong> – the epoch number.</li>
+<li><strong>nn</strong> – the neural network that is being trained.</li>
+<li><strong>loss_value</strong> – the loss value obtained in this epoch.</li>
+<li><strong>metrics_values</strong> – the other metric values obtained in this epoch.</li>
 </ul>
 </td>
 </tr>
@@ -527,7 +520,7 @@ given, it will also write to the file the validation results.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> &#8211; the neural network that is being trained.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> – the neural network that is being trained.</td>
 </tr>
 </tbody>
 </table>
@@ -541,7 +534,7 @@ given, it will also write to the file the validation results.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> &#8211; the neural network that is being trained.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> – the neural network that is being trained.</td>
 </tr>
 </tbody>
 </table>
@@ -552,12 +545,12 @@ given, it will also write to the file the validation results.</p>
 </div>
 <div class="section" id="module-nnweaver.losses">
 <span id="nnweaver-losses-module"></span><h2>nnweaver.losses module<a class="headerlink" href="#module-nnweaver.losses" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.losses" title="nnweaver.losses"><code class="xref py py-mod docutils literal"><span class="pre">losses</span></code></a> module provides a set of loss/objective
+<p>The <a class="reference internal" href="#module-nnweaver.losses" title="nnweaver.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">losses</span></code></a> module provides a set of loss/objective
 functions whose output should be minimized during the training phase.</p>
 <dl class="class">
 <dt id="nnweaver.losses.Loss">
 <em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">Loss</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/losses.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.Loss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for classes that provide methods to compute the
 cost function over a single example or a batch of examples.</p>
 <dl class="classmethod">
@@ -569,10 +562,10 @@ cost function over a single example or a batch of examples.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the bi-dimensional matrix whose rows are the examples and
+<li><strong>y</strong> – the bi-dimensional matrix whose rows are the examples and
 whose columns are the predicted features.</li>
-<li><strong>y_target</strong> &#8211; the target bi-dimensional matrix. Must have the same
-number of rows of <code class="docutils literal"><span class="pre">y</span></code>,</li>
+<li><strong>y_target</strong> – the target bi-dimensional matrix. Must have the same
+number of rows of <code class="docutils literal notranslate"><span class="pre">y</span></code>,</li>
 </ul>
 </td>
 </tr>
@@ -598,7 +591,7 @@ number of rows of <code class="docutils literal"><span class="pre">y</span></cod
 <dl class="class">
 <dt id="nnweaver.losses.MEE">
 <em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">MEE</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/losses.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MEE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.losses.MEE.euclidean_distance">
 <em class="property">classmethod </em><code class="descname">euclidean_distance</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/losses.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MEE.euclidean_distance" title="Permalink to this definition">¶</a></dt>
@@ -608,8 +601,8 @@ number of rows of <code class="docutils literal"><span class="pre">y</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output (a column vector).</li>
-<li><strong>y_target</strong> &#8211; the target output (a column vector).</li>
+<li><strong>y</strong> – the predicted output (a column vector).</li>
+<li><strong>y_target</strong> – the target output (a column vector).</li>
 </ul>
 </td>
 </tr>
@@ -630,8 +623,8 @@ example.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output (a column vector).</li>
-<li><strong>y_target</strong> &#8211; the target output (a column vector).</li>
+<li><strong>y</strong> – the predicted output (a column vector).</li>
+<li><strong>y_target</strong> – the target output (a column vector).</li>
 </ul>
 </td>
 </tr>
@@ -651,8 +644,8 @@ example.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output (a column vector).</li>
-<li><strong>y_target</strong> &#8211; the target output (a column vector).</li>
+<li><strong>y</strong> – the predicted output (a column vector).</li>
+<li><strong>y_target</strong> – the target output (a column vector).</li>
 </ul>
 </td>
 </tr>
@@ -668,7 +661,7 @@ example.</p>
 <dl class="class">
 <dt id="nnweaver.losses.MSE">
 <em class="property">class </em><code class="descclassname">nnweaver.losses.</code><code class="descname">MSE</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/losses.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MSE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.losses.Loss</span></code></a></p>
 <dl class="classmethod">
 <dt id="nnweaver.losses.MSE.gradient">
 <em class="property">classmethod </em><code class="descname">gradient</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/losses.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.losses.MSE.gradient" title="Permalink to this definition">¶</a></dt>
@@ -679,8 +672,8 @@ example.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output (a column vector).</li>
-<li><strong>y_target</strong> &#8211; the target output (a column vector).</li>
+<li><strong>y</strong> – the predicted output (a column vector).</li>
+<li><strong>y_target</strong> – the target output (a column vector).</li>
 </ul>
 </td>
 </tr>
@@ -700,8 +693,8 @@ example.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output (a column vector).</li>
-<li><strong>y_target</strong> &#8211; the target output (a column vector).</li>
+<li><strong>y</strong> – the predicted output (a column vector).</li>
+<li><strong>y_target</strong> – the target output (a column vector).</li>
 </ul>
 </td>
 </tr>
@@ -717,25 +710,25 @@ example.</p>
 </div>
 <div class="section" id="module-nnweaver.nn">
 <span id="nnweaver-nn-module"></span><h2>nnweaver.nn module<a class="headerlink" href="#module-nnweaver.nn" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.nn" title="nnweaver.nn"><code class="xref py py-mod docutils literal"><span class="pre">nn</span></code></a> module contains the <a class="reference internal" href="#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal"><span class="pre">NN</span></code></a> (neural network) and
-the <a class="reference internal" href="#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal"><span class="pre">Layer</span></code></a> classes.</p>
+<p>The <a class="reference internal" href="#module-nnweaver.nn" title="nnweaver.nn"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nn</span></code></a> module contains the <a class="reference internal" href="#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal notranslate"><span class="pre">NN</span></code></a> (neural network) and
+the <a class="reference internal" href="#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a> classes.</p>
 <p>Formally, a neural network models a function
-<span class="math">\(f(\boldsymbol x)=f^{(L)}(f^{(L-1)}(\dots f^{(1)}(\boldsymbol
-x)\dots ))\)</span> , where <span class="math">\(\boldsymbol x\)</span> is the input vector, and the
-<span class="math">\(f^{(i)}\)</span> s are the layers of the network.</p>
+<span class="math notranslate nohighlight">\(f(\boldsymbol x)=f^{(L)}(f^{(L-1)}(\dots f^{(1)}(\boldsymbol
+x)\dots ))\)</span> , where <span class="math notranslate nohighlight">\(\boldsymbol x\)</span> is the input vector, and the
+<span class="math notranslate nohighlight">\(f^{(i)}\)</span> s are the layers of the network.</p>
 <p>A layer specifies a function
-<span class="math">\(f(\boldsymbol x)=g(\boldsymbol{Wx} + \boldsymbol b)\)</span> ,
-where <span class="math">\(g\)</span> is called activation function, <span class="math">\(\boldsymbol W\)</span> provides
-the weights of a linear transformation, and <span class="math">\(\boldsymbol b\)</span> is the bias
+<span class="math notranslate nohighlight">\(f(\boldsymbol x)=g(\boldsymbol{Wx} + \boldsymbol b)\)</span> ,
+where <span class="math notranslate nohighlight">\(g\)</span> is called activation function, <span class="math notranslate nohighlight">\(\boldsymbol W\)</span> provides
+the weights of a linear transformation, and <span class="math notranslate nohighlight">\(\boldsymbol b\)</span> is the bias
 vector.</p>
 <p>A neural network can be trained with an optimizer and then used to predict the
-target values of (previously unseen) examples. See the <a class="reference internal" href="#module-nnweaver.optimizers" title="nnweaver.optimizers"><code class="xref py py-mod docutils literal"><span class="pre">optimizers</span></code></a>
+target values of (previously unseen) examples. See the <a class="reference internal" href="#module-nnweaver.optimizers" title="nnweaver.optimizers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">optimizers</span></code></a>
 module for a list of available training algorithms and the
-<a class="reference internal" href="#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal"><span class="pre">activations</span></code></a> module for a list of available activation functions.</p>
+<a class="reference internal" href="#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">activations</span></code></a> module for a list of available activation functions.</p>
 <dl class="class">
 <dt id="nnweaver.nn.Layer">
 <em class="property">class </em><code class="descclassname">nnweaver.nn.</code><code class="descname">Layer</code><span class="sig-paren">(</span><em>units</em>, <em>activation=&lt;class 'nnweaver.activations.Linear'&gt;</em>, <em>weights_initializer=&lt;function uniform.&lt;locals&gt;.&lt;lambda&gt;&gt;</em>, <em>bias_initializer=&lt;function uniform.&lt;locals&gt;.&lt;lambda&gt;&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/nn.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.Layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Create a new layer with a given number of units and activation
 function.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -743,14 +736,14 @@ function.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>weights_initializer</strong> &#8211; a function that takes a shape and returns a
+<li><strong>weights_initializer</strong> – a function that takes a shape and returns a
 matrix with the specified shape. Already implemented weights
-initializer are <a class="reference internal" href="#nnweaver.nn.uniform" title="nnweaver.nn.uniform"><code class="xref py py-meth docutils literal"><span class="pre">uniform()</span></code></a>, <a class="reference internal" href="#nnweaver.nn.he_normal" title="nnweaver.nn.he_normal"><code class="xref py py-meth docutils literal"><span class="pre">he_normal()</span></code></a>,
-<a class="reference internal" href="#nnweaver.nn.glorot_uniform" title="nnweaver.nn.glorot_uniform"><code class="xref py py-meth docutils literal"><span class="pre">glorot_uniform()</span></code></a>.</li>
-<li><strong>bias_initializer</strong> &#8211; see the description of the argument
-<code class="docutils literal"><span class="pre">weights_initializer</span></code>.</li>
-<li><strong>units</strong> &#8211; the number of units in the layer.</li>
-<li><strong>activation</strong> &#8211; the activation function.</li>
+initializer are <a class="reference internal" href="#nnweaver.nn.uniform" title="nnweaver.nn.uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">uniform()</span></code></a>, <a class="reference internal" href="#nnweaver.nn.he_normal" title="nnweaver.nn.he_normal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">he_normal()</span></code></a>,
+<a class="reference internal" href="#nnweaver.nn.glorot_uniform" title="nnweaver.nn.glorot_uniform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">glorot_uniform()</span></code></a>.</li>
+<li><strong>bias_initializer</strong> – see the description of the argument
+<code class="docutils literal notranslate"><span class="pre">weights_initializer</span></code>.</li>
+<li><strong>units</strong> – the number of units in the layer.</li>
+<li><strong>activation</strong> – the activation function.</li>
 </ul>
 </td>
 </tr>
@@ -764,7 +757,7 @@ initializer are <a class="reference internal" href="#nnweaver.nn.uniform" title=
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; input to the layer (a column vector).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – input to the layer (a column vector).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">activated output (a column vector).</td>
 </tr>
@@ -781,7 +774,7 @@ values.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>preceding_units</strong> &#8211; number of units in the previous level.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>preceding_units</strong> – number of units in the previous level.</td>
 </tr>
 </tbody>
 </table>
@@ -796,7 +789,7 @@ function.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; input to the layer (a column vector).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – input to the layer (a column vector).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">weighted sum of the input with the bias (a column vector).</td>
 </tr>
@@ -816,14 +809,14 @@ random values.</p>
 <dl class="class">
 <dt id="nnweaver.nn.NN">
 <em class="property">class </em><code class="descclassname">nnweaver.nn.</code><code class="descname">NN</code><span class="sig-paren">(</span><em>input_dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/nn.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.NN" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Create a multi-layer perceptron (MLP, also called feedforward
 neural network) with the given number of inputs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_dim</strong> &#8211; number of dimensions of the input.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_dim</strong> – number of dimensions of the input.</td>
 </tr>
 </tbody>
 </table>
@@ -835,7 +828,7 @@ neural network) with the given number of inputs.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer</strong> &#8211; the <a class="reference internal" href="#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal"><span class="pre">Layer</span></code></a> to add.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer</strong> – the <a class="reference internal" href="#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a> to add.</td>
 </tr>
 </tbody>
 </table>
@@ -863,7 +856,7 @@ neural network) with the given number of inputs.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; the input. Its size must match the <code class="docutils literal"><span class="pre">input_dim</span></code> of the neural
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – the input. Its size must match the <code class="docutils literal notranslate"><span class="pre">input_dim</span></code> of the neural
 network.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the output of the neural network (a column vector).</td>
@@ -880,7 +873,7 @@ network.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x_batch</strong> &#8211; a list of examples.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x_batch</strong> – a list of examples.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an array (with the same size of x_batch) with the outputs of
 the network.</td>
@@ -901,13 +894,13 @@ the network.</td>
 <dt id="nnweaver.nn.glorot_uniform">
 <code class="descclassname">nnweaver.nn.</code><code class="descname">glorot_uniform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/nn.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.glorot_uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a weights initializer with values uniformly distributed over the
-half-open interval <span class="math">\(\left[-\sqrt{\frac{6}{n_i+n_o}},
-\sqrt{\frac{6}{n_i+n_o}} \right)\)</span>, where <span class="math">\(n_i\)</span> and <span class="math">\(n_o\)</span> are
+half-open interval <span class="math notranslate nohighlight">\(\left[-\sqrt{\frac{6}{n_i+n_o}},
+\sqrt{\frac{6}{n_i+n_o}} \right)\)</span>, where <span class="math notranslate nohighlight">\(n_i\)</span> and <span class="math notranslate nohighlight">\(n_o\)</span> are
 the number of inputs and outputs of a layer.</p>
-<p>The result of this function can be passed as <code class="docutils literal"><span class="pre">distribution</span></code> argument to
-<a class="reference internal" href="#nnweaver.nn.NN.add_layer" title="nnweaver.nn.NN.add_layer"><code class="xref py py-meth docutils literal"><span class="pre">NN.add_layer()</span></code></a> .</p>
-<p>See &#8220;Understanding the difficulty of training deep feedforward neural
-networks&#8221; by Glorot and Bengio (2010).</p>
+<p>The result of this function can be passed as <code class="docutils literal notranslate"><span class="pre">distribution</span></code> argument to
+<a class="reference internal" href="#nnweaver.nn.NN.add_layer" title="nnweaver.nn.NN.add_layer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NN.add_layer()</span></code></a> .</p>
+<p>See “Understanding the difficulty of training deep feedforward neural
+networks” by Glorot and Bengio (2010).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -922,10 +915,10 @@ networks&#8221; by Glorot and Bengio (2010).</p>
 <dt id="nnweaver.nn.he_normal">
 <code class="descclassname">nnweaver.nn.</code><code class="descname">he_normal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/nn.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.he_normal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a weight initializer with a Gaussian distribution whose mean is
-zero and standard deviation is <span class="math">\(\sqrt{\frac{2}{n_i}}\)</span>, where
-<span class="math">\(n_i\)</span> is the number inputs to a layer.</p>
-<p>See &#8220;Delving deep into rectifiers: Surpassing human-level performance on
-ImageNet classification&#8221; by He et al (2015).</p>
+zero and standard deviation is <span class="math notranslate nohighlight">\(\sqrt{\frac{2}{n_i}}\)</span>, where
+<span class="math notranslate nohighlight">\(n_i\)</span> is the number inputs to a layer.</p>
+<p>See “Delving deep into rectifiers: Surpassing human-level performance on
+ImageNet classification” by He et al (2015).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -940,16 +933,16 @@ ImageNet classification&#8221; by He et al (2015).</p>
 <dt id="nnweaver.nn.uniform">
 <code class="descclassname">nnweaver.nn.</code><code class="descname">uniform</code><span class="sig-paren">(</span><em>low</em>, <em>high</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/nn.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.nn.uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a weights initializer with values uniformly distributed over the
-half-open interval <span class="math">\([low, high)\)</span>.</p>
-<p>The result of this function can be passed as <code class="docutils literal"><span class="pre">distribution</span></code> argument to
-<a class="reference internal" href="#nnweaver.nn.NN.add_layer" title="nnweaver.nn.NN.add_layer"><code class="xref py py-meth docutils literal"><span class="pre">NN.add_layer()</span></code></a> .</p>
+half-open interval <span class="math notranslate nohighlight">\([low, high)\)</span>.</p>
+<p>The result of this function can be passed as <code class="docutils literal notranslate"><span class="pre">distribution</span></code> argument to
+<a class="reference internal" href="#nnweaver.nn.NN.add_layer" title="nnweaver.nn.NN.add_layer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NN.add_layer()</span></code></a> .</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>low</strong> &#8211; lower boundary of the random values.</li>
-<li><strong>high</strong> &#8211; upper boundary of the random values.</li>
+<li><strong>low</strong> – lower boundary of the random values.</li>
+<li><strong>high</strong> – upper boundary of the random values.</li>
 </ul>
 </td>
 </tr>
@@ -963,40 +956,41 @@ half-open interval <span class="math">\([low, high)\)</span>.</p>
 </div>
 <div class="section" id="module-nnweaver.optimizers">
 <span id="nnweaver-optimizers-module"></span><h2>nnweaver.optimizers module<a class="headerlink" href="#module-nnweaver.optimizers" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.optimizers" title="nnweaver.optimizers"><code class="xref py py-mod docutils literal"><span class="pre">optimizers</span></code></a> module provides a set of optimization
+<p>The <a class="reference internal" href="#module-nnweaver.optimizers" title="nnweaver.optimizers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">optimizers</span></code></a> module provides a set of optimization
 algorithms that can be used to train neural networks.</p>
 <p>Currently, the following optimizers are available:</p>
 <ol class="arabic simple">
-<li><a class="reference internal" href="#nnweaver.optimizers.SGD" title="nnweaver.optimizers.SGD"><code class="xref py py-class docutils literal"><span class="pre">SGD</span></code></a> Stochastic Gradient Descent.</li>
+<li><a class="reference internal" href="#nnweaver.optimizers.SGD" title="nnweaver.optimizers.SGD"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGD</span></code></a> Stochastic Gradient Descent.</li>
+<li><a class="reference internal" href="#nnweaver.optimizers.ProximalBundleMethod" title="nnweaver.optimizers.ProximalBundleMethod"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProximalBundleMethod</span></code></a> Proximal Bundle Method.</li>
 </ol>
 <dl class="class">
 <dt id="nnweaver.optimizers.GradientBasedOptimizer">
 <em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">GradientBasedOptimizer</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.GradientBasedOptimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.Optimizer" title="nnweaver.optimizers.Optimizer"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.optimizers.Optimizer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.Optimizer" title="nnweaver.optimizers.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.optimizers.Optimizer</span></code></a></p>
 <p>Abstract class for optimizers that use the gradient information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> &#8211; the loss function to optimize.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> – the loss function to optimize.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="nnweaver.optimizers.GradientBasedOptimizer.backward">
 <code class="descname">backward</code><span class="sig-paren">(</span><em>nn</em>, <em>x</em>, <em>y</em>, <em>inputs</em>, <em>outputs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.GradientBasedOptimizer.backward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Propagate an error backward through the network. See &#8220;Deep Learning&#8221;
+<dd><p>Propagate an error backward through the network. See “Deep Learning”
 by Ian Goodfellow et. al (2016) p. 206.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn</strong> &#8211; the neural network.</li>
-<li><strong>x</strong> &#8211; the input.</li>
-<li><strong>y</strong> &#8211; the target output.</li>
-<li><strong>inputs</strong> &#8211; a list of the input sums at each layer.</li>
-<li><strong>outputs</strong> &#8211; a list of the activated outputs at each layer.</li>
+<li><strong>nn</strong> – the neural network.</li>
+<li><strong>x</strong> – the input.</li>
+<li><strong>y</strong> – the target output.</li>
+<li><strong>inputs</strong> – a list of the input sums at each layer.</li>
+<li><strong>outputs</strong> – a list of the activated outputs at each layer.</li>
 </ul>
 </td>
 </tr>
@@ -1016,12 +1010,12 @@ by Ian Goodfellow et. al (2016) p. 206.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn</strong> &#8211; the neural network.</li>
-<li><strong>x</strong> &#8211; the input.</li>
+<li><strong>nn</strong> – the neural network.</li>
+<li><strong>x</strong> – the input.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">two lists of length <code class="docutils literal"><span class="pre">len(nn.layers)</span></code> that contains,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">two lists of length <code class="docutils literal notranslate"><span class="pre">len(nn.layers)</span></code> that contains,
 respectively, the input sum and the output (i.e. the result of
 applying the activation function on the input sum) at each layer.</p>
 </td>
@@ -1040,13 +1034,13 @@ applying the activation function on the input sum) at each layer.</p>
 <dl class="class">
 <dt id="nnweaver.optimizers.Optimizer">
 <em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">Optimizer</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.Optimizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for optimizers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> &#8211; the loss function to optimize.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> – the loss function to optimize.</td>
 </tr>
 </tbody>
 </table>
@@ -1059,8 +1053,8 @@ applying the activation function on the input sum) at each layer.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
 </ul>
 </td>
 </tr>
@@ -1079,16 +1073,83 @@ applying the activation function on the input sum) at each layer.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="nnweaver.optimizers.ProximalBundleMethod">
+<em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">ProximalBundleMethod</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.ProximalBundleMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.GradientBasedOptimizer" title="nnweaver.optimizers.GradientBasedOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.optimizers.GradientBasedOptimizer</span></code></a></p>
+<p>Create an optimizer that implement the Proximal Bundle Method
+algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> – the loss (cost) function to optimize.</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="nnweaver.optimizers.ProximalBundleMethod.flatten">
+<em class="property">static </em><code class="descname">flatten</code><span class="sig-paren">(</span><em>list_weights</em>, <em>list_bias</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.ProximalBundleMethod.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a column vector with the concatenation of the given neural
+network parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nnweaver.optimizers.ProximalBundleMethod.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>nn</em>, <em>x</em>, <em>y</em>, <em>mu=1.0</em>, <em>m_L=0.1</em>, <em>m_R=0.99</em>, <em>t_bar=0.5</em>, <em>gamma=0.5</em>, <em>accuracy_tolerance=0.0001</em>, <em>max_iterations=10</em>, <em>a_bar=inf</em>, <em>regularizer=None</em>, <em>callbacks=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.ProximalBundleMethod.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train the given neural network using the Proximal Bundle Method
+algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>nn</strong> – the neural network.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>mu</strong> – the fixed weight to be given to the
+stabilizing term throughout all the algorithm. It must be a
+strictly positive number.</li>
+<li><strong>m_L</strong> – line search parameter. Must be 0 &lt; m_L &lt;= 0.5.</li>
+<li><strong>m_R</strong> – line search parameter. Must be m_L &lt; m_R &lt; 1.</li>
+<li><strong>t_bar</strong> – set to a small value in (0,1) to prevent large steps
+relative to the decreasing of the loss function.</li>
+<li><strong>gamma</strong> – the distance measure parameter. Higher values lead to
+more localized information of the subgradients. Must be γ &gt;= 0.</li>
+<li><strong>accuracy_tolerance</strong> – a value greater than 0 that determines the
+stopping criterion.</li>
+<li><strong>max_iterations</strong> – maximum number of iterations before stopping the
+training.</li>
+<li><strong>a_bar</strong> – the locality radius tolerance. The subgradient
+information collected outside the ball of radius a_bar around
+the current solution will be discarded.</li>
+<li><strong>regularizer</strong> – a regularizer that will be used in the training.</li>
+<li><strong>callbacks</strong> – a list of <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callback</span></code></a> objects.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="nnweaver.optimizers.ProximalBundleMethod.unflatten">
+<em class="property">static </em><code class="descname">unflatten</code><span class="sig-paren">(</span><em>nn</em>, <em>flattened</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.ProximalBundleMethod.unflatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plug back the flattened weights/bias into the neural networks.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="nnweaver.optimizers.SGD">
 <em class="property">class </em><code class="descclassname">nnweaver.optimizers.</code><code class="descname">SGD</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.SGD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.GradientBasedOptimizer" title="nnweaver.optimizers.GradientBasedOptimizer"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.optimizers.GradientBasedOptimizer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.optimizers.GradientBasedOptimizer" title="nnweaver.optimizers.GradientBasedOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.optimizers.GradientBasedOptimizer</span></code></a></p>
 <p>Create an optimizer that implement the Stochastic Gradient Descent
 (SGD) algorithm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> &#8211; the loss (cost) function to optimize.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>loss</strong> – the loss (cost) function to optimize.</td>
 </tr>
 </tbody>
 </table>
@@ -1101,8 +1162,8 @@ applying the activation function on the input sum) at each layer.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>batch_size</strong> &#8211; the batch size.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>batch_size</strong> – the batch size.</li>
 </ul>
 </td>
 </tr>
@@ -1119,27 +1180,27 @@ bounds (indexes) of each batch.</p>
 <code class="descname">train</code><span class="sig-paren">(</span><em>nn</em>, <em>x</em>, <em>y</em>, <em>learning_rate=0.05</em>, <em>batch_size=1</em>, <em>epochs=1</em>, <em>momentum=0</em>, <em>metrics=None</em>, <em>callbacks=None</em>, <em>regularizer=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.SGD.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train the given neural network using the Stochastic Gradient
 Descent (SGD) algorithm.</p>
-<p>See &#8220;Deep Learning&#8221; by Ian Goodfellow et. al (2016) p. 286.</p>
+<p>See “Deep Learning” by Ian Goodfellow et. al (2016) p. 286.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nn</strong> &#8211; the neural network.</li>
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>learning_rate</strong> &#8211; the step size of the gradient descend. It can be
+<li><strong>nn</strong> – the neural network.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>learning_rate</strong> – the step size of the gradient descend. It can be
 a constant, or a generator that returns the step size at each
 next() call.</li>
-<li><strong>batch_size</strong> &#8211; the batch size.</li>
-<li><strong>epochs</strong> &#8211; the number of the epochs.</li>
-<li><strong>momentum</strong> &#8211; value between 0 and 1. Determines how quickly the
+<li><strong>batch_size</strong> – the batch size.</li>
+<li><strong>epochs</strong> – the number of the epochs.</li>
+<li><strong>momentum</strong> – value between 0 and 1. Determines how quickly the
 contribution of previous gradients exponentially decay.</li>
-<li><strong>metrics</strong> &#8211; a list of metric functions to be evaluated at each
+<li><strong>metrics</strong> – a list of metric functions to be evaluated at each
 epoch.</li>
-<li><strong>callbacks</strong> &#8211; a list of <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal"><span class="pre">Callback</span></code></a>
+<li><strong>callbacks</strong> – a list of <a class="reference internal" href="#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callback</span></code></a>
 objects.</li>
-<li><strong>regularizer</strong> &#8211; a regularizer that will be used in the training.</li>
+<li><strong>regularizer</strong> – a regularizer that will be used in the training.</li>
 </ul>
 </td>
 </tr>
@@ -1154,21 +1215,21 @@ objects.</li>
 <code class="descclassname">nnweaver.optimizers.</code><code class="descname">learning_rate_linearly_decayed</code><span class="sig-paren">(</span><em>initial_rate</em>, <em>final_rate=0</em>, <em>max_iterations=20</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.learning_rate_linearly_decayed" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator function that, starting from <cite>initial_rate</cite>, decays the
 learning rate linearly. After <cite>max_iterations</cite> it always yields final_rate.</p>
-<p>It can be passed as <code class="docutils literal"><span class="pre">learning_rate</span></code> argument to <a class="reference internal" href="#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal"><span class="pre">SGD.train()</span></code></a> .</p>
-<p>Formally, it computes <span class="math">\(\epsilon_k = (1 - \alpha)\epsilon_0+
-\alpha \epsilon_\tau\)</span>, where <span class="math">\(k\)</span> is the iteration number,
-<span class="math">\(\tau\)</span> is <code class="docutils literal"><span class="pre">max_iterations</span></code>, <span class="math">\(\epsilon_0\)</span> is
-<code class="docutils literal"><span class="pre">initial_rate</span></code>, <span class="math">\(\epsilon_\tau\)</span> is <code class="docutils literal"><span class="pre">final_rate</span></code>, and
-<span class="math">\(\alpha=\frac{k}{\tau}\)</span>.</p>
+<p>It can be passed as <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> argument to <a class="reference internal" href="#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SGD.train()</span></code></a> .</p>
+<p>Formally, it computes <span class="math notranslate nohighlight">\(\epsilon_k = (1 - \alpha)\epsilon_0+
+\alpha \epsilon_\tau\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the iteration number,
+<span class="math notranslate nohighlight">\(\tau\)</span> is <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>, <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is
+<code class="docutils literal notranslate"><span class="pre">initial_rate</span></code>, <span class="math notranslate nohighlight">\(\epsilon_\tau\)</span> is <code class="docutils literal notranslate"><span class="pre">final_rate</span></code>, and
+<span class="math notranslate nohighlight">\(\alpha=\frac{k}{\tau}\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_rate</strong> &#8211; the rate at the first iteration.</li>
-<li><strong>final_rate</strong> &#8211; the rate to return after the maximum number of
+<li><strong>initial_rate</strong> – the rate at the first iteration.</li>
+<li><strong>final_rate</strong> – the rate to return after the maximum number of
 iterations.</li>
-<li><strong>max_iterations</strong> &#8211; the maximum number of iterations.</li>
+<li><strong>max_iterations</strong> – the maximum number of iterations.</li>
 </ul>
 </td>
 </tr>
@@ -1180,18 +1241,18 @@ iterations.</li>
 <dt id="nnweaver.optimizers.learning_rate_time_based">
 <code class="descclassname">nnweaver.optimizers.</code><code class="descname">learning_rate_time_based</code><span class="sig-paren">(</span><em>initial_rate</em>, <em>rate_decay</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/optimizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.optimizers.learning_rate_time_based" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator function that decays the rate with time.</p>
-<p>It can be passed as <code class="docutils literal"><span class="pre">learning_rate</span></code> argument to <a class="reference internal" href="#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal"><span class="pre">SGD.train()</span></code></a> .</p>
+<p>It can be passed as <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> argument to <a class="reference internal" href="#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SGD.train()</span></code></a> .</p>
 <p>Formally, it computes
-<span class="math">\(\epsilon_k = \frac{\epsilon_{0}}{1+\gamma k}\)</span>, where
-<span class="math">\(k\)</span> is the iteration number, <span class="math">\(\gamma\)</span> is <code class="docutils literal"><span class="pre">rate_decay</span></code>,
-<span class="math">\(\epsilon_0\)</span> is <code class="docutils literal"><span class="pre">initial_rate</span></code>.</p>
+<span class="math notranslate nohighlight">\(\epsilon_k = \frac{\epsilon_{0}}{1+\gamma k}\)</span>, where
+<span class="math notranslate nohighlight">\(k\)</span> is the iteration number, <span class="math notranslate nohighlight">\(\gamma\)</span> is <code class="docutils literal notranslate"><span class="pre">rate_decay</span></code>,
+<span class="math notranslate nohighlight">\(\epsilon_0\)</span> is <code class="docutils literal notranslate"><span class="pre">initial_rate</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_rate</strong> &#8211; the rate at the first iteration.</li>
-<li><strong>rate_decay</strong> &#8211; the decay factor.</li>
+<li><strong>initial_rate</strong> – the rate at the first iteration.</li>
+<li><strong>rate_decay</strong> – the decay factor.</li>
 </ul>
 </td>
 </tr>
@@ -1202,20 +1263,20 @@ iterations.</li>
 </div>
 <div class="section" id="module-nnweaver.regularizers">
 <span id="nnweaver-regularizers-module"></span><h2>nnweaver.regularizers module<a class="headerlink" href="#module-nnweaver.regularizers" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.regularizers" title="nnweaver.regularizers"><code class="xref py py-mod docutils literal"><span class="pre">regularizers</span></code></a> provides a set of weight regularization
+<p>The <a class="reference internal" href="#module-nnweaver.regularizers" title="nnweaver.regularizers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">regularizers</span></code></a> provides a set of weight regularization
 classes to be used during the training of a neural network.</p>
 <dl class="class">
 <dt id="nnweaver.regularizers.L1L2Regularizer">
 <em class="property">class </em><code class="descclassname">nnweaver.regularizers.</code><code class="descname">L1L2Regularizer</code><span class="sig-paren">(</span><em>l1=0</em>, <em>l2=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/regularizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.regularizers.L1L2Regularizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnweaver.regularizers.Regularizer" title="nnweaver.regularizers.Regularizer"><code class="xref py py-class docutils literal"><span class="pre">nnweaver.regularizers.Regularizer</span></code></a></p>
-<p>Initialize a regularizer on weights&#8217; norms.</p>
+<dd><p>Bases: <a class="reference internal" href="#nnweaver.regularizers.Regularizer" title="nnweaver.regularizers.Regularizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnweaver.regularizers.Regularizer</span></code></a></p>
+<p>Initialize a regularizer on weights’ norms.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>l1</strong> &#8211; the factor of the L1 weight decay term.</li>
-<li><strong>l2</strong> &#8211; the factor of the L2 weight decay (aka ridge regression or
+<li><strong>l1</strong> – the factor of the L1 weight decay term.</li>
+<li><strong>l2</strong> – the factor of the L2 weight decay (aka ridge regression or
 Tikhonov regularization) term.</li>
 </ul>
 </td>
@@ -1231,7 +1292,7 @@ given neural network.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> &#8211; a neural network.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nn</strong> – a neural network.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the loss penalty.</td>
 </tr>
@@ -1248,7 +1309,7 @@ neural network.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer</strong> &#8211; a layer.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>layer</strong> – a layer.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the weight and the bias gradient penalty.</td>
 </tr>
@@ -1261,14 +1322,15 @@ neural network.</p>
 <dl class="class">
 <dt id="nnweaver.regularizers.Regularizer">
 <em class="property">class </em><code class="descclassname">nnweaver.regularizers.</code><code class="descname">Regularizer</code><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/regularizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.regularizers.Regularizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for classes that implements functions on the
-<a class="reference internal" href="#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal"><span class="pre">NN</span></code></a>&#8216;s parameters to control the complexity of the model during
+<a class="reference internal" href="#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal notranslate"><span class="pre">NN</span></code></a>’s parameters to control the complexity of the model during
 the training.</p>
 <dl class="method">
 <dt id="nnweaver.regularizers.Regularizer.__call__">
 <code class="descname">__call__</code><span class="sig-paren">(</span><em>nn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/regularizers.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.regularizers.Regularizer.__call__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Call self as a function.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="nnweaver.regularizers.Regularizer.gradient">
@@ -1280,21 +1342,21 @@ the training.</p>
 </div>
 <div class="section" id="module-nnweaver.utils">
 <span id="nnweaver-utils-module"></span><h2>nnweaver.utils module<a class="headerlink" href="#module-nnweaver.utils" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.utils" title="nnweaver.utils"><code class="xref py py-mod docutils literal"><span class="pre">nnweaver.utils</span></code></a> module provides a set of utility functions.</p>
+<p>The <a class="reference internal" href="#module-nnweaver.utils" title="nnweaver.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nnweaver.utils</span></code></a> module provides a set of utility functions.</p>
 <dl class="function">
 <dt id="nnweaver.utils.accuracy">
 <code class="descclassname">nnweaver.utils.</code><code class="descname">accuracy</code><span class="sig-paren">(</span><em>y</em>, <em>y_target</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/utils.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.utils.accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the (binary) accuracy of a given prediction.</p>
 <p>If the dimension of the input arrays is greater than 1 (e.g. <cite>y_target</cite> is
-encoded with <a class="reference internal" href="#nnweaver.utils.one_hot_encoding" title="nnweaver.utils.one_hot_encoding"><code class="xref py py-func docutils literal"><span class="pre">one_hot_encoding()</span></code></a>), the multi-class accuracy is
+encoded with <a class="reference internal" href="#nnweaver.utils.one_hot_encoding" title="nnweaver.utils.one_hot_encoding"><code class="xref py py-func docutils literal notranslate"><span class="pre">one_hot_encoding()</span></code></a>), the multi-class accuracy is
 computed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the predicted output.</li>
-<li><strong>y_target</strong> &#8211; the target (binary) output.</li>
+<li><strong>y</strong> – the predicted output.</li>
+<li><strong>y_target</strong> – the target (binary) output.</li>
 </ul>
 </td>
 </tr>
@@ -1313,7 +1375,7 @@ computed.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; the elements to be encoded.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – the elements to be encoded.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a matrix with rows equal to the number of the
 elements in x and max(x) columns.</td>
@@ -1325,36 +1387,36 @@ elements in x and max(x) columns.</td>
 </div>
 <div class="section" id="module-nnweaver.validation">
 <span id="nnweaver-validation-module"></span><h2>nnweaver.validation module<a class="headerlink" href="#module-nnweaver.validation" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal"><span class="pre">validation</span></code></a> module provides a set of cross validation
+<p>The <a class="reference internal" href="#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">validation</span></code></a> module provides a set of cross validation
 and model selection methods.</p>
 <dl class="function">
 <dt id="nnweaver.validation.grid_search">
-<code class="descclassname">nnweaver.validation.</code><code class="descname">grid_search</code><span class="sig-paren">(</span><em>nn_builder: typing.Callable[dict, nnweaver.nn.NN], optimizer, x, y, train_args, builder_args, cv: typing.Callable[[nnweaver.nn.NN, nnweaver.optimizers.Optimizer, object, object], typing.Dict[str, typing.List[float]]] = None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/validation.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.validation.grid_search" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">nnweaver.validation.</code><code class="descname">grid_search</code><span class="sig-paren">(</span><em>nn_builder: Callable[dict, nnweaver.nn.NN], optimizer, x, y, train_args, builder_args, cv: Callable[[nnweaver.nn.NN, nnweaver.optimizers.Optimizer, object, object], Dict[str, List[float]]] = None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/validation.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.validation.grid_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform an exhaustive search through a space of training and neural
 network topology parameters.</p>
 <p>An <em>iteration</em> of the grid search is one of the possible combinations of
 the training and builder parameters. The first ones will be fed to
-<code class="docutils literal"><span class="pre">optimizer.train()</span></code>, while the second ones will be fed to <code class="docutils literal"><span class="pre">nn_builder</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>, while the second ones will be fed to <code class="docutils literal notranslate"><span class="pre">nn_builder</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn_builder</strong> &#8211; a function that accepts a parameter <code class="docutils literal"><span class="pre">builder_args</span></code> and
+<li><strong>nn_builder</strong> – a function that accepts a parameter <code class="docutils literal notranslate"><span class="pre">builder_args</span></code> and
 returns a neural network.</li>
-<li><strong>optimizer</strong> &#8211; the optimizer to use in the grid search. Its signature
-must be compatible with the keys in <code class="docutils literal"><span class="pre">train_args</span></code>.</li>
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>train_args</strong> &#8211; a dictionary whose keys are:
-(1) compatible with the arguments of <code class="docutils literal"><span class="pre">optimizer.train()</span></code>, and
+<li><strong>optimizer</strong> – the optimizer to use in the grid search. Its signature
+must be compatible with the keys in <code class="docutils literal notranslate"><span class="pre">train_args</span></code>.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>train_args</strong> – a dictionary whose keys are:
+(1) compatible with the arguments of <code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>, and
 (2) associated with lists that represent the subset of the arguments to
 explore.</li>
-<li><strong>builder_args</strong> &#8211; a dictionary whose keys are:
-(1) compatible with the arguments of <code class="docutils literal"><span class="pre">nn_builder()</span></code>, and
+<li><strong>builder_args</strong> – a dictionary whose keys are:
+(1) compatible with the arguments of <code class="docutils literal notranslate"><span class="pre">nn_builder()</span></code>, and
 (2) associated with lists that represent the subset of arguments to
 explore.</li>
-<li><strong>cv</strong> &#8211; an optional cross validation method that is called at each
+<li><strong>cv</strong> – an optional cross validation method that is called at each
 iteration.</li>
 </ul>
 </td>
@@ -1379,15 +1441,15 @@ iteration.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn</strong> &#8211; a neural network.</li>
-<li><strong>optimizer</strong> &#8211; the optimizer used to train the neural network. Its
-signature must be compatible with the keys in <code class="docutils literal"><span class="pre">train_args</span></code>.</li>
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>train_ratio</strong> &#8211; the ratio between the size of the partition of examples
+<li><strong>nn</strong> – a neural network.</li>
+<li><strong>optimizer</strong> – the optimizer used to train the neural network. Its
+signature must be compatible with the keys in <code class="docutils literal notranslate"><span class="pre">train_args</span></code>.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>train_ratio</strong> – the ratio between the size of the partition of examples
 used to train the neural network and the one used to test it.</li>
-<li><strong>train_args</strong> &#8211; a dictionary whose keys are compatible with the arguments
-of <code class="docutils literal"><span class="pre">optimizer.train()</span></code>.</li>
+<li><strong>train_args</strong> – a dictionary whose keys are compatible with the arguments
+of <code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1403,26 +1465,26 @@ partition.</p>
 <dt id="nnweaver.validation.kfold_cross_validation">
 <code class="descclassname">nnweaver.validation.</code><code class="descname">kfold_cross_validation</code><span class="sig-paren">(</span><em>nn</em>, <em>optimizer</em>, <em>x</em>, <em>y</em>, <em>k=3</em>, <em>**train_args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/validation.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.validation.kfold_cross_validation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a K-Fold Cross Validation of the given neural network.</p>
-<p>It splits the data set into <code class="docutils literal"><span class="pre">k</span></code> partitions that will be used to test
-<code class="docutils literal"><span class="pre">k</span></code> different models (trained on the other <code class="docutils literal"><span class="pre">k</span></code> - 1 partitions).</p>
+<p>It splits the data set into <code class="docutils literal notranslate"><span class="pre">k</span></code> partitions that will be used to test
+<code class="docutils literal notranslate"><span class="pre">k</span></code> different models (trained on the other <code class="docutils literal notranslate"><span class="pre">k</span></code> - 1 partitions).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn</strong> &#8211; a neural network.</li>
-<li><strong>optimizer</strong> &#8211; the optimizer used to train the neural network. Its
-signature must be compatible with the keys in <code class="docutils literal"><span class="pre">train_args</span></code>.</li>
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>k</strong> &#8211; the number of partitions (folds) of the data set.</li>
-<li><strong>train_args</strong> &#8211; a dictionary whose keys are compatible with the arguments
-of <code class="docutils literal"><span class="pre">optimizer.train()</span></code>.</li>
+<li><strong>nn</strong> – a neural network.</li>
+<li><strong>optimizer</strong> – the optimizer used to train the neural network. Its
+signature must be compatible with the keys in <code class="docutils literal notranslate"><span class="pre">train_args</span></code>.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>k</strong> – the number of partitions (folds) of the data set.</li>
+<li><strong>train_args</strong> – a dictionary whose keys are compatible with the arguments
+of <code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary with keys <code class="docutils literal"><span class="pre">'validation_scores'</span></code> and
-<code class="docutils literal"><span class="pre">'train_scores'</span></code> whose values are arrays of size <code class="docutils literal"><span class="pre">k</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dictionary with keys <code class="docutils literal notranslate"><span class="pre">'validation_scores'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'train_scores'</span></code> whose values are arrays of size <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -1431,33 +1493,33 @@ of <code class="docutils literal"><span class="pre">optimizer.train()</span></co
 
 <dl class="function">
 <dt id="nnweaver.validation.random_search">
-<code class="descclassname">nnweaver.validation.</code><code class="descname">random_search</code><span class="sig-paren">(</span><em>nn_builder: typing.Callable[dict, nnweaver.nn.NN], optimizer, x, y, train_args: typing.Dict[str, typing.Union[scipy.stats._distn_infrastructure.rv_frozen, typing.List[typing.Any]]], builder_args: typing.Dict[str, typing.Union[scipy.stats._distn_infrastructure.rv_frozen, typing.List[typing.Any]]], iterations, cv: typing.Callable[[nnweaver.nn.NN, nnweaver.optimizers.Optimizer, object, object], typing.Dict[str, typing.List[float]]] = None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/validation.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.validation.random_search" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">nnweaver.validation.</code><code class="descname">random_search</code><span class="sig-paren">(</span><em>nn_builder: Callable[dict, nnweaver.nn.NN], optimizer, x, y, train_args: Dict[str, Union[scipy.stats._distn_infrastructure.rv_frozen, typing.List[typing.Any]]], builder_args: Dict[str, Union[scipy.stats._distn_infrastructure.rv_frozen, typing.List[typing.Any]]], iterations, cv: Callable[[nnweaver.nn.NN, nnweaver.optimizers.Optimizer, object, object], Dict[str, List[float]]] = None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gvinciguerra/nnweaver/blob/master/nnweaver/validation.py"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnweaver.validation.random_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a random search through a space of training and neural network
 topology parameters.</p>
 <p>An <em>iteration</em> of the random search is one of the possible combinations of
 the training and builder parameters. The first ones will be fed to
-<code class="docutils literal"><span class="pre">optimizer.train()</span></code>, while the second ones will be fed to <code class="docutils literal"><span class="pre">nn_builder</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>, while the second ones will be fed to <code class="docutils literal notranslate"><span class="pre">nn_builder</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nn_builder</strong> &#8211; a function that accepts a parameter <code class="docutils literal"><span class="pre">builder_args</span></code> and
+<li><strong>nn_builder</strong> – a function that accepts a parameter <code class="docutils literal notranslate"><span class="pre">builder_args</span></code> and
 returns a neural network.</li>
-<li><strong>optimizer</strong> &#8211; the optimizer to use in the random search. Its signature
-must be compatible with the keys in <code class="docutils literal"><span class="pre">train_args</span></code>.</li>
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>train_args</strong> &#8211; a dictionary whose keys are:
-(1) compatible with the arguments of <code class="docutils literal"><span class="pre">optimizer.train()</span></code>, and
+<li><strong>optimizer</strong> – the optimizer to use in the random search. Its signature
+must be compatible with the keys in <code class="docutils literal notranslate"><span class="pre">train_args</span></code>.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>train_args</strong> – a dictionary whose keys are:
+(1) compatible with the arguments of <code class="docutils literal notranslate"><span class="pre">optimizer.train()</span></code>, and
 (2) associated with lists or (SciPy) random distributions that represent
 the subset of arguments to explore.</li>
-<li><strong>builder_args</strong> &#8211; a dictionary whose keys are:
-(1) compatible with the arguments of <code class="docutils literal"><span class="pre">nn_builder()</span></code>, and
+<li><strong>builder_args</strong> – a dictionary whose keys are:
+(1) compatible with the arguments of <code class="docutils literal notranslate"><span class="pre">nn_builder()</span></code>, and
 (2) associated with lists or (SciPy) random distributions that represent
 the subset of arguments to explore.</li>
-<li><strong>iterations</strong> &#8211; the number of iterations of the random search.</li>
-<li><strong>cv</strong> &#8211; an optional cross validation method that is called at each
+<li><strong>iterations</strong> – the number of iterations of the random search.</li>
+<li><strong>cv</strong> – an optional cross validation method that is called at each
 iteration.</li>
 </ul>
 </td>
@@ -1482,10 +1544,10 @@ iteration.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> &#8211; a list of examples.</li>
-<li><strong>y</strong> &#8211; a list with the target output of each example.</li>
-<li><strong>groups</strong> &#8211; the list of the sizes of each partition (the sum of its
-elements must be <code class="docutils literal"><span class="pre">len(x)</span></code>.</li>
+<li><strong>x</strong> – a list of examples.</li>
+<li><strong>y</strong> – a list with the target output of each example.</li>
+<li><strong>groups</strong> – the list of the sizes of each partition (the sum of its
+elements must be <code class="docutils literal notranslate"><span class="pre">len(x)</span></code>.</li>
 </ul>
 </td>
 </tr>

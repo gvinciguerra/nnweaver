@@ -1,30 +1,19 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Getting Started &#8212; nnweaver 0.1 documentation</title>
-    
+    <title>Getting Started &#8212; nnweaver 0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tuning Hyperparameters" href="hyperparameters.html" />
@@ -35,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">
+  </head><body>
   <div class="document">
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -84,19 +72,21 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">NNWeaver&#8217;s Documentation</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">NNWeaver’s Documentation</a></li>
       <li>Next: <a href="hyperparameters.html" title="next chapter">Tuning Hyperparameters</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -109,44 +99,44 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="specify-a-neural-network-topology">
 <h2>Specify a Neural Network Topology<a class="headerlink" href="#specify-a-neural-network-topology" title="Permalink to this headline">¶</a></h2>
-<p>You can create a feedforward neural network specifying the number of inputs as the argument of <a class="reference internal" href="nnweaver.html#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal"><span class="pre">NN</span></code></a>, and the
-number of outputs by adding a <a class="reference internal" href="nnweaver.html#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal"><span class="pre">Layer</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver</span> <span class="k">import</span> <span class="o">*</span>
+<p>You can create a feedforward neural network specifying the number of inputs as the argument of <a class="reference internal" href="nnweaver.html#nnweaver.nn.NN" title="nnweaver.nn.NN"><code class="xref py py-class docutils literal notranslate"><span class="pre">NN</span></code></a>, and the
+number of outputs by adding a <a class="reference internal" href="nnweaver.html#nnweaver.nn.Layer" title="nnweaver.nn.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver</span> <span class="k">import</span> <span class="o">*</span>
 <span class="n">nn</span> <span class="o">=</span> <span class="n">NN</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">Linear</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>You can always add more layers, specify an activation function and a weights initializer, as the following lines of code
 show:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">Sigmoid</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">Sigmoid</span><span class="p">))</span>
 <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">Rectifier</span><span class="p">,</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)))</span>
 <span class="n">nn</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="n">TanH</span><span class="p">,</span> <span class="n">glorot_uniform</span><span class="p">()))</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="nnweaver.html#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal"><span class="pre">activations</span></code></a> for the list of available activation functions.</p>
+<p>See <a class="reference internal" href="nnweaver.html#module-nnweaver.activations" title="nnweaver.activations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">activations</span></code></a> for the list of available activation functions.</p>
 </div>
 <div class="section" id="train-the-neural-network">
 <h2>Train the Neural Network<a class="headerlink" href="#train-the-neural-network" title="Permalink to this headline">¶</a></h2>
-<p>Now, choose a <a class="reference internal" href="nnweaver.html#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal"><span class="pre">Loss</span></code></a> function, pass it to an <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.Optimizer" title="nnweaver.optimizers.Optimizer"><code class="xref py py-class docutils literal"><span class="pre">Optimizer</span></code></a> (like the stochastic gradient
+<p>Now, choose a <a class="reference internal" href="nnweaver.html#nnweaver.losses.Loss" title="nnweaver.losses.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a> function, pass it to an <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.Optimizer" title="nnweaver.optimizers.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a> (like the stochastic gradient
 descent) and start the training:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sgd</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">MSE</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sgd</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">MSE</span><span class="p">)</span>
 <span class="n">sgd</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>There are other arguments to pass to the <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal"><span class="pre">SGD.train()</span></code></a> method, for example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sgd</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+<p>There are other arguments to pass to the <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SGD.train()</span></code></a> method, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sgd</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
           <span class="n">learning_rate_time_based</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
           <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Also, you may want to control the model complexity. <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal"><span class="pre">SGD.train()</span></code></a> has a <code class="docutils literal"><span class="pre">regularizer</span></code> argument, that
-accepts an instance of the <a class="reference internal" href="nnweaver.html#nnweaver.regularizers.L1L2Regularizer" title="nnweaver.regularizers.L1L2Regularizer"><code class="xref py py-class docutils literal"><span class="pre">L1L2Regularizer</span></code></a> class.</p>
+<p>Also, you may want to control the model complexity. <a class="reference internal" href="nnweaver.html#nnweaver.optimizers.SGD.train" title="nnweaver.optimizers.SGD.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SGD.train()</span></code></a> has a <code class="docutils literal notranslate"><span class="pre">regularizer</span></code> argument, that
+accepts an instance of the <a class="reference internal" href="nnweaver.html#nnweaver.regularizers.L1L2Regularizer" title="nnweaver.regularizers.L1L2Regularizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">L1L2Regularizer</span></code></a> class.</p>
 </div>
 <div class="section" id="validate-a-model">
 <h2>Validate a Model<a class="headerlink" href="#validate-a-model" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="nnweaver.html#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal"><span class="pre">validation</span></code></a> module has some facilities to assess a model and select its hyperparameters. These lines of code,
+<p>The <a class="reference internal" href="nnweaver.html#module-nnweaver.validation" title="nnweaver.validation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">validation</span></code></a> module has some facilities to assess a model and select its hyperparameters. These lines of code,
 for example, perform a 3-fold cross validation:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.validation</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.validation</span> <span class="k">import</span> <span class="o">*</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">kfold_cross_validation</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">sgd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
@@ -155,9 +145,9 @@ for example, perform a 3-fold cross validation:</p>
 </div>
 <div class="section" id="other-cool-stuff">
 <h2>Other (Cool) Stuff<a class="headerlink" href="#other-cool-stuff" title="Permalink to this headline">¶</a></h2>
-<p>With the <a class="reference internal" href="nnweaver.html#module-nnweaver.callbacks" title="nnweaver.callbacks"><code class="xref py py-mod docutils literal"><span class="pre">callbacks</span></code></a> mechanism you can get information on the training procedure. There are two callbacks in
+<p>With the <a class="reference internal" href="nnweaver.html#module-nnweaver.callbacks" title="nnweaver.callbacks"><code class="xref py py-mod docutils literal notranslate"><span class="pre">callbacks</span></code></a> mechanism you can get information on the training procedure. There are two callbacks in
 NNWeaver to write to a file and to plot the loss for each epoch on a training and a validation set:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.callbacks</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nnweaver.callbacks</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">write</span> <span class="o">=</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">WriteFileCallback</span><span class="p">(</span><span class="s1">&#39;out.csv&#39;</span><span class="p">)</span>
 <span class="n">plot</span> <span class="o">=</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">PlotLearningCurve</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">MSE</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -167,7 +157,7 @@ NNWeaver to write to a file and to plot the loss for each epoch on a training an
           <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">write</span><span class="p">,</span> <span class="n">plot</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>You can implement your own callback extending the class <a class="reference internal" href="nnweaver.html#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal"><span class="pre">callbacks.Callback</span></code></a>.</p>
+<p>You can implement your own callback extending the class <a class="reference internal" href="nnweaver.html#nnweaver.callbacks.Callback" title="nnweaver.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">callbacks.Callback</span></code></a>.</p>
 </div>
 </div>
 
