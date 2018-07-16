@@ -4,8 +4,8 @@
 
 # NNWeaver #
 
-[![Coverage Status](https://img.shields.io/coveralls/github/gvinciguerra/nnweaver.svg)](https://coveralls.io/github/gvinciguerra/nnweaver)
-[![Build Status](https://img.shields.io/travis/gvinciguerra/nnweaver.svg)](https://travis-ci.org/gvinciguerra/nnweaver)
+[![Coverage Status](https://coveralls.io/repos/github/gvinciguerra/nnweaver/badge.svg?branch=master)](https://coveralls.io/github/gvinciguerra/nnweaver?branch=master)
+[![Build Status](https://travis-ci.org/gvinciguerra/nnweaver.svg?branch=master)](https://travis-ci.org/gvinciguerra/nnweaver)
 
 NNWeaver is a *tiny* Python library to create and train feedforward neural networks. We developed this library as a project for a Machine Learning course.
 
