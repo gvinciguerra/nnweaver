@@ -92,16 +92,16 @@ def test_bundle_bisector():
     x = np.arange(-1, 1, 0.2)
     y = np.arange(-1, 1, 0.2)
     nn = NN(1)
-    nn.add_layer(Layer(1, Linear, uniform(0, 0), uniform(0, 0)))
+    nn.add_layer(Layer(1, Linear, he_normal(), he_normal()))
     pbm = ProximalBundleMethod(MSE)
     pbm.train(nn, x, y,  mu=0.001, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0,
               accuracy_tolerance=1e-10, max_iterations=500)
-    np.testing.assert_almost_equal(nn.predict(-1), -1, decimal=4)
+    np.testing.assert_almost_equal(nn.predict(-1), -1, decimal=3)
 
 
 def test_bundle_linear():
     nn = NN(3)
-    nn.add_layer(Layer(1, Linear, uniform(0, 0), uniform(0, 0)))
+    nn.add_layer(Layer(1, Linear, glorot_uniform(), uniform(0, 0)))
     x = np.array(
         [[0.14131787,  0.31549032,  0.33582581,  0.16351758,  0.23220519],
          [0.34221643,  0.36613729,  0.9500988,  0.74681656,  0.08620996],
@@ -110,16 +110,4 @@ def test_bundle_linear():
     pbm = ProximalBundleMethod(MSE)
     pbm.train(nn, x.T, y.T, mu=0.001, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0,
               accuracy_tolerance=1e-10, max_iterations=500)
-    np.testing.assert_almost_equal(nn.predict([0, 1, 2]), 2, decimal=4)
-
-
-# def test_bundle_quadratic():
-#     nn = NN(1)
-#     nn.add_layer(Layer(3, Rectifier, uniform(0, 0.9), uniform(0, 0.9)))
-#     nn.add_layer(Layer(1, Linear, uniform(0, 0.9), uniform(0, 0.9)))
-#     x = np.arange(-1, 1, 0.1)
-#     y = np.arange(-1, 1, 0.1) ** 2
-#     pbm = ProximalBundleMethod(MSE)
-#     pbm.train(nn, x.T, y.T,  mu=10, m_L=0.3, m_R=0.99, t_bar=0.5, gamma=2,
-#               accuracy_tolerance=1e-3, max_iterations=100)
-#     np.testing.assert_almost_equal(nn.predict([0, 1, 2, 3, 4]), -3, decimal=1)
+    np.testing.assert_almost_equal(nn.predict([0, 1, 2]), 2, decimal=3)
