@@ -5,6 +5,7 @@ python:
 install:
   - pip install --upgrade pip setuptools wheel pytest
   - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+  - pip install cvxopt
   - pip install pytest pytest-cov coveralls
   - python setup.py install
 before_script:

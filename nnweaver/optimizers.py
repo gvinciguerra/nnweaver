@@ -7,7 +7,9 @@ Currently, the following optimizers are available:
 
 """
 
+import functools
 import itertools
+import operator
 from abc import ABC, abstractmethod
 from math import ceil
 from sys import stdout
@@ -15,6 +17,7 @@ from types import GeneratorType
 
 import numpy as np
 import tqdm
+from cvxopt import matrix, solvers
 
 
 class Optimizer(ABC):
@@ -128,8 +131,8 @@ class SGD(GradientBasedOptimizer):
         return [(i * batch_size, min(size, (i + 1) * batch_size))
                 for i in range(num_batches)]
 
-    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1, momentum=0,
-              metrics=None, callbacks=None, regularizer=None):
+    def train(self, nn, x, y, learning_rate=0.05, batch_size=1, epochs=1,
+              momentum=0, metrics=None, callbacks=None, regularizer=None):
         """ Train the given neural network using the Stochastic Gradient
         Descent (SGD) algorithm.
 
@@ -169,7 +172,8 @@ class SGD(GradientBasedOptimizer):
             c.on_training_begin(nn)
 
         for epoch in range(epochs):
-            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, desc="Epoch %3d/%d" % (epoch + 1, epochs), file=stdout)
+            bar = tqdm.tqdm(batch_ranges, bar_format=bar_format, file=stdout,
+                            desc="Epoch %3d/%d" % (epoch + 1, epochs))
             x_shuffled, y_shuffled = SGD.shuffle(x, y)
 
             for low, high in batch_ranges:
@@ -182,7 +186,8 @@ class SGD(GradientBasedOptimizer):
                     i = i.reshape(-1, 1)
                     o = o.reshape(-1, 1)
                     inputs, outputs = self.forward(nn, i)
-                    grad_weights, grad_bias = self.backward(nn, i, o, inputs, outputs)
+                    grad_weights, grad_bias = self.backward(
+                        nn, i, o, inputs, outputs)
                     for l in range(len(nn.layers)):
                         errors_bias[l] += grad_bias[l]
                         errors_weights[l] += grad_weights[l]
@@ -194,14 +199,17 @@ class SGD(GradientBasedOptimizer):
                     step = learning_rate
 
                 # Update weights
-                iterator = zip(nn.layers, errors_weights, errors_bias, velocity_weights, velocity_bias)
+                self._weights_gradient = (errors_weights, errors_bias)
+                iterator = zip(nn.layers, errors_weights,
+                               errors_bias, velocity_weights, velocity_bias)
                 new_velocity_bias, new_velocity_weights = [], []
 
                 for (l, grad_w, grad_b, vel_w, vel_b) in iterator:
                     assert (l.weights - step * grad_w).shape == l.weights.shape
-                    penalty_w, penalty_b = (0, 0) if regularizer is None else regularizer.gradient(l)
+                    penalty_w, penalty_b = (0, 0) if regularizer is None \
+                        else regularizer.gradient(l)
 
-                    # Apply penalty to weights (and compute the gradients' velocity)
+                    # Apply penalty to weights
                     g_w = step * (grad_w + penalty_w) / batch_size
                     g_b = step * (grad_b + penalty_b) / batch_size
 
@@ -215,12 +223,15 @@ class SGD(GradientBasedOptimizer):
                     l.bias -= v_b
                     l.weights -= v_w
 
-                velocity_bias, velocity_weights = new_velocity_bias, new_velocity_weights
+                velocity_bias = new_velocity_bias
+                velocity_weights = new_velocity_weights
                 bar.update(1)
 
             y_predicted = nn.predict_batch(x)
-            loss_value = self.loss.batch_mean(y_predicted, y) + (0 if regularizer is None else regularizer(nn))
-            metrics_values = {} if metrics is None else {m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
+            loss_value = self.loss.batch_mean(y_predicted, y) \
+                + (0 if regularizer is None else regularizer(nn))
+            metrics_values = {} if metrics is None else {
+                m.__name__: '%.4f' % m(y_predicted, y) for m in metrics}
             bar.set_postfix(loss='%.4f' % loss_value, **metrics_values)
             bar.close()
             for c in callbacks:
@@ -247,7 +258,8 @@ def learning_rate_time_based(initial_rate, rate_decay):
         yield initial_rate / (1. + rate_decay * i)
 
 
-def learning_rate_linearly_decayed(initial_rate, final_rate=0, max_iterations=20):
+def learning_rate_linearly_decayed(initial_rate, final_rate=0,
+                                   max_iterations=20):
     """ A generator function that, starting from `initial_rate`, decays the
     learning rate linearly. After `max_iterations` it always yields final_rate.
 
@@ -272,3 +284,333 @@ def learning_rate_linearly_decayed(initial_rate, final_rate=0, max_iterations=20
 
     while True:
         yield final_rate
+
+
+class ProximalBundleMethod(GradientBasedOptimizer):
+    def __init__(self, loss):
+        """ Create an optimizer that implement the Proximal Bundle Method
+        algorithm.
+
+        :param loss: the loss (cost) function to optimize.
+        """
+        super().__init__(loss)
+        self.seed = None
+
+    def train(self, nn, x, y, mu=1., m_L=0.1, m_R=0.99, t_bar=0.5, gamma=0.5,
+              accuracy_tolerance=1e-4, max_iterations=10, a_bar=np.inf,
+              regularizer=None, callbacks=None):
+        """ Train the given neural network using the Proximal Bundle Method
+        algorithm.
+
+        :param nn: the neural network.
+        :param x: a list of examples.
+        :param y: a list with the target output of each example.
+        :param mu: the fixed weight to be given to the
+            stabilizing term throughout all the algorithm. It must be a
+            strictly positive number.
+        :param m_L: line search parameter. Must be 0 < m_L <= 0.5.
+        :param m_R: line search parameter. Must be m_L < m_R < 1.
+        :param t_bar: set to a small value in (0,1) to prevent large steps
+            relative to the decreasing of the loss function.
+        :param gamma: the distance measure parameter. Higher values lead to
+            more localized information of the subgradients. Must be γ >= 0.
+        :param accuracy_tolerance: a value greater than 0 that determines the
+            stopping criterion.
+        :param max_iterations: maximum number of iterations before stopping the
+            training.
+        :param a_bar: the locality radius tolerance. The subgradient
+            information collected outside the ball of radius a_bar around
+            the current solution will be discarded.
+        :param regularizer: a regularizer that will be used in the training.
+        :param callbacks: a list of :py:class:`.Callback` objects.
+        """
+        t̅ = t_bar
+        µ = mu
+        γ = gamma
+        a̅ = a_bar
+
+        assert µ > 0
+        assert accuracy_tolerance > 0
+        assert 0 < t̅ <= 1
+        assert 0 < m_L <= 0.5 and m_L < m_R < 1
+        assert γ >= 0
+        assert a̅ >= 0
+
+        if callbacks is None:
+            callbacks = []
+
+        def grad_f():
+            errors_bias = [np.zeros(l.bias.shape) for l in nn.layers]
+            errors_weights = [np.zeros(l.weights.shape) for l in nn.layers]
+            for i, o in zip(x, y):
+                i = i.reshape(-1, 1)
+                o = o.reshape(-1, 1)
+                inputs, outputs = self.forward(nn, i)
+                grad_weights, grad_bias = self.backward(nn, i, o, inputs,
+                                                        outputs)
+                for l in range(len(nn.layers)):
+                    weight_penalty, bias_penalty = (0, 0)
+                    if regularizer is not None:
+                        weight_penalty, bias_penalty = regularizer.gradient(
+                            nn.layers[l])
+                    errors_bias[l] += (grad_bias[l] + bias_penalty) / len(x)
+                    errors_weights[l] += (grad_weights[l] + weight_penalty) / len(x)
+            return self.flatten(errors_weights, errors_bias)
+
+        def f(θ):
+            self.unflatten(nn, θ)
+            penalty = 0 if regularizer is None else regularizer(nn)
+            return self.loss.batch_mean(nn.predict_batch(x), y) + penalty
+
+        def line_search_l(ν, c, d):
+            t_L = 0
+            r = 1
+            while r - t_L > accuracy_tolerance:
+                m = (r + t_L) / 2.0
+                if f(c + t_L * d) <= f(c) + m_L * t_L * ν:
+                    t_L = m
+                else:
+                    r = m
+            return t_L
+
+        def line_search_r(ν, c, d, t_L):
+            t_R = t_L
+            r = 1
+            while r - t_R > accuracy_tolerance:
+                m = (r + t_R) / 2.0
+                fc = f(c + t_L * d)
+                fw = f(c + t_R * d)
+                g = grad_f()
+                α = abs(fc - fw - (t_L - t_R) * g.T.dot(d))
+                if -α + g.T.dot(d) >= m_R * ν:
+                    t_R = m
+                else:
+                    r = m
+            return t_R
+
+        def make_parameters(c, f_c, G, F, S):
+            α = f_c - G.dot(c) - F
+            h = np.maximum(np.abs(α), γ * S ** 2)
+            A = np.hstack((-np.ones((G.shape[0], 1)), G))
+            P = µ * np.eye(len(c) + 1)
+            P[0, 0] = 0
+            q = np.eye(len(c) + 1, 1)
+            return matrix(P), matrix(q), matrix(A), matrix(h)
+
+        # Compute first function and subgradient
+        list_weights = [l.weights for l in nn.layers]
+        list_bias = [l.bias for l in nn.layers]
+
+        θ = self.flatten(list_weights, list_bias)
+        c = θ
+        fc = f(c)
+        g = grad_f()
+        a = 0
+
+        G = g.T  # Matrix of subgradients
+        F = np.matrix(fc - g.T.dot(c))
+        S = np.zeros(1)  # Info to compute the subgrad locality measure
+
+        for clbk in callbacks:
+            clbk.on_training_begin(nn)
+
+        # fig, ax = plt.subplots()
+        # plt.ion()
+        # plt.show()
+
+        bar = tqdm.tqdm(total=max_iterations)
+        for iteration in itertools.count(start=1, step=1):
+            bar.write('Iteration %3d: ' % iteration, end='')
+            res = solvers.qp(*make_parameters(c, fc, G, F, S),
+                             options={'show_progress': False})
+
+            if res['status'] is not 'optimal':
+                self.unflatten(nn, c)
+                bar.write('QP Solver error: ' + res['status'], end='')
+
+            d = res['x'][1:]
+            ν = res['x'][0]
+
+            # Compute function and subgradient and update the bundle
+            fd = f(θ)
+            g = grad_f()
+            fc = f(c)
+            G = np.vstack((G, g.T))
+            F = np.vstack((F, fd - g.T.dot(θ)))
+
+            # Serious step / null step decision
+            t_L = line_search_l(ν, c, d)
+            d_norm = np.linalg.norm(d)
+            if t_L >= t̅:
+                bar.write('Long Serious Step, ', end='')
+                c = c + t_L * d
+                θ = c
+                s_c = t_L * d_norm
+                s_d = 0
+            else:
+                t_R = line_search_r(ν, c, d, t_L)
+                if t_L > 0:
+                    bar.write('Short Serious Step, ', end='')
+                    c = c + t_L * d
+                    θ = c + t_R * d
+                    s_c = t_L * d_norm
+                    s_d = (t_R - t_L) * d_norm
+                else:
+                    bar.write('Null Step, ', end='')
+                    θ = c + t_R * d
+                    s_c = 0
+                    s_d = t_R * d_norm
+            S += s_c
+            S = np.vstack((S, s_d))
+            a = max(a + s_c, s_d)
+
+            if a > a̅:
+                mask = (S < 0.5 * a̅).flatten()
+                mask[-1] = True  # Ensures at least one element
+                G = G[mask]
+                F = F[mask]
+                S = S[mask]
+                a = S[0]
+
+            bar.write('{} constraints'.format(len(F)))
+
+            # Stopping criteria
+            self.unflatten(nn, c)
+            if abs(ν) <= accuracy_tolerance:
+                bar.write('Optimal')
+                break
+            if iteration > max_iterations:
+                bar.write('Exceeded max_iterations')
+                break
+
+            # bar.write("Weights: \n{}".format(str([l.weights for l in nn.layers])))
+            # bar.write("Biases: \n{}".format(str([l.bias for l in nn.layers])))
+
+            # Callbacks
+            y_predicted = nn.predict_batch(x)
+            loss_value = self.loss.batch_mean(y_predicted, y)
+            for clbk in callbacks:
+                clbk.on_epoch_end(iteration, nn, loss_value, {})
+            bar.set_postfix({'loss': loss_value, '‖d‖': d_norm, 'ν': ν})
+            bar.update()
+
+            # if iteration % 5 == 0:
+            #     plt.cla()
+            #     plt.scatter(x, y, label='dataset')
+            #     plt.scatter(x, y_predicted, label='nn')
+            #     plt.legend()
+            #     fig.canvas.draw()
+            #     plt.pause(1e-16)
+
+        for clbk in callbacks:
+            clbk.on_training_end(nn)
+
+        # plt.ioff()
+
+    @staticmethod
+    def flatten(list_weights, list_bias):
+        """ Returns a column vector with the concatenation of the given neural
+        network parameters. """
+        flattened = np.array([])
+        for w, b in zip(list_weights, list_bias):
+            flattened = np.concatenate((flattened, w.flatten(), b.flatten()))
+        return flattened.reshape((-1, 1))
+
+    @staticmethod
+    def unflatten(nn, flattened):
+        """ Plug back the flattened weights/bias into the neural networks. """
+        low = 0
+        for l in nn.layers:
+            high = low + functools.reduce(operator.mul, l.weights.shape, 1)
+            l.weights = flattened[low:high].reshape(l.weights.shape)
+            low = high
+            high = low + l.bias.shape[0]
+            l.bias = flattened[low:high].reshape(l.bias.shape)
+            low = high
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    from nnweaver.nn import NN, Layer, Linear, uniform
+    from nnweaver.activations import Sigmoid, Rectifier
+    from nnweaver.losses import MSE
+    from nnweaver.regularizers import L1L2Regularizer
+    from nnweaver.callbacks import PlotLearningCurve
+    from sklearn import preprocessing
+    from nnweaver.validation import random_search
+    from scipy import stats
+
+    # nn = NN(5)
+    # nn.add_layer(Layer(1, Linear, bias_initializer=uniform(-0.5, 0.5)))
+    # x = np.random.rand(5, 10)
+    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2] + x[3] - 2.*x[4]
+    # pbm = ProximalBundleMethod(MSE)
+    # pbm.train(nn, x.T, y.T, µ=1, accuracy_tolerance=1e-6, max_iterations=40, convex=True)
+    #
+    # def build():
+    #     nn = NN(1)
+    #     nn.add_layer(
+    #         Layer(1, Sigmoid, weights_initializer=uniform(-0.005, 0.005)))
+    #     nn.add_layer(
+    #         Layer(1, Linear, weights_initializer=uniform(-0.005, 0.005)))
+    #     return nn
+    # x = np.arange(-15, 15).reshape((1, -1))
+    # y = 1 * Sigmoid.apply(x) + 5
+    # y += .05 * np.random.randn(*y.shape)
+    #
+    # scaler_x = preprocessing.MinMaxScaler()
+    # scaler_y = preprocessing.MinMaxScaler()
+    # x = (x - x.min()) / (x.max() - x.min())
+    # y = (y - y.min()) / (y.max() - y.min())
+    #
+    # iterations = 25
+    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    # pbm = ProximalBundleMethod(MSE)
+    # # pbm.train(nn, x.T, y.T, accuracy_tolerance=1e-3,  µ=4, γ=0, m_L=0.1, m_R=0.99, t̅=0.5,
+    # #           max_iterations=iterations, callbacks=[callback])
+    # # print(nn.layers[0].weights)
+    #
+    # train_args = {'max_iterations': [50],
+    #               'mu': stats.uniform(0.001, 10),
+    #               'gamma': stats.uniform(0, 10),
+    #               'm_L': stats.uniform(1e-3, 0.499),
+    #               'm_R': stats.uniform(0.5, 0.499),
+    #               't_bar': stats.uniform(0, 1)
+    #               }
+    # result = random_search(build, pbm, x.T, y.T, train_args, {}, 30)
+    #
+    # nn = result[0]
+    # plt.scatter(x, y, label='dataset')
+    # plt.scatter(x, nn.predict_batch(x.T), label='nn')
+    # plt.legend()
+    # plt.show()
+    nn = NN(1)
+    nn.add_layer(Layer(5, Rectifier))
+    nn.add_layer(Layer(1, Linear))
+    x = np.arange(-1, 1, 0.01)
+    y = np.arange(-1, 1, 0.01) ** 2
+    pbm = ProximalBundleMethod(MSE)
+
+    iterations = 1000
+    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    pbm.train(nn, x.T, y.T,  mu=1, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=1,
+              accuracy_tolerance=1e-10, max_iterations=iterations,
+              regularizer=L1L2Regularizer(1e-8, 1e-5), a_bar=0.2, callbacks=[])
+    np.testing.assert_array_equal(y, nn.predict_batch(x.T).flatten())
+
+    # plt.scatter(x, y, label='dataset')
+    # plt.scatter(x, nn.predict_batch(x.T), label='nn')
+    # plt.legend()
+    # plt.show()
+    #
+    # nn = NN(3)
+    # nn.add_layer(Layer(1, Linear))
+    # x = np.random.rand(3, 10)
+    # y = 2.*x[0] + 3.*x[1] - 0.5*x[2]
+    #
+    # iterations = 500
+    # callback = PlotLearningCurve(x.T, y.T, loss=MSE, max_epochs=iterations)
+    # pbm = ProximalBundleMethod(MSE)
+    # pbm.train(nn, x.T, y.T, mu=10, m_L=0.3, m_R=0.7, t_bar=0.5, gamma=0,
+    #           accuracy_tolerance=1e-6, max_iterations=iterations, callbacks=[callback])
+    # np.testing.assert_almost_equal(nn.predict_batch(x.T).flatten(), y, decimal=3)

@@ -1,6 +1,6 @@
 """ The :py:mod:`nnweaver.callbacks` module provides the callback classes that
-will be used to execute some pre-defined or user-defined actions before, during,
-or after the training of a neural network. """
+will be used to execute some pre-defined or user-defined actions before,
+during, or after the training of a neural network. """
 
 import csv
 from abc import ABC, abstractmethod
@@ -27,7 +27,8 @@ class Callback(ABC):
 
 
 class WriteFileCallback(Callback):
-    def __init__(self, filename, x_validation=None, y_validation=None, loss=None, metrics=None):
+    def __init__(self, filename, x_validation=None, y_validation=None,
+                 loss=None, metrics=None):
         """ Create a callback that, at each epoch, writes the loss found by a
         training algorithm to a CSV file. If a data set and a loss function are
         given, it will also write to the file the validation results.
@@ -36,9 +37,11 @@ class WriteFileCallback(Callback):
         :param x_validation: the set of validation examples.
         :param y_validation: the set of validation targets.
         :param loss: the loss function to be evaluated in the validation step.
-        :param metrics: a list of metrics to be evaluated in the validation step.
+        :param metrics: a list of metrics to be evaluated in the validation
+            step.
         """
-        assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
+        assert (x_validation is None) == (y_validation is None) \
+            == (loss is None)
         assert metrics is None or x_validation is not None
         self.x_validation = x_validation
         self.y_validation = y_validation
@@ -78,8 +81,8 @@ class WriteFileCallback(Callback):
             record['train_' + k] = v
         if self.x_validation is not None:
             y_predicted = nn.predict_batch(self.x_validation)
-            validation_loss_value = self.loss.batch_mean(y_predicted, self.y_validation)
-            record['val_loss'] = validation_loss_value
+            val_loss = self.loss.batch_mean(y_predicted, self.y_validation)
+            record['val_loss'] = val_loss
             for m in self.metrics:
                 record['val_' + m.__name__] = m(y_predicted, self.y_validation)
         self.csv_writer.writerow(record)
@@ -93,17 +96,17 @@ class WriteFileCallback(Callback):
 
 
 class PlotLearningCurve(Callback):
-    def __init__(self, x_validation=None, y_validation=None, loss=None, interactive=True, max_epochs=None,
-                 blocking=True):
-        """ Create a callback that plot the learning curve of a model during and
-        after its training phase. If a data set and a loss function are given,
-        it will also plot the validation results.
+    def __init__(self, x_validation=None, y_validation=None, loss=None,
+                 interactive=True, max_epochs=None, blocking=True):
+        """ Create a callback that plot the learning curve of a model during
+        and after its training phase. If a data set and a loss function are
+        given, it will also plot the validation results.
 
         :param x_validation: the set of validation examples.
         :param y_validation: the set of validation targets.
         :param loss: the loss function to be evaluated in the validation step.
         :param interactive: if ``True``, show the learning curve interactively
-            during the training of the model, otherwise only after the training.
+            during the training of the model, otherwise only after it's ended.
             Notice that the former may cause a loss of training performance.
         :param max_epochs: the expected number of epochs. If present, this
             parameter prevents the plot from rescaling during the training (if
@@ -111,7 +114,8 @@ class PlotLearningCurve(Callback):
         :param blocking: if ``True`` display the curve window and block until
             it has been closed.
         """
-        assert bool(x_validation is None) == bool(y_validation is None) == bool(loss is None)
+        assert (x_validation is None) == (y_validation is None) \
+            == (loss is None)
         self.x_validation = x_validation
         self.y_validation = y_validation
         self.loss = loss
@@ -144,14 +148,15 @@ class PlotLearningCurve(Callback):
         self.losses.append(loss_value)
         if self.x_validation is not None:
             y_predicted = nn.predict_batch(self.x_validation)
-            validation_loss_value = self.loss.batch_mean(y_predicted, self.y_validation)
-            self.val_losses.append(validation_loss_value)
+            val_loss = self.loss.batch_mean(y_predicted, self.y_validation)
+            self.val_losses.append(val_loss)
 
         if self.interactive:
             self.ax.cla()
             self.ax.plot(self.epochs, self.losses, 'b', label='Training')
             if self.x_validation is not None:
-                self.ax.plot(self.epochs, self.val_losses, 'r', label='Validation')
+                self.ax.plot(self.epochs, self.val_losses,
+                             'r', label='Validation')
                 self.ax.legend()
             if self.max_epochs:
                 self.ax.set_xlim(0, self.max_epochs)
